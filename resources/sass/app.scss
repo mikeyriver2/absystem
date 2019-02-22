@@ -65,8 +65,59 @@ body{
 .ticket-module{
   border: 1px;
   border-style: solid;
-  margin: 10px;
+  //margin: 10px;
+  .ticket-module-head{
+    .orders-title{
+      background: #444444;
+      color: white;
+      span{
+        margin-left:1em;
+      }
+    }
+    .concert-detail{
+      height: 10vh;
+      display: flex;
+      background: #f1b850;
+      .abs-logo{
+        display: flex;
+        align-items: center;
+        padding-right: 5px;
+        img{
+          height: 8vh;
+          float:right;
+        }
+      }
+      .concert-title{
+        display: flex;
+        font-size: .80em;
+        font-weight: bold;
+        align-items: center;
+        padding-right: 0px;
+        padding-left: 0px;
+      }
+    }
+    #dropdown-date{
+      border: 0;
+      background: #ffffff;
+      width: 100%;
+      border-radius: 0%;
+      &::after{
+        color: #b6b4b4;
+      }
+      .dropdown-container{
+        float:left;
+        span{
+          color: #b6b4b4;
+        }
+        img{
+          height: 3vh;
+          margin: 5px;
+        }
+      }
+    }
+  }
 }
+
 .container-vanilla{
   margin-left: 0;
   display: grid;

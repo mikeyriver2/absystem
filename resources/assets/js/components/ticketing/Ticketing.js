@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import {Dropdown,Col,Row} from 'react-bootstrap';
 
 export default class Ticketing extends Component {
     constructor(){
@@ -89,7 +90,40 @@ export default class Ticketing extends Component {
         return (
             <div className="container-vanilla">
                 <div className="ticket-module">
-                    ticket module
+                    <div className="ticket-module-head">
+                        <div className="date-dropdown">
+                            <Dropdown>
+                                <Dropdown.Toggle id="dropdown-date">
+                                    <div className="dropdown-container">
+                                        <img src="/images/clapperboard.png"/>
+                                        <span>Select Reservation Date</span>
+                                    </div>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
+                        <div className="concert-detail">
+                            <Row>
+                                <Col md={3} className="abs-logo">
+                                    <img src="/images/abs-logo.png"/>
+                                </Col>
+                                <Col md={9} className='concert-title'>
+                                    YEAR-END CONCERT 2019: SPIRIT
+                                </Col>
+                            </Row>
+                        </div>
+                        <div className="orders-title">
+                            <span>Orders</span>
+                        </div>
+                        <div className="orders">
+                        
+                        </div>
+                    </div>
                 </div>
                 <div className="venue">
                     <div className="stage">
