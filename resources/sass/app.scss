@@ -1,0 +1,120 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@font-face {
+  font-family: QuickSand;
+  src: url('/fonts/Quicksand-Regular.ttf');
+}
+
+
+// .navbar-laravel {
+//   background-color: #fff;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// }
+
+body{
+  font-family: "Quicksand";
+}
+
+.body{
+  margin: 0;
+}
+
+.head{
+  height: 11vh;
+  margin-left: 0px;
+  margin-right: 0px;
+  //border: 1px;
+  //border-style: solid;
+  .dp{
+    display: flex;
+    align-items: center;
+    img{
+      height: 6vh;
+    }
+  }
+  .logo{
+    img{
+      height: 11vh;
+    }
+  }
+  .abs-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.5vw;
+  }
+  .hi-username{
+    text-align: end;
+    .username{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.ticket-module{
+  border: 1px;
+  border-style: solid;
+  margin: 10px;
+}
+.container-vanilla{
+  margin-left: 0;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  height: 95vh;
+}
+.venue{
+  margin: 1.5vh 0;
+  margin-right: 1vh;
+}
+
+.stage{
+  text-align: center;
+  border: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
+.seat{
+  border: 1px;
+  height: 2.5vh;
+  border-style: solid;
+  margin-bottom: 5px;
+}
+.venue .clickables{
+  margin-left: 3vw;
+  font-size:.75em;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.section{
+  padding: 10px;
+  display:grid;
+  grid-template-rows: repeat(15, 1fr);
+  max-width: 22.5vw;
+  
+}
+.row-notBS{
+  display:grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-column-gap:5px;
+}
+/*
+.row-2{
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+.row-3{
+  grid-template-columns: repeat(5, 1fr) !important;
+}
+*/
