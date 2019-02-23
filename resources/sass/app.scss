@@ -63,10 +63,11 @@ body{
 }
 
 .ticket-module{
-  border: 1px;
-  border-style: solid;
+  //border: 1px;
+  //border-style: solid;
   //margin: 10px;
   .ticket-module-head{
+    background:white;
     .summary{
       padding-top:1vh;
       .total-price{
@@ -95,7 +96,7 @@ body{
       padding-top: 1px; // to handle moving parent div
       margin-top: -1px; //
       background-color: #f2f2f2;
-      height: 55vh;
+      height: 50vh;
       .row{
         padding: 2vh 0;
         margin: 2vh .5vw;
@@ -190,16 +191,19 @@ body{
 .container-vanilla{
   margin-left: 0;
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 25% 75%;
   height: 95vh;
 }
 .venue{
+  overflow:auto;
   background: #f2f2f2;
-  margin: 1.5vh 0;
+  //margin: 1.5vh 0;
   margin-right: 1vh;
 }
 
 .stage{
+  width:75%;
+  margin: 3vh auto;
   text-align: center;
   border: 1px;
   border-style: solid;
@@ -207,30 +211,39 @@ body{
 }
 
 .seat{
+  box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
+  background: white;
+  border-radius:50%;
   border: 1px;
-  height: 2.5vh;
-  border-style: solid;
+  height: 3.5vh;
+  //border-style: solid;
   margin-bottom: 5px;
   &::after{
     content:"";
   }
 }
-.venue .clickables{
-  margin-left: 3vw;
-  font-size:.75em;
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-}
+.venue{
+  .clickables{
+    .clickables-container{
+    margin-left: 3vw;
+    font-size:.75em;
+    display:grid;
+    //grid-template-columns: repeat(3, 1fr);
+    }
+  }
+} 
+
 .section{
-  padding: 10px;
+  //padding: 10px;
+  justify-items: center;
   display:grid;
   grid-template-rows: repeat(15, 1fr);
-  max-width: 22.5vw;
+  //max-width: 20.5vw;
   
 }
 .row-notBS{
   display:grid;
-  grid-template-columns: repeat(15, 1fr);
+  //grid-template-columns: repeat(10, 1fr);
   grid-column-gap:5px;
 }
 /*

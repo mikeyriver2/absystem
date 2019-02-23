@@ -31659,7 +31659,10 @@ var Ticketing = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Ticketing.__proto__ || Object.getPrototypeOf(Ticketing)).call(this));
 
-        _this.state = {};
+        _this.state = {
+            venue_name: "",
+            venue: []
+        };
         _this.renderVenue = _this.renderVenue.bind(_this);
         _this.test = _this.test.bind(_this);
         _this.handleSeatClick = _this.handleSeatClick.bind(_this);
@@ -31668,7 +31671,22 @@ var Ticketing = function (_Component) {
 
     _createClass(Ticketing, [{
         key: 'componentDidMount',
-        value: function componentDidMount() {}
+        value: function componentDidMount() {
+            this.setState({
+                venue_name: "Singson Hall",
+                venue: [{
+                    type: "ground floor",
+                    number_of_sections: 3,
+                    number_of_rows: [15, 15, 15],
+                    number_of_columns: [10, 15, 10]
+                }, {
+                    type: "balcony",
+                    number_of_sections: 3,
+                    number_of_rows: [4, 5, 4],
+                    number_of_columns: [6, 16, 6]
+                }]
+            });
+        }
     }, {
         key: 'showSales',
         value: function showSales() {
@@ -31753,13 +31771,29 @@ var Ticketing = function (_Component) {
             var sections = [];
 
             var seat = function seat(row_number, number_of_seats, section_number) {
+                var height = 3.5;
+                if (number_of_seats > 10) {
+                    height = 2.5;
+                }
+                /*if(number_of_seats > 10){
+                    height = 2.5
+                }else if (number_of_seats < 7){
+                    height = 3
+                }else if (number_of_seats > 15){
+                    height = 2
+                }*/
+                var style = {
+                    height: height + "vh"
+                    /*width: number_of_seats < 7 ? "3vh" : "",
+                    margin:  number_of_seats < 7 ? "1.5vh auto" : ""*/
+                };
                 var seats = [];
                 var sections = ['OL', 'VIP', 'OR'];
                 var rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
                 var section = sections[section_number];
                 var row = rows[row_number];
                 for (var i = 0; i < number_of_seats; i++) {
-                    seats.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { onClick: _this2.handleSeatClick, className: "seat" }));
+                    seats.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { id: section + "-" + row + (i + 1), onClick: _this2.handleSeatClick, className: "seat" }));
                 }
                 return seats;
             };
@@ -31769,7 +31803,7 @@ var Ticketing = function (_Component) {
                 for (var i = 0; i < number_of_rows; i++) {
                     rows.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: "row-notBS row-" + i },
+                        { style: { gridTemplateColumns: "repeat(" + number_of_columns + ", 3vh)" }, className: "row-notBS row-" + i },
                         seat(i, number_of_columns, numberOfSections)
                     ));
                 }
@@ -31786,10 +31820,11 @@ var Ticketing = function (_Component) {
                     section = "or";
                 }
                 var class_name = "section section-" + section;
+
                 sections.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: class_name },
-                    row(numberOfRows, numberOfColumns, i)
+                    { style: { gridTemplateRows: "repeat(" + numberOfRows[i] + ", 5vh)" }, className: class_name },
+                    row(numberOfRows[i], numberOfColumns[i], i)
                 ));
             }
             return sections;
@@ -31797,7 +31832,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'test',
         value: function test() {
-            console.log('fuck this shit so much');
+            console.log('Fok me baby one more time');
             var ass = [];
             var fuckass = function fuckass() {
                 for (var i = 0; i < 5; i++) {
@@ -31815,7 +31850,15 @@ var Ticketing = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             var window_width = window.innerWidth + "px";
+            var window_height = window.innerHeight + "px";
+            var number_of_columnSection = [10, 13, 10]; //# of items must match number of sections
+            var number_of_rowSection = [4, 5, 4]; //same rule
+            var numberOfSections = 3;
+            var numberOfRows = 15;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'container-vanilla' },
@@ -31850,18 +31893,13 @@ var Ticketing = function (_Component) {
                                     null,
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
-                                        { href: '#/action-1' },
-                                        'Action'
+                                        null,
+                                        'Day 1 [May 5, 2019]'
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
-                                        { href: '#/action-2' },
-                                        'Another action'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
-                                        { href: '#/action-3' },
-                                        'Something else'
+                                        null,
+                                        'Day 2 [May 6, 2019]'
                                     )
                                 )
                             )
@@ -31947,16 +31985,41 @@ var Ticketing = function (_Component) {
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'venue' },
+                    { style: { maxHeight: window_height }, className: 'venue' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { className: 'stage' },
-                        'stage'
+                        { className: 'stage-container' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'stage' },
+                            'Stage'
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'clickables' },
-                        this.renderVenue(3, 15, 15)
+                        this.state.venue.map(function (venue) {
+                            var sections = venue.number_of_sections;
+                            var rows = venue.number_of_rows;
+                            var columns = venue.number_of_columns;
+                            //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
+                            var grid_template_size = "";
+                            if (venue.type == "balcony") {
+                                grid_template_size = "20vw 30vw 20vw";
+                            } else {
+                                grid_template_size = "20vw 30vw 20vw";
+                            }
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { style: { gridTemplateColumns: grid_template_size }, className: 'clickables-container' },
+                                    _this3.renderVenue(sections, rows, columns)
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
+                            );
+                        })
                     )
                 )
             );

@@ -6,7 +6,8 @@ export default class Ticketing extends Component {
     constructor(){
         super();
         this.state = {
-
+            venue_name: "",
+            venue: []
         }
         this.renderVenue = this.renderVenue.bind(this)
         this.test = this.test.bind(this)
@@ -14,7 +15,23 @@ export default class Ticketing extends Component {
     }
 
     componentDidMount(){
-
+        this.setState({
+            venue_name: "Singson Hall",
+            venue: [
+                {
+                    type: "ground floor",
+                    number_of_sections: 3,
+                    number_of_rows: [15,15,15],
+                    number_of_columns: [10,15,10]
+                },
+                {
+                    type: "balcony",
+                    number_of_sections: 3,
+                    number_of_rows: [4,5,4],
+                    number_of_columns: [6,16,6]
+                }
+            ]
+        })
     }
 
     showSales(){
@@ -75,6 +92,22 @@ export default class Ticketing extends Component {
         var sections = [];
         
         const seat = (row_number,number_of_seats,section_number) => {
+            var height = 3.5
+            if(number_of_seats > 10){
+                height = 2.5
+            }
+            /*if(number_of_seats > 10){
+                height = 2.5
+            }else if (number_of_seats < 7){
+                height = 3
+            }else if (number_of_seats > 15){
+                height = 2
+            }*/
+            var style = {
+                height: height+"vh",
+                /*width: number_of_seats < 7 ? "3vh" : "",
+                margin:  number_of_seats < 7 ? "1.5vh auto" : ""*/
+            }
             var seats = [];
             var sections = ['OL','VIP','OR']
             var rows = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
@@ -82,7 +115,7 @@ export default class Ticketing extends Component {
             var row = rows[row_number];
             for(var i = 0; i < number_of_seats; i++){
                 seats.push(
-                    <div onClick={this.handleSeatClick} className={"seat"}>
+                    <div id={section+"-"+row+(i+1)} onClick={this.handleSeatClick} className={"seat"}>
                         {/*"r"+row_number+"-s"+i+" "*/}
                         {/*section+"-"+row+(i+1)*/}
                     </div>
@@ -95,7 +128,7 @@ export default class Ticketing extends Component {
             var rows = [];
             for(var i = 0; i < number_of_rows; i++){
                 rows.push(
-                    <div className={"row-notBS row-"+i}>
+                    <div style={{gridTemplateColumns: "repeat("+number_of_columns+", 3vh)" }}className={"row-notBS row-"+i}>
                         {seat(i,number_of_columns,numberOfSections)}
                     </div>
                 )
@@ -113,9 +146,10 @@ export default class Ticketing extends Component {
                 section = "or"
             }
             var class_name = "section section-"+section
-             sections.push(
-                <div className={class_name}>
-                    {row(numberOfRows,numberOfColumns,i)}
+            
+            sections.push(
+                <div style={{gridTemplateRows: "repeat("+numberOfRows[i]+", 5vh)"}}className={class_name}>
+                    {row(numberOfRows[i],numberOfColumns[i],i)}
                 </div>
             )
         }
@@ -124,7 +158,7 @@ export default class Ticketing extends Component {
     }
 
     test(){
-        console.log('fuck this shit so much')
+        console.log('Fok me baby one more time')
         const ass = [];
         var fuckass = function() {for(var i = 0; i < 5; i++){
             ass.push(<div key={i}>Asss Fuck</div>)
@@ -137,6 +171,12 @@ export default class Ticketing extends Component {
 
     render() {
         var window_width = window.innerWidth+"px";
+        var window_height = window.innerHeight+"px";
+        var number_of_columnSection = [10,13,10] //# of items must match number of sections
+        var number_of_rowSection = [4,5,4] //same rule
+        var numberOfSections = 3;
+        var numberOfRows = 15;
+
         return (
             <div className="container-vanilla">
                 <div className="ticket-module">
@@ -151,9 +191,8 @@ export default class Ticketing extends Component {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                    <Dropdown.Item>Day 1 [May 5, 2019]</Dropdown.Item>
+                                    <Dropdown.Item>Day 2 [May 6, 2019]</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
@@ -194,12 +233,39 @@ export default class Ticketing extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="venue">
-                    <div className="stage">
-                        stage
+                <div style={{maxHeight:window_height}} className="venue">
+                    <div className="stage-container">
+                        <div className="stage">
+                            Stage
+                        </div>
                     </div>
                     <div className="clickables">
-                        {this.renderVenue(3,15,15)}
+                        {this.state.venue.map((venue)=>{
+                            let sections = venue.number_of_sections;
+                            let rows = venue.number_of_rows;
+                            let columns = venue.number_of_columns 
+                            //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
+                            var grid_template_size = ""
+                            if(venue.type == "balcony"){
+                                grid_template_size = "20vw 30vw 20vw"
+                            }else{
+                                grid_template_size = "20vw 30vw 20vw"
+                            }
+                            return (
+                            <div>
+                                <div style={{gridTemplateColumns:grid_template_size}}className="clickables-container">
+                                    {this.renderVenue(sections,rows,columns)}
+                                </div>
+                                <hr />
+                            </div>
+                            )
+                        })
+                        }
+                        {/*
+                        <div style={{gridTemplateColumns:"repeat("+numberOfSections+", 1fr)"}}className="clickables-container">
+                            {this.renderVenue(3,number_of_rowSection,[6,16,6])}
+                        </div>
+                        */}
                     </div>
                         {/*this.test()*/}
                 </div>
