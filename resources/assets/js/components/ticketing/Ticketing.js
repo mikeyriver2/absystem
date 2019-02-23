@@ -17,6 +17,38 @@ export default class Ticketing extends Component {
 
     }
 
+    displayOrders(){
+        var rows = [];
+        const row = (
+            <Row className="order">
+                <Col md={7} className="order-text">
+                    <div className="order-text-section">
+                        Orchestra Center
+                    </div>
+                    <div className="order-text-seatNo">
+                        Seat No. ORA1
+                    </div>
+                </Col>
+                <Col md={4} className="order-price">
+                    <div className="price">
+                        P100,000
+                    </div>
+                    <div className="cancel">
+                        Cancel
+                    </div>
+                </Col>
+            </Row>
+        )
+
+        for(var i = 0; i < 5; i++){
+            rows.push(
+                row
+            )
+        }
+
+        return rows;
+    }
+
     handleSeatClick(){
         console.log('ive been reserved baby')
     }
@@ -121,7 +153,9 @@ export default class Ticketing extends Component {
                             <span>Orders</span>
                         </div>
                         <div className="orders">
-                        
+                            <div className="orders-container">
+                                {this.displayOrders()}
+                            </div>
                         </div>
                     </div>
                 </div>

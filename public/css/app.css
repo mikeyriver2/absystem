@@ -11710,6 +11710,58 @@ body {
   border-style: solid;
 }
 
+.ticket-module .ticket-module-head .orders {
+  overflow: auto;
+  padding-top: 1px;
+  margin-top: -1px;
+  background-color: #f2f2f2;
+  height: 55vh;
+}
+
+.ticket-module .ticket-module-head .orders .row {
+  padding: 2vh 0;
+  margin: 2vh .5vw;
+  background: white;
+  -webkit-box-shadow: 0px 10px 15px rgba(128, 128, 128, 0.1);
+          box-shadow: 0px 10px 15px rgba(128, 128, 128, 0.1);
+}
+
+.ticket-module .ticket-module-head .orders .order-text {
+  border-left: 4px;
+  border-right: 0;
+  border-style: solid;
+  border-top: 0;
+  border-bottom: 0;
+  padding-left: 10px;
+  margin-left: 1vw;
+  border-color: #f1b850;
+}
+
+.ticket-module .ticket-module-head .orders .order-text .order-text-section {
+  font-size: .8em;
+  font-weight: bold;
+}
+
+.ticket-module .ticket-module-head .orders .order-text .order-text-seatNo {
+  font-size: .9em;
+}
+
+.ticket-module .ticket-module-head .orders .order-price .price {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.ticket-module .ticket-module-head .orders .order-price .cancel {
+  font-size: .65em;
+  font-weight: bold;
+  float: right;
+  color: red;
+}
+
 .ticket-module .ticket-module-head .orders-title {
   background: #444444;
   color: white;
@@ -11725,6 +11777,10 @@ body {
   display: -ms-flexbox;
   display: flex;
   background: #f1b850;
+}
+
+.ticket-module .ticket-module-head .concert-detail .row {
+  width: 100%;
 }
 
 .ticket-module .ticket-module-head .concert-detail .abs-logo {
@@ -11746,7 +11802,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  font-size: .80em;
+  font-size: 1.1em;
   font-weight: bold;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -11763,6 +11819,7 @@ body {
 }
 
 .ticket-module .ticket-module-head #dropdown-date::after {
+  margin-left: 10em;
   color: #b6b4b4;
 }
 
@@ -11782,7 +11839,7 @@ body {
 .container-vanilla {
   margin-left: 0;
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 30% 70%;
   height: 95vh;
 }
 
