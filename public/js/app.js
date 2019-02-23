@@ -31670,6 +31670,33 @@ var Ticketing = function (_Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {}
     }, {
+        key: 'showSales',
+        value: function showSales() {
+            var sales = [];
+            var sale_container = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'sale-container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'sale-ticket-section' },
+                    '3x Orchestra Center'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'span',
+                    { className: 'total-price' },
+                    'P100,000.000'
+                )
+            );
+            for (var i = 0; i < 3; i++) {
+                sales.push(sale_container);
+            }
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'sale' },
+                sales
+            );
+        }
+    }, {
         key: 'displayOrders',
         value: function displayOrders() {
             var rows = [];
@@ -31873,6 +31900,47 @@ var Ticketing = function (_Component) {
                                 'div',
                                 { className: 'orders-container' },
                                 this.displayOrders()
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'orders-title' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                'Summary'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'summary' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'summary-container' },
+                                this.showSales()
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'total-price' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', { style: { margin: "10px 1vw" }, className: 'summary-hr' }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'price' },
+                                    'P300,000.00'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'btn-container' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        { className: 'btn btn-default' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'b',
+                                            null,
+                                            'Order Now'
+                                        )
+                                    )
+                                )
                             )
                         )
                     )

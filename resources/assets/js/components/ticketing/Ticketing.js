@@ -17,6 +17,24 @@ export default class Ticketing extends Component {
 
     }
 
+    showSales(){
+        var sales = []
+        const sale_container = (
+                <div className="sale-container">
+                    <span className="sale-ticket-section">3x Orchestra Center</span>
+                    <span className="total-price">P100,000.000</span>
+                </div>
+        )
+        for(var i = 0; i < 3; i++){
+            sales.push(sale_container)
+        }
+        return (
+            <div className="sale">
+                {sales}
+            </div>
+        )
+    }
+
     displayOrders(){
         var rows = [];
         const row = (
@@ -157,6 +175,23 @@ export default class Ticketing extends Component {
                                 {this.displayOrders()}
                             </div>
                         </div>
+                        <div className="orders-title">
+                            <span>Summary</span>
+                        </div>
+                        <div className="summary">
+                            <div className="summary-container">
+                                {this.showSales()}
+                            </div>
+                            <div className="total-price">
+                                <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
+                                <div className="price">P300,000.00</div>
+                                <div className="btn-container">
+                                    <button className="btn btn-default">
+                                        <b>Order Now</b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="venue">
@@ -164,9 +199,9 @@ export default class Ticketing extends Component {
                         stage
                     </div>
                     <div className="clickables">
-                    {this.renderVenue(3,15,15)}
+                        {this.renderVenue(3,15,15)}
                     </div>
-                    {/*this.test()*/}
+                        {/*this.test()*/}
                 </div>
             </div>
         );

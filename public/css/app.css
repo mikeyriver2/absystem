@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);/*!
+/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
  * Copyright 2011-2019 Twitter, Inc.
@@ -11710,6 +11710,31 @@ body {
   border-style: solid;
 }
 
+.ticket-module .ticket-module-head .summary {
+  padding-top: 1vh;
+}
+
+.ticket-module .ticket-module-head .summary .total-price .price {
+  text-align: right;
+  padding-right: 1.5vw;
+}
+
+.ticket-module .ticket-module-head .summary .total-price .btn-container {
+  text-align: center;
+}
+
+.ticket-module .ticket-module-head .summary .summary-container .sale {
+  text-align: left;
+}
+
+.ticket-module .ticket-module-head .summary .summary-container .sale .sale-container {
+  padding: 0.05vh 1.5vw;
+}
+
+.ticket-module .ticket-module-head .summary .summary-container .sale .sale-container .total-price {
+  float: right;
+}
+
 .ticket-module .ticket-module-head .orders {
   overflow: auto;
   padding-top: 1px;
@@ -11844,6 +11869,7 @@ body {
 }
 
 .venue {
+  background: #f2f2f2;
   margin: 1.5vh 0;
   margin-right: 1vh;
 }
@@ -11860,6 +11886,10 @@ body {
   height: 2.5vh;
   border-style: solid;
   margin-bottom: 5px;
+}
+
+.seat::after {
+  content: "";
 }
 
 .venue .clickables {
