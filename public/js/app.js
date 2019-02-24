@@ -31661,7 +31661,8 @@ var Ticketing = function (_Component) {
 
         _this.state = {
             venue_name: "",
-            venue: []
+            venue: [],
+            chosen_seats: []
         };
         _this.renderVenue = _this.renderVenue.bind(_this);
         _this.test = _this.test.bind(_this);
@@ -31732,7 +31733,7 @@ var Ticketing = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'order-text-seatNo' },
-                        'Seat No. ORA1'
+                        'SEAT NO. ORA1'
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -31746,7 +31747,12 @@ var Ticketing = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'cancel' },
-                        'Cancel'
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { style: { height: "2vh", marginRight: ".3vw" }, src: '/images/error.svg' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'span',
+                            null,
+                            'Cancel'
+                        )
                     )
                 )
             );
@@ -31759,12 +31765,23 @@ var Ticketing = function (_Component) {
         }
     }, {
         key: 'handleSeatClick',
-        value: function handleSeatClick() {
+        value: function handleSeatClick(e) {
             console.log('ive been reserved baby');
+            console.log('className =' + e.target.className);
+            var class_name = e.target.className;
+            var status = class_name.split(" ");
+
+            if (status.includes("seat-not-taken")) {
+                document.getElementById(e.target.id).classList.add('seat-reserved');
+                document.getElementById(e.target.id).classList.remove('seat-not-taken');
+            } else if (status.includes("seat-reserved")) {
+                document.getElementById(e.target.id).classList.remove('seat-reserved');
+                document.getElementById(e.target.id).classList.add('seat-not-taken');
+            }
         }
     }, {
         key: 'renderVenue',
-        value: function renderVenue(numberOfSections, numberOfRows, numberOfColumns) {
+        value: function renderVenue(numberOfSections, numberOfRows, numberOfColumns, type) {
             var _this2 = this;
 
             //# of columns per Section, for now assuming all sections have = number of columns
@@ -31793,7 +31810,8 @@ var Ticketing = function (_Component) {
                 var section = sections[section_number];
                 var row = rows[row_number];
                 for (var i = 0; i < number_of_seats; i++) {
-                    seats.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { id: section + "-" + row + (i + 1), onClick: _this2.handleSeatClick, className: "seat" }));
+                    var _class_name = "seat seat-not-taken";
+                    seats.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { id: section + "-" + row + (i + 1), onClick: _this2.handleSeatClick, className: _class_name }));
                 }
                 return seats;
             };
@@ -31823,8 +31841,17 @@ var Ticketing = function (_Component) {
 
                 sections.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { style: { gridTemplateRows: "repeat(" + numberOfRows[i] + ", 5vh)" }, className: class_name },
-                    row(numberOfRows[i], numberOfColumns[i], i)
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        { style: { textAlign: "center", marginBottom: "1.5rem" } },
+                        type == "balcony" ? "balcony" : section
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { style: { gridTemplateRows: "repeat(" + numberOfRows[i] + ", 5vh)" }, className: class_name },
+                        row(numberOfRows[i], numberOfColumns[i], i)
+                    )
                 ));
             }
             return sections;
@@ -31913,7 +31940,7 @@ var Ticketing = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
                                     { md: 3, className: 'abs-logo' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/abs-logo.png' })
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/ABS_Full-Logo_Circle.png' })
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
@@ -31964,7 +31991,11 @@ var Ticketing = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { className: 'price' },
-                                    'P300,000.00'
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'b',
+                                        null,
+                                        'P300,000.00'
+                                    )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
@@ -31992,7 +32023,7 @@ var Ticketing = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { className: 'stage' },
-                            'Stage'
+                            'STAGE'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -32002,6 +32033,7 @@ var Ticketing = function (_Component) {
                             var sections = venue.number_of_sections;
                             var rows = venue.number_of_rows;
                             var columns = venue.number_of_columns;
+                            var type = venue.type;
                             //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
                             var grid_template_size = "";
                             if (venue.type == "balcony") {
@@ -32015,7 +32047,7 @@ var Ticketing = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'div',
                                     { style: { gridTemplateColumns: grid_template_size }, className: 'clickables-container' },
-                                    _this3.renderVenue(sections, rows, columns)
+                                    _this3.renderVenue(sections, rows, columns, type)
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null)
                             );

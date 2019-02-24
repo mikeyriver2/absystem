@@ -7,7 +7,8 @@ export default class Ticketing extends Component {
         super();
         this.state = {
             venue_name: "",
-            venue: []
+            venue: [],
+            chosen_seats: []
         }
         this.renderVenue = this.renderVenue.bind(this)
         this.test = this.test.bind(this)
@@ -61,7 +62,7 @@ export default class Ticketing extends Component {
                         Orchestra Center
                     </div>
                     <div className="order-text-seatNo">
-                        Seat No. ORA1
+                        SEAT NO. ORA1
                     </div>
                 </Col>
                 <Col md={4} className="order-price">
@@ -69,7 +70,7 @@ export default class Ticketing extends Component {
                         P100,000
                     </div>
                     <div className="cancel">
-                        Cancel
+                        <img style={{height:"2vh",marginRight:".3vw"}} src="/images/error.svg"/><span>Cancel</span>
                     </div>
                 </Col>
             </Row>
@@ -84,11 +85,22 @@ export default class Ticketing extends Component {
         return rows;
     }
 
-    handleSeatClick(){
+    handleSeatClick(e){
         console.log('ive been reserved baby')
+        console.log('className ='+e.target.className)
+        var class_name = e.target.className;
+        var status = class_name.split(" ")
+
+        if(status.includes("seat-not-taken")){
+            document.getElementById(e.target.id).classList.add('seat-reserved');
+            document.getElementById(e.target.id).classList.remove('seat-not-taken');
+        }else if(status.includes("seat-reserved")){
+            document.getElementById(e.target.id).classList.remove('seat-reserved');
+            document.getElementById(e.target.id).classList.add('seat-not-taken');
+        }
     }
 
-    renderVenue(numberOfSections,numberOfRows,numberOfColumns){ //# of columns per Section, for now assuming all sections have = number of columns
+    renderVenue(numberOfSections,numberOfRows,numberOfColumns,type){ //# of columns per Section, for now assuming all sections have = number of columns
         var sections = [];
         
         const seat = (row_number,number_of_seats,section_number) => {
@@ -114,8 +126,9 @@ export default class Ticketing extends Component {
             var section = sections[section_number];
             var row = rows[row_number];
             for(var i = 0; i < number_of_seats; i++){
+                let class_name = "seat seat-not-taken" 
                 seats.push(
-                    <div id={section+"-"+row+(i+1)} onClick={this.handleSeatClick} className={"seat"}>
+                    <div id={section+"-"+row+(i+1)} onClick={this.handleSeatClick} className={class_name}>
                         {/*"r"+row_number+"-s"+i+" "*/}
                         {/*section+"-"+row+(i+1)*/}
                     </div>
@@ -148,8 +161,11 @@ export default class Ticketing extends Component {
             var class_name = "section section-"+section
             
             sections.push(
-                <div style={{gridTemplateRows: "repeat("+numberOfRows[i]+", 5vh)"}}className={class_name}>
-                    {row(numberOfRows[i],numberOfColumns[i],i)}
+                <div>
+                    <h4 style={{textAlign:"center",marginBottom:"1.5rem"}}>{type == "balcony" ? "balcony" : section}</h4>
+                    <div style={{gridTemplateRows: "repeat("+numberOfRows[i]+", 5vh)"}}className={class_name}>
+                        {row(numberOfRows[i],numberOfColumns[i],i)}
+                    </div>
                 </div>
             )
         }
@@ -199,7 +215,7 @@ export default class Ticketing extends Component {
                         <div className="concert-detail">
                             <Row>
                                 <Col md={3} className="abs-logo">
-                                    <img src="/images/abs-logo.png"/>
+                                    <img src="/images/ABS_Full-Logo_Circle.png"/>
                                 </Col>
                                 <Col md={9} className='concert-title'>
                                     YEAR-END CONCERT 2019: SPIRIT
@@ -223,7 +239,7 @@ export default class Ticketing extends Component {
                             </div>
                             <div className="total-price">
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
-                                <div className="price">P300,000.00</div>
+                                <div className="price"><b>P300,000.00</b></div>
                                 <div className="btn-container">
                                     <button className="btn btn-default">
                                         <b>Order Now</b>
@@ -236,14 +252,15 @@ export default class Ticketing extends Component {
                 <div style={{maxHeight:window_height}} className="venue">
                     <div className="stage-container">
                         <div className="stage">
-                            Stage
+                            STAGE
                         </div>
                     </div>
                     <div className="clickables">
                         {this.state.venue.map((venue)=>{
                             let sections = venue.number_of_sections;
                             let rows = venue.number_of_rows;
-                            let columns = venue.number_of_columns 
+                            let columns = venue.number_of_columns;
+                            var type = venue.type;
                             //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
                             var grid_template_size = ""
                             if(venue.type == "balcony"){
@@ -254,7 +271,7 @@ export default class Ticketing extends Component {
                             return (
                             <div>
                                 <div style={{gridTemplateColumns:grid_template_size}}className="clickables-container">
-                                    {this.renderVenue(sections,rows,columns)}
+                                    {this.renderVenue(sections,rows,columns,type)}
                                 </div>
                                 <hr />
                             </div>

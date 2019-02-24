@@ -12,6 +12,25 @@
   font-family: QuickSand;
   src: url('/fonts/Quicksand-Regular.ttf');
 }
+@font-face {
+  font-family: Montserrat_SemiBold;
+  src: url('/fonts/Montserrat/Montserrat-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: Montserrat_Regular;
+  src: url('/fonts/Montserrat/Montserrat-Regular.ttf');
+}
+
+@font-face {
+  font-family: Montserrat_Light;
+  src: url('/fonts/Montserrat/Montserrat-Light.ttf');
+}
+
+@font-face {
+  font-family: bebas_neue_regular;
+  src: url('/fonts/bebas_neue/BebasNeue-Regular.ttf');
+}
 
 
 // .navbar-laravel {
@@ -67,6 +86,7 @@ body{
   //border-style: solid;
   //margin: 10px;
   .ticket-module-head{
+    font-family: Montserrat_Regular; 
     background:white;
     .summary{
       padding-top:1vh;
@@ -84,8 +104,13 @@ body{
           text-align:left;
           .sale-container{
             padding: 0.05vh 1.5vw;
+            .sale-ticket-section{
+              color: #9b9b9b;
+            }
             .total-price{
               float:right;
+              color: #9b9b9b;
+              font-weight: bold;
             }
           }
         }
@@ -98,6 +123,7 @@ body{
       background-color: #f2f2f2;
       height: 50vh;
       .row{
+        border-radius: 8px;
         padding: 2vh 0;
         margin: 2vh .5vw;
         background: white;
@@ -113,11 +139,12 @@ body{
         margin-left: 1vw;
         border-color: #f1b850;
         .order-text-section{
-          font-size: .8em;
+          font-size: 1em;
           font-weight: bold;
         }
         .order-text-seatNo{
           font-size: .9em;
+          color: #9b9b9b;
         }
       }
       .order-price{
@@ -126,6 +153,7 @@ body{
           justify-content: flex-end;
         }
         .cancel{
+          cursor:pointer;
           font-size: .65em;
           font-weight:bold;
           float: right;
@@ -136,6 +164,7 @@ body{
     .orders-title{
       background: #444444;
       color: white;
+      font-family: Montserrat_SemiBold;
       span{
         margin-left:1em;
       }
@@ -152,14 +181,17 @@ body{
         align-items: center;
         padding-right: 5px;
         img{
-          height: 8vh;
-          float:right;
+          height: 7vh;
+          padding-left:1vw;
+          //float:right;
         }
       }
       .concert-title{
+        font-family: bebas_neue_regular;
+        color: #444444;
         display: flex;
-        font-size: 1.1em;
-        font-weight: bold;
+        font-size: 1.5em;
+        //font-weight: bold;
         align-items: center;
         padding-right: 0px;
         padding-left: 0px;
@@ -171,7 +203,7 @@ body{
       width: 100%;
       border-radius: 0%;
       &::after{
-        margin-left: 10em;
+        margin-left: 5em;
         color: #b6b4b4;
       }
       .dropdown-container{
@@ -207,20 +239,30 @@ body{
   text-align: center;
   border: 1px;
   border-style: solid;
-  border-color: black;
+  border-color: #00000054;
+  padding: 1vh;
 }
 
 .seat{
   box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
-  background: white;
   border-radius:50%;
   border: 1px;
   height: 3.5vh;
+  transition: background-color .2s;
   //border-style: solid;
   margin-bottom: 5px;
   &::after{
     content:"";
   }
+}
+.seat-reserved{
+  background-color: #2741af;
+}
+.seat-not-taken{
+  background-color: white;
+}
+.seat-taken{
+  background-color: #f1b850
 }
 .venue{
   .clickables{
