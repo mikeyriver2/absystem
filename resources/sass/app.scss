@@ -53,6 +53,20 @@ body{
   .row{
     padding: 0px;
   }
+  .main{
+    .main-venue{
+      border: 1px;
+      margin-top: 15vh;
+      border-style: solid;
+      height: 50vh;
+      box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
+      width: 60vw;
+      border-color: #c3c0c085;
+      overflow-y: auto;
+      overflow-x:hidden;
+      margin-left: 1vw;    
+    }
+  }
   .main-info{
     color: #707070;
     background:#f8fafc;
@@ -141,6 +155,7 @@ body{
       }
       label{
         //display: none;
+        z-index: 1000000000000;
         opacity: 0;
         position: absolute;
         margin-left: 6.5vw;
@@ -407,6 +422,11 @@ body{
   display:grid;
   //grid-template-columns: repeat(10, 1fr);
   grid-column-gap:5px;
+}
+
+.section-names{
+  text-align:center;
+  margin-bottom:1.5rem;
 }
 /*
 .row-2{

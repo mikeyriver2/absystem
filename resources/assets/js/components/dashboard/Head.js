@@ -41,6 +41,7 @@ export default class Head extends Component{
                 </Row>
                 <Route exact path={`${this.props.match.url}`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/home`} component={Home}/>
+                <Route exact path={`${this.props.match.url}/example`} component={Example}/>
             </div>
             
         )

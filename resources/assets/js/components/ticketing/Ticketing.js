@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Dropdown,Col,Row} from 'react-bootstrap';
+import Singson from './venues/Singson'
 
 export default class Ticketing extends Component {
     constructor(){
@@ -10,9 +11,7 @@ export default class Ticketing extends Component {
             venue: [],
             chosen_seats: []
         }
-        this.renderVenue = this.renderVenue.bind(this)
         this.test = this.test.bind(this)
-        this.handleSeatClick = this.handleSeatClick.bind(this)
     }
 
     componentDidMount(){
@@ -83,94 +82,6 @@ export default class Ticketing extends Component {
         }
 
         return rows;
-    }
-
-    handleSeatClick(e){
-        console.log('ive been reserved baby')
-        console.log('className ='+e.target.className)
-        var class_name = e.target.className;
-        var status = class_name.split(" ")
-
-        if(status.includes("seat-not-taken")){
-            document.getElementById(e.target.id).classList.add('seat-reserved');
-            document.getElementById(e.target.id).classList.remove('seat-not-taken');
-        }else if(status.includes("seat-reserved")){
-            document.getElementById(e.target.id).classList.remove('seat-reserved');
-            document.getElementById(e.target.id).classList.add('seat-not-taken');
-        }
-    }
-
-    renderVenue(numberOfSections,numberOfRows,numberOfColumns,type){ //# of columns per Section, for now assuming all sections have = number of columns
-        var sections = [];
-        
-        const seat = (row_number,number_of_seats,section_number) => {
-            var height = 3.5
-            if(number_of_seats > 10){
-                height = 2.5
-            }
-            /*if(number_of_seats > 10){
-                height = 2.5
-            }else if (number_of_seats < 7){
-                height = 3
-            }else if (number_of_seats > 15){
-                height = 2
-            }*/
-            var style = {
-                height: height+"vh",
-                /*width: number_of_seats < 7 ? "3vh" : "",
-                margin:  number_of_seats < 7 ? "1.5vh auto" : ""*/
-            }
-            var seats = [];
-            var sections = ['OL','VIP','OR']
-            var rows = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
-            var section = sections[section_number];
-            var row = rows[row_number];
-            for(var i = 0; i < number_of_seats; i++){
-                let class_name = "seat seat-not-taken" 
-                seats.push(
-                    <div id={section+"-"+row+(i+1)} onClick={this.handleSeatClick} className={class_name}>
-                        {/*"r"+row_number+"-s"+i+" "*/}
-                        {/*section+"-"+row+(i+1)*/}
-                    </div>
-                )
-            }
-            return seats
-        }
-
-        const row = (number_of_rows,number_of_columns,numberOfSections) => {
-            var rows = [];
-            for(var i = 0; i < number_of_rows; i++){
-                rows.push(
-                    <div style={{gridTemplateColumns: "repeat("+number_of_columns+", 3vh)" }}className={"row-notBS row-"+i}>
-                        {seat(i,number_of_columns,numberOfSections)}
-                    </div>
-                )
-            }
-            return rows
-        }
-
-        for(var i = 0; i < numberOfSections; i++){
-            var section = " "
-            if(i == 0){
-                section = "ol"
-            }else if(i == 1){
-                section = "vip"
-            }else{
-                section = "or"
-            }
-            var class_name = "section section-"+section
-            
-            sections.push(
-                <div>
-                    <h4 style={{textAlign:"center",marginBottom:"1.5rem"}}>{type == "balcony" ? "balcony" : section}</h4>
-                    <div style={{gridTemplateRows: "repeat("+numberOfRows[i]+", 5vh)"}}className={class_name}>
-                        {row(numberOfRows[i],numberOfColumns[i],i)}
-                    </div>
-                </div>
-            )
-        }
-        return sections
-        
     }
 
     test(){
@@ -256,33 +167,9 @@ export default class Ticketing extends Component {
                         </div>
                     </div>
                     <div className="clickables">
-                        {this.state.venue.map((venue)=>{
-                            let sections = venue.number_of_sections;
-                            let rows = venue.number_of_rows;
-                            let columns = venue.number_of_columns;
-                            var type = venue.type;
-                            //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
-                            var grid_template_size = ""
-                            if(venue.type == "balcony"){
-                                grid_template_size = "20vw 30vw 20vw"
-                            }else{
-                                grid_template_size = "20vw 30vw 20vw"
-                            }
-                            return (
-                            <div>
-                                <div style={{gridTemplateColumns:grid_template_size}}className="clickables-container">
-                                    {this.renderVenue(sections,rows,columns,type)}
-                                </div>
-                                <hr />
-                            </div>
-                            )
-                        })
-                        }
-                        {/*
-                        <div style={{gridTemplateColumns:"repeat("+numberOfSections+", 1fr)"}}className="clickables-container">
-                            {this.renderVenue(3,number_of_rowSection,[6,16,6])}
-                        </div>
-                        */}
+                        <Singson 
+                            venue = {this.state.venue}
+                        />
                     </div>
                         {/*this.test()*/}
                 </div>
