@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Dropdown,Col,Row} from 'react-bootstrap';
 import Singson from './venues/Singson'
+import axios from 'axios';
 
 export default class Ticketing extends Component {
     constructor(){

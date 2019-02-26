@@ -54,9 +54,24 @@ body{
     padding: 0px;
   }
   .main{
+    .main-footer{
+      margin: 3vh;
+      font-weight: bold;
+      font-size: 1.3em;
+      margin-top: 6vh;
+    }
+    .main-top{
+      padding: 7vh 4vw 3vh 1.5vw;
+      h3{
+        display: inline-block;
+      }
+      h4{
+        float: right;
+      }
+    }
     .main-venue{
       border: 1px;
-      margin-top: 15vh;
+      //margin-top: 15vh;
       border-style: solid;
       height: 50vh;
       box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);

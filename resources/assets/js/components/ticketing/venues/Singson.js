@@ -1,5 +1,6 @@
 import {Row, Col} from 'react-bootstrap'
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Singson extends Component{
     constructor(props){
@@ -10,6 +11,10 @@ export default class Singson extends Component{
     }
 
     handleSeatClick(e){
+        axios.get('/api/test').then(res=>{
+            console.log(res.data);
+        })
+
         console.log('ive been reserved baby')
         console.log('className ='+e.target.className)
         var class_name = e.target.className;

@@ -95,12 +95,21 @@ export default class Home extends Component{
                     </Row>
                 </Col>
                 <Col md={8} className="main">
-                    <h4>Live Status of Singson</h4>
+                    <div className="main-top">
+                        <h3>YEAR-END CONCERT 2019: SPIRIT</h3>
+                        <h4>Live Status of Singson</h4>
+                    </div>
+                    
                     <div className="main-venue">
                         <Singson
                             venue={this.state.venue}
                             from_dashboard={true}
                         />
+                    </div>
+                    <div className="main-footer">
+                        <Link to={"/ticketing"}>Ticketing Module </Link>|
+                        <Link to={"/dashboard"}> Ticket Sales </Link>|
+                        <Link to={"/dashboard"}> Export Sales .xlsx </Link>
                     </div>
                 </Col>
                 <Col md={3} className="main-info">
@@ -126,7 +135,9 @@ export default class Home extends Component{
                     </div>
                     <div className="breakdown">
                         <h4>RECENT SALES</h4>
-                        {this.handleShowSales()}
+                        <div className="breakdown-sales">
+                            {this.handleShowSales()}
+                        </div>
                     </div>
                 </Col>
             </Row>

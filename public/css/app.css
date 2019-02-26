@@ -11682,9 +11682,27 @@ body {
   padding: 0px;
 }
 
+.home .main .main-footer {
+  margin: 3vh;
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-top: 6vh;
+}
+
+.home .main .main-top {
+  padding: 7vh 4vw 3vh 1.5vw;
+}
+
+.home .main .main-top h3 {
+  display: inline-block;
+}
+
+.home .main .main-top h4 {
+  float: right;
+}
+
 .home .main .main-venue {
   border: 1px;
-  margin-top: 15vh;
   border-style: solid;
   height: 50vh;
   -webkit-box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
