@@ -5,14 +5,17 @@ import Singson from './venues/Singson'
 import axios from 'axios';
 
 export default class Ticketing extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             venue_name: "",
             venue: [],
-            chosen_seats: []
+            chosen_seats: [],
         }
-        this.test = this.test.bind(this)
+        this.test = this.test.bind(this);
+        this.handleChosenSeats = this.handleChosenSeats.bind(this);
+        this.displayOrders = this.displayOrders.bind(this);
+        this.removeSeat = this.removeSeat.bind(this);
     }
 
     componentDidMount(){
@@ -35,8 +38,35 @@ export default class Ticketing extends Component {
         })
     }
 
+    handleChosenSeats(seat){
+        var chosen_seats = this.state.chosen_seats;
+        var bool = false; //id is not yet selected, meaning this should be selected
+        var found_index;
+        chosen_seats.map((chosen_seat,index)=>{
+            if(chosen_seat.seat_id == seat.seat_id){
+                bool = true // id is already selected, meaning this should be unselected
+                found_index = index
+            }
+        })
+
+        if(bool){
+            var unSetSeat = chosen_seats.filter((value, index, arr)=>{
+                return index != found_index;
+            });
+            this.setState({
+                chosen_seats : unSetSeat
+            })
+        }else{
+            chosen_seats.push(seat);
+            this.setState({
+                chosen_seats : chosen_seats
+            })
+        }
+        
+    }
+
     showSales(){
-        var sales = []
+        var sales_htmls = []
         const sale_container = (
                 <div className="sale-container">
                     <span className="sale-ticket-section">3x Orchestra Center</span>
@@ -44,43 +74,56 @@ export default class Ticketing extends Component {
                 </div>
         )
         for(var i = 0; i < 3; i++){
-            sales.push(sale_container)
+            sales_htmls.push(sale_container)
         }
         return (
             <div className="sale">
-                {sales}
+                {sales_htmls}
             </div>
         )
     }
+    
+    removeSeat(seat){
+        var chosen_seats = this.state.chosen_seats;
+        chosen_seats.map((chosen_seat,index)=>{
+            if(chosen_seat.seat_id == seat.seat_id){
+                var filtered = chosen_seats.filter((value,f_index)=>{
+                    return f_index != index;
+                })
+                this.setState({
+                    chosen_seats: filtered
+                })
+            }
+        })
+    }
 
     displayOrders(){
+        console.log("displaying orders")
         var rows = [];
-        const row = (
+        const row = (seat) => { return (
             <Row className="order">
                 <Col md={7} className="order-text">
                     <div className="order-text-section">
-                        Orchestra Center
+                        {seat.section_name}
                     </div>
                     <div className="order-text-seatNo">
-                        SEAT NO. ORA1
+                        SEAT NO. {seat.seat_id}
                     </div>
                 </Col>
                 <Col md={4} className="order-price">
                     <div className="price">
-                        P100,000
+                        P{seat.ticket_price}.00
                     </div>
-                    <div className="cancel">
+                    <div onClick={()=>this.removeSeat(seat)} className="cancel">
                         <img style={{height:"2vh",marginRight:".3vw"}} src="/images/error.svg"/><span>Cancel</span>
                     </div>
                 </Col>
             </Row>
-        )
+        )}
 
-        for(var i = 0; i < 5; i++){
-            rows.push(
-                row
-            )
-        }
+        this.state.chosen_seats.map((seat)=>{
+            rows.push(row(seat))
+        })
 
         return rows;
     }
@@ -170,6 +213,8 @@ export default class Ticketing extends Component {
                     <div className="clickables">
                         <Singson 
                             venue = {this.state.venue}
+                            handleChosenSeats = {this.handleChosenSeats}
+                            chosen_seats = {this.state.chosen_seats}
                         />
                     </div>
                         {/*this.test()*/}

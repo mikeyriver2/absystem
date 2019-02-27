@@ -6,19 +6,68 @@ export default class Singson extends Component{
     constructor(props){
         super(props)
         this.state = {
+            price: {
+                ol: 350.00,
+                vip: 500.00,
+                or: 350.00
+            }
+        }
+        this.handleSeatClick = this.handleSeatClick.bind(this)
+    }
 
+    componentDidUpdate(prevProps){
+        if(prevProps.chosen_seats){
+            if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
+                console.log('mutha fucker')
+                console.log(prevProps.chosen_seats)
+                console.log(this.props.chosen_seats)
+
+                prevProps.chosen_seats.map((seat)=>{
+                    var bool = false;
+                    this.props.chosen_seats.map((seat_1)=>{
+                        if(seat_1.seat_id == seat.seat_id){
+                            bool = true
+                        }
+                    })
+                    if(!bool){
+                        document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');                } 
+                })
+            }
         }
     }
 
     handleSeatClick(e){
-        axios.get('/api/test').then(res=>{
+        /*axios.get('/api/test').then(res=>{
             console.log(res.data);
-        })
+        })*/
 
-        console.log('ive been reserved baby')
+        /*console.log('ive been reserved baby')
         console.log('className ='+e.target.className)
+        console.log('className ='+e.target.id)*/
+
         var class_name = e.target.className;
-        var status = class_name.split(" ")
+        var id = e.target.id
+        var section_name = "";
+        var ticket_price = 350;
+        var status = class_name.split(" ");
+        
+        if(id.includes('OL')){
+            section_name = "Orchestra Left"
+        }else if(id.includes('OR')){
+            section_name = "Orchestra Right"
+        }else if(id.includes('VIP')){
+            section_name = "VIP"
+            ticket_price = 500;
+        }
+
+        var seat = {
+            section_name: section_name,
+            seat_id: id,
+            ticket_price: ticket_price
+        }
+        
+        this.props.handleChosenSeats(seat);
 
         if(status.includes("seat-not-taken")){
             document.getElementById(e.target.id).classList.add('seat-reserved');
@@ -62,7 +111,7 @@ export default class Singson extends Component{
                     height: from_dashboard ? "2.5vh" : ""
                 }
                 seats.push(
-                    <div id={section+"-"+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
+                    <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
                         {/*"r"+row_number+"-s"+i+" "*/}
                         {/*section+"-"+row+(i+1)*/}
                     </div>

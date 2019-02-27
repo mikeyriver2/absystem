@@ -8663,21 +8663,76 @@ var Singson = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (Singson.__proto__ || Object.getPrototypeOf(Singson)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            price: {
+                ol: 350.00,
+                vip: 500.00,
+                or: 350.00
+            }
+        };
+        _this.handleSeatClick = _this.handleSeatClick.bind(_this);
         return _this;
     }
 
     _createClass(Singson, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            var _this2 = this;
+
+            if (prevProps.chosen_seats) {
+                if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
+                    console.log('mutha fucker');
+                    console.log(prevProps.chosen_seats);
+                    console.log(this.props.chosen_seats);
+
+                    prevProps.chosen_seats.map(function (seat) {
+                        var bool = false;
+                        _this2.props.chosen_seats.map(function (seat_1) {
+                            if (seat_1.seat_id == seat.seat_id) {
+                                bool = true;
+                            }
+                        });
+                        if (!bool) {
+                            document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                            document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                        }
+                    });
+                }
+            }
+        }
+    }, {
         key: 'handleSeatClick',
         value: function handleSeatClick(e) {
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/test').then(function (res) {
+            /*axios.get('/api/test').then(res=>{
                 console.log(res.data);
-            });
+            })*/
 
-            console.log('ive been reserved baby');
-            console.log('className =' + e.target.className);
+            /*console.log('ive been reserved baby')
+            console.log('className ='+e.target.className)
+            console.log('className ='+e.target.id)*/
+
             var class_name = e.target.className;
+            var id = e.target.id;
+            var section_name = "";
+            var ticket_price = 350;
             var status = class_name.split(" ");
+
+            if (id.includes('OL')) {
+                section_name = "Orchestra Left";
+            } else if (id.includes('OR')) {
+                section_name = "Orchestra Right";
+            } else if (id.includes('VIP')) {
+                section_name = "VIP";
+                ticket_price = 500;
+            }
+
+            var seat = {
+                section_name: section_name,
+                seat_id: id,
+                ticket_price: ticket_price
+            };
+
+            this.props.handleChosenSeats(seat);
 
             if (status.includes("seat-not-taken")) {
                 document.getElementById(e.target.id).classList.add('seat-reserved');
@@ -8690,7 +8745,7 @@ var Singson = function (_Component) {
     }, {
         key: 'renderVenue',
         value: function renderVenue(numberOfSections, numberOfRows, numberOfColumns, type) {
-            var _this2 = this;
+            var _this3 = this;
 
             //# of columns per Section, for now assuming all sections have = number of columns
             var sections = [];
@@ -8723,7 +8778,7 @@ var Singson = function (_Component) {
                     var style = {
                         height: from_dashboard ? "2.5vh" : ""
                     };
-                    seats.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + "-" + row + (i + 1), style: style, onClick: _this2.handleSeatClick, className: _class_name }));
+                    seats.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name }));
                 }
                 return seats;
             };
@@ -8775,7 +8830,7 @@ var Singson = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
@@ -8787,7 +8842,7 @@ var Singson = function (_Component) {
                     var type = venue.type;
                     //gridTemplateColumns:"repeat("+sections+", 1fr)" old grid template
                     var grid_template_size = "";
-                    var from_dashboard = _this3.props.hasOwnProperty('from_dashboard');
+                    var from_dashboard = _this4.props.hasOwnProperty('from_dashboard');
 
                     if (from_dashboard) {
                         if (venue.type == "balcony") {
@@ -8808,7 +8863,7 @@ var Singson = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             { style: { display: "grid", gridTemplateColumns: grid_template_size }, className: 'clickables-container' },
-                            _this3.renderVenue(sections, rows, columns, type)
+                            _this4.renderVenue(sections, rows, columns, type)
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('hr', null)
                     );
@@ -32640,10 +32695,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Ticketing = function (_Component) {
     _inherits(Ticketing, _Component);
 
-    function Ticketing() {
+    function Ticketing(props) {
         _classCallCheck(this, Ticketing);
 
-        var _this = _possibleConstructorReturn(this, (Ticketing.__proto__ || Object.getPrototypeOf(Ticketing)).call(this));
+        var _this = _possibleConstructorReturn(this, (Ticketing.__proto__ || Object.getPrototypeOf(Ticketing)).call(this, props));
 
         _this.state = {
             venue_name: "",
@@ -32651,6 +32706,9 @@ var Ticketing = function (_Component) {
             chosen_seats: []
         };
         _this.test = _this.test.bind(_this);
+        _this.handleChosenSeats = _this.handleChosenSeats.bind(_this);
+        _this.displayOrders = _this.displayOrders.bind(_this);
+        _this.removeSeat = _this.removeSeat.bind(_this);
         return _this;
     }
 
@@ -32673,9 +32731,36 @@ var Ticketing = function (_Component) {
             });
         }
     }, {
+        key: 'handleChosenSeats',
+        value: function handleChosenSeats(seat) {
+            var chosen_seats = this.state.chosen_seats;
+            var bool = false; //id is not yet selected, meaning this should be selected
+            var found_index;
+            chosen_seats.map(function (chosen_seat, index) {
+                if (chosen_seat.seat_id == seat.seat_id) {
+                    bool = true; // id is already selected, meaning this should be unselected
+                    found_index = index;
+                }
+            });
+
+            if (bool) {
+                var unSetSeat = chosen_seats.filter(function (value, index, arr) {
+                    return index != found_index;
+                });
+                this.setState({
+                    chosen_seats: unSetSeat
+                });
+            } else {
+                chosen_seats.push(seat);
+                this.setState({
+                    chosen_seats: chosen_seats
+                });
+            }
+        }
+    }, {
         key: 'showSales',
         value: function showSales() {
-            var sales = [];
+            var sales_htmls = [];
             var sale_container = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'sale-container' },
@@ -32691,59 +32776,86 @@ var Ticketing = function (_Component) {
                 )
             );
             for (var i = 0; i < 3; i++) {
-                sales.push(sale_container);
+                sales_htmls.push(sale_container);
             }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'sale' },
-                sales
+                sales_htmls
             );
+        }
+    }, {
+        key: 'removeSeat',
+        value: function removeSeat(seat) {
+            var _this2 = this;
+
+            var chosen_seats = this.state.chosen_seats;
+            chosen_seats.map(function (chosen_seat, index) {
+                if (chosen_seat.seat_id == seat.seat_id) {
+                    var filtered = chosen_seats.filter(function (value, f_index) {
+                        return f_index != index;
+                    });
+                    _this2.setState({
+                        chosen_seats: filtered
+                    });
+                }
+            });
         }
     }, {
         key: 'displayOrders',
         value: function displayOrders() {
+            var _this3 = this;
+
+            console.log("displaying orders");
             var rows = [];
-            var row = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["c" /* Row */],
-                { className: 'order' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
-                    { md: 7, className: 'order-text' },
+            var row = function row(seat) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["c" /* Row */],
+                    { className: 'order' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'order-text-section' },
-                        'Orchestra Center'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'order-text-seatNo' },
-                        'SEAT NO. ORA1'
-                    )
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
-                    { md: 4, className: 'order-price' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'price' },
-                        'P100,000'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        { className: 'cancel' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { style: { height: "2vh", marginRight: ".3vw" }, src: '/images/error.svg' }),
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
+                        { md: 7, className: 'order-text' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'span',
-                            null,
-                            'Cancel'
+                            'div',
+                            { className: 'order-text-section' },
+                            seat.section_name
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'order-text-seatNo' },
+                            'SEAT NO. ',
+                            seat.seat_id
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["a" /* Col */],
+                        { md: 4, className: 'order-price' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'price' },
+                            'P',
+                            seat.ticket_price,
+                            '.00'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { onClick: function onClick() {
+                                    return _this3.removeSeat(seat);
+                                }, className: 'cancel' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { style: { height: "2vh", marginRight: ".3vw" }, src: '/images/error.svg' }),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                null,
+                                'Cancel'
+                            )
                         )
                     )
-                )
-            );
+                );
+            };
 
-            for (var i = 0; i < 5; i++) {
-                rows.push(row);
-            }
+            this.state.chosen_seats.map(function (seat) {
+                rows.push(row(seat));
+            });
 
             return rows;
         }
@@ -32919,7 +33031,9 @@ var Ticketing = function (_Component) {
                         'div',
                         { className: 'clickables' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__venues_Singson__["a" /* default */], {
-                            venue: this.state.venue
+                            venue: this.state.venue,
+                            handleChosenSeats: this.handleChosenSeats,
+                            chosen_seats: this.state.chosen_seats
                         })
                     )
                 )
