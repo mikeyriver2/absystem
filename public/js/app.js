@@ -8681,10 +8681,6 @@ var Singson = function (_Component) {
 
             if (prevProps.chosen_seats) {
                 if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
-                    console.log('mutha fucker');
-                    console.log(prevProps.chosen_seats);
-                    console.log(this.props.chosen_seats);
-
                     prevProps.chosen_seats.map(function (seat) {
                         var bool = false;
                         _this2.props.chosen_seats.map(function (seat_1) {
@@ -32703,7 +32699,8 @@ var Ticketing = function (_Component) {
         _this.state = {
             venue_name: "",
             venue: [],
-            chosen_seats: []
+            chosen_seats: [],
+            total_price: 0
         };
         _this.test = _this.test.bind(_this);
         _this.handleChosenSeats = _this.handleChosenSeats.bind(_this);
@@ -32731,11 +32728,33 @@ var Ticketing = function (_Component) {
             });
         }
     }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
+            //IMPORTANCE OF CLONING ELEMENT FIRST
+            //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
+
+            //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
+            if (prevState.chosen_seats.length != this.state.chosen_seats.length) {
+                console.log('updating yo');
+                var total_price = 0;
+                this.state.chosen_seats.map(function (seat) {
+                    total_price += seat.ticket_price;
+                });
+                this.setState(function (prevState) {
+                    return {
+                        total_price: total_price
+                    };
+                });
+            }
+        }
+    }, {
         key: 'handleChosenSeats',
         value: function handleChosenSeats(seat) {
-            var chosen_seats = this.state.chosen_seats;
+            var chosen_seats = this.state.chosen_seats.slice(); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
             var bool = false; //id is not yet selected, meaning this should be selected
             var found_index;
+
             chosen_seats.map(function (chosen_seat, index) {
                 if (chosen_seat.seat_id == seat.seat_id) {
                     bool = true; // id is already selected, meaning this should be unselected
@@ -32761,23 +32780,49 @@ var Ticketing = function (_Component) {
         key: 'showSales',
         value: function showSales() {
             var sales_htmls = [];
-            var sale_container = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'sale-container' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    { className: 'sale-ticket-section' },
-                    '3x Orchestra Center'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'span',
-                    { className: 'total-price' },
-                    'P100,000.000'
-                )
-            );
-            for (var i = 0; i < 3; i++) {
-                sales_htmls.push(sale_container);
-            }
+            var chosen_seats = this.state.chosen_seats;
+            var seats = [];
+            chosen_seats.map(function (seat) {
+                var bool = false;
+                seats.map(function (seet, index) {
+                    if (seet.section_name == seat.section_name) {
+                        bool = true;
+                        seats[index].total_price += seat.ticket_price;
+                        seats[index].total_amount += 1;
+                    }
+                });
+                if (!bool) {
+                    seats.push({
+                        section_name: seat.section_name,
+                        total_price: seat.ticket_price,
+                        total_amount: 1
+                    });
+                }
+            });
+
+            var sale_container = function sale_container(seat) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'sale-container' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'sale-ticket-section' },
+                        seat.total_amount + 'x ' + seat.section_name
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'total-price' },
+                        'P',
+                        seat.total_price,
+                        '.00'
+                    )
+                );
+            };
+
+            seats.map(function (seat) {
+                sales_htmls.push(sale_container(seat));
+            });
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'sale' },
@@ -32995,7 +33040,9 @@ var Ticketing = function (_Component) {
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'b',
                                         null,
-                                        'P300,000.00'
+                                        'P',
+                                        this.state.total_price,
+                                        '.00'
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

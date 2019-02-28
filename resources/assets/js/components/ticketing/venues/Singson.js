@@ -18,10 +18,6 @@ export default class Singson extends Component{
     componentDidUpdate(prevProps){
         if(prevProps.chosen_seats){
             if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
-                console.log('mutha fucker')
-                console.log(prevProps.chosen_seats)
-                console.log(this.props.chosen_seats)
-
                 prevProps.chosen_seats.map((seat)=>{
                     var bool = false;
                     this.props.chosen_seats.map((seat_1)=>{

@@ -11,6 +11,7 @@ export default class Ticketing extends Component {
             venue_name: "",
             venue: [],
             chosen_seats: [],
+            total_price: 0
         }
         this.test = this.test.bind(this);
         this.handleChosenSeats = this.handleChosenSeats.bind(this);
@@ -38,10 +39,32 @@ export default class Ticketing extends Component {
         })
     }
 
+    componentDidUpdate(prevProps, prevState){
+        //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
+        //IMPORTANCE OF CLONING ELEMENT FIRST
+        //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
+
+        //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
+        if(prevState.chosen_seats.length != this.state.chosen_seats.length){
+            console.log('updating yo');
+            var total_price = 0;
+            this.state.chosen_seats.map((seat)=>{
+                total_price += seat.ticket_price;
+            })          
+            this.setState((prevState)=>({
+                total_price: total_price
+            }));
+        }
+
+
+    }
+
+
     handleChosenSeats(seat){
-        var chosen_seats = this.state.chosen_seats;
+        var chosen_seats = this.state.chosen_seats.slice(); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
         var bool = false; //id is not yet selected, meaning this should be selected
         var found_index;
+
         chosen_seats.map((chosen_seat,index)=>{
             if(chosen_seat.seat_id == seat.seat_id){
                 bool = true // id is already selected, meaning this should be unselected
@@ -67,15 +90,38 @@ export default class Ticketing extends Component {
 
     showSales(){
         var sales_htmls = []
-        const sale_container = (
+        var chosen_seats = this.state.chosen_seats;
+        const seats = [];
+        chosen_seats.map((seat)=>{
+            var bool = false
+            seats.map((seet,index)=>{
+                if(seet.section_name == seat.section_name){
+                    bool = true
+                    seats[index].total_price += seat.ticket_price
+                    seats[index].total_amount += 1
+                }
+            })
+            if(!bool){
+                seats.push({
+                    section_name: seat.section_name,
+                    total_price: seat.ticket_price,
+                    total_amount: 1,
+                })
+            }
+        })
+        
+        const sale_container = (seat) => {
+            return (
                 <div className="sale-container">
-                    <span className="sale-ticket-section">3x Orchestra Center</span>
-                    <span className="total-price">P100,000.000</span>
+                    <span className="sale-ticket-section">{`${seat.total_amount}x ${seat.section_name}`}</span>
+                    <span className="total-price">P{seat.total_price}.00</span>
                 </div>
-        )
-        for(var i = 0; i < 3; i++){
-            sales_htmls.push(sale_container)
-        }
+        )}
+        
+        seats.map((seat)=>{
+            sales_htmls.push(sale_container(seat))
+        })
+
         return (
             <div className="sale">
                 {sales_htmls}
@@ -194,7 +240,7 @@ export default class Ticketing extends Component {
                             </div>
                             <div className="total-price">
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
-                                <div className="price"><b>P300,000.00</b></div>
+                                <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
                                     <button className="btn btn-default">
                                         <b>Order Now</b>
