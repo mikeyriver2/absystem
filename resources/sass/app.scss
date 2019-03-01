@@ -443,12 +443,73 @@ body{
   text-align:center;
   margin-bottom:1.5rem;
 }
-/*
-.row-2{
-  grid-template-columns: repeat(4, 1fr) !important;
+
+#confirm-order-modal{
+  .modal-content{
+    width: 50vw;
+    .modal-header{
+      h4{
+        margin: 0;
+        text-align: center;
+        width: 100%;
+      }
+    }
+    .modal-body{
+      .thanks{
+        h5{
+          text-align: center;
+          font-weight: bold;
+        }
+      }
+      button{
+        width: 100%;
+        margin-top: 5vh;
+      }
+      padding: 2em !important;
+      .form-span{
+        display: grid;
+        grid-template-columns: 200px 400px;
+        margin-bottom: 3vh;
+      }
+      .form-span-two{
+        display: flex;
+        justify-content: center;
+        .id_number{
+          margin: 1vh;
+          span{
+            margin-right: 1vw;
+          }
+        }
+      }
+    }
+  }
 }
 
-.row-3{
-  grid-template-columns: repeat(5, 1fr) !important;
+.confirm-button{
+  .loader{
+    margin: 0 auto;
+  }
 }
-*/
+
+
+//https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_loader
+.loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

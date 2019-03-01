@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Dropdown,Col,Row} from 'react-bootstrap';
 import Singson from './venues/Singson'
+import ConfirmModal from './ConfirmModal'
 import axios from 'axios';
 
 export default class Ticketing extends Component {
@@ -11,12 +12,15 @@ export default class Ticketing extends Component {
             venue_name: "",
             venue: [],
             chosen_seats: [],
-            total_price: 0
+            total_price: 0,
+            show_order_modal: false
         }
         this.test = this.test.bind(this);
         this.handleChosenSeats = this.handleChosenSeats.bind(this);
         this.displayOrders = this.displayOrders.bind(this);
         this.removeSeat = this.removeSeat.bind(this);
+        this.handleOrder = this.handleOrder.bind(this);
+        this.clearOrder = this.clearOrder.bind(this);
     }
 
     componentDidMount(){
@@ -55,8 +59,28 @@ export default class Ticketing extends Component {
                 total_price: total_price
             }));
         }
+    }
 
+    clearOrder(){
+        this.setState({
+            chosen_seats: [],
+            total_price: 0,
+        })
+        setTimeout(()=>{
+            this.setState({
+                show_order_modal: false
+            })
+        },5000)
+    }
 
+    handleOrder(){
+        var show = false
+        if(!this.state.show_order_modal){
+            show = true
+        }
+        this.setState({
+            show_order_modal: show
+        })
     }
 
 
@@ -242,7 +266,7 @@ export default class Ticketing extends Component {
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
-                                    <button className="btn btn-default">
+                                    <button onClick={this.handleOrder} className="btn btn-default">
                                         <b>Order Now</b>
                                     </button>
                                 </div>
@@ -265,6 +289,11 @@ export default class Ticketing extends Component {
                     </div>
                         {/*this.test()*/}
                 </div>
+                <ConfirmModal 
+                    show_order_modal = {this.state.show_order_modal}
+                    show_order_modal_fnc = {this.handleOrder}
+                    clearOrder = {this.clearOrder}
+                />
             </div>
         );
     }
