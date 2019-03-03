@@ -4114,6 +4114,15 @@ var Singson = function (_Component) {
             }
         }
     }, {
+        key: 'renderSeatPopOver',
+        value: function renderSeatPopOver(section, row, column_number) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: '' },
+                section + row + column_number
+            );
+        }
+    }, {
         key: 'handleSeatClick',
         value: function handleSeatClick(e) {
             /*axios.get('/api/test').then(res=>{
@@ -4137,6 +4146,15 @@ var Singson = function (_Component) {
             } else if (id.includes('VIP')) {
                 section_name = "VIP";
                 ticket_price = 500;
+            } else if (id.includes('BL')) {
+                section_name = "Balcony Left";
+                ticket_price = 250;
+            } else if (id.includes('BC')) {
+                section_name = "Balcony Center";
+                ticket_price = 250;
+            } else if (id.includes('BR')) {
+                section_name = "Balcony Right";
+                ticket_price = 250;
             }
 
             var seat = {
@@ -4163,50 +4181,70 @@ var Singson = function (_Component) {
             //# of columns per Section, for now assuming all sections have = number of columns
             var sections = [];
             var from_dashboard = this.props.hasOwnProperty('from_dashboard');
+            var rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
 
             var seat = function seat(row_number, number_of_seats, section_number) {
                 var height = 3.5;
                 if (number_of_seats > 10) {
                     height = 2.5;
                 }
-                /*if(number_of_seats > 10){
-                    height = 2.5
-                }else if (number_of_seats < 7){
-                    height = 3
-                }else if (number_of_seats > 15){
-                    height = 2
-                }*/
+
                 var style = {
                     height: height + "vh"
-                    /*width: number_of_seats < 7 ? "3vh" : "",
-                    margin:  number_of_seats < 7 ? "1.5vh auto" : ""*/
                 };
                 var seats = [];
                 var sections = ['OL', 'VIP', 'OR'];
-                var rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
-                var section = sections[section_number];
+                var sections_balcony = ['BL', 'BC', 'BR'];
+                var section = "";
+                if (type == "balcony") {
+                    section = sections_balcony[section_number];
+                } else {
+                    section = sections[section_number];
+                }
                 var row = rows[row_number];
                 for (var i = 0; i < number_of_seats; i++) {
                     var _class_name = "seat seat-not-taken";
                     var style = {
                         height: from_dashboard ? "2.5vh" : ""
                     };
-                    seats.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name }));
+                    seats.push(
+                    // <OverlayTrigger causes it to slow down for some stupid ass reason
+                    //     placement="top"
+                    //     delay={{ show: 250 }}
+                    //     overlay={this.renderSeatPopOver(section,row,i+1)}
+                    //     onClick={this.handleSeatClick}
+                    // >
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name })
+                    // </OverlayTrigger>
+                    );
                 }
                 return seats;
             };
 
-            var row = function row(number_of_rows, number_of_columns, numberOfSections) {
-                var rows = [];
-                var spacing = from_dashboard ? " 2.2vh" : " 3vh";
+            var row_label = function row_label(number_of_rows, number_of_columns, numberOfSections) {
+                var row_labels = [];
                 for (var i = 0; i < number_of_rows; i++) {
-                    rows.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    row_labels.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        { style: { gridTemplateColumns: 'repeat(' + number_of_columns + ',' + spacing + ')' }, className: "row-notBS row-" + i },
+                        null,
+                        rows[i]
+                    ));
+                }
+                return row_labels;
+            };
+
+            var row = function row(number_of_rows, number_of_columns, numberOfSections) {
+                var rows_array = [];
+                var spacing = from_dashboard ? " 2.2vh" : " 3vh";
+                console.log('row called');
+                for (var i = 0; i < number_of_rows; i++) {
+                    rows_array.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { style: { gridTemplateColumns: 'repeat(' + number_of_columns + ',' + spacing + ')' }, id: i, className: "row-notBS row-" + i },
                         seat(i, number_of_columns, numberOfSections)
                     ));
                 }
-                return rows;
+                return rows_array;
             };
 
             for (var i = 0; i < numberOfSections; i++) {
@@ -4223,6 +4261,25 @@ var Singson = function (_Component) {
                     marginTop: from_dashboard ? "2vh" : ""
                 };
                 var row_size = from_dashboard ? "3vh" : "5vh";
+
+                if (i == 0 && !this.props.hasOwnProperty('from_dashboard')) {
+                    //for row label
+                    console.log('rows label called bitch ass bitch');
+                    sections.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { className: 'row-labels' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'h4',
+                            { style: { color: '#f2f2f2' }, className: 'section-names' },
+                            ' a'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'div',
+                            { style: { gridTemplateRows: "repeat(" + numberOfRows[i] + ", " + row_size + ")", display: "grid" } },
+                            row_label(type == "balcony" ? numberOfRows[i] + 1 : numberOfRows[i] + 1, numberOfColumns[i], i)
+                        )
+                    ));
+                }
                 sections.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
                     null,
@@ -4265,9 +4322,9 @@ var Singson = function (_Component) {
                         }
                     } else {
                         if (venue.type == "balcony") {
-                            grid_template_size = "20vw 30vw 20vw";
+                            grid_template_size = "20px 20vw 30vw 20vw";
                         } else {
-                            grid_template_size = "20vw 30vw 20vw";
+                            grid_template_size = "20px 20vw 30vw 20vw";
                         }
                     }
                     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9158,7 +9215,7 @@ module.exports = Cancel;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Example__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Home__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Home__ = __webpack_require__(264);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_router_dom__ = __webpack_require__(28);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9249,7 +9306,7 @@ var Head = function (_Component) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(71);
-module.exports = __webpack_require__(264);
+module.exports = __webpack_require__(265);
 
 
 /***/ }),
@@ -32782,7 +32839,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'handleChosenSeats',
         value: function handleChosenSeats(seat) {
-            var chosen_seats = this.state.chosen_seats.slice(); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
+            var chosen_seats = this.state.chosen_seats.slice(0); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
             var bool = false; //id is not yet selected, meaning this should be selected
             var found_index;
 
@@ -33061,32 +33118,28 @@ var Ticketing = function (_Component) {
                                 { className: 'summary-container' },
                                 this.showSales()
                             ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', { style: { margin: "10px 1vw" }, className: 'summary-hr' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
-                                { className: 'total-price' },
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', { style: { margin: "10px 1vw" }, className: 'summary-hr' }),
+                                { className: 'price' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'price' },
+                                    'b',
+                                    null,
+                                    'P',
+                                    this.state.total_price,
+                                    '.00'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'btn-container' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'button',
+                                    { onClick: this.handleOrder, className: 'btn btn-default' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'b',
                                         null,
-                                        'P',
-                                        this.state.total_price,
-                                        '.00'
-                                    )
-                                ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'btn-container' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        'button',
-                                        { onClick: this.handleOrder, className: 'btn btn-default' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'b',
-                                            null,
-                                            'Order Now'
-                                        )
+                                        'Order Now'
                                     )
                                 )
                             )
@@ -43376,7 +43429,7 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__venues_Singson__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__ = __webpack_require__(269);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -43574,6 +43627,44 @@ var ConfirmModal = function (_Component) {
 
 /***/ }),
 /* 263 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+var Loader = function (_Component) {
+    _inherits(Loader, _Component);
+
+    function Loader() {
+        _classCallCheck(this, Loader);
+
+        return _possibleConstructorReturn(this, (Loader.__proto__ || Object.getPrototypeOf(Loader)).apply(this, arguments));
+    }
+
+    _createClass(Loader, [{
+        key: "render",
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "loader" });
+        }
+    }]);
+
+    return Loader;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Loader);
+
+/***/ }),
+/* 264 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43845,52 +43936,10 @@ var Home = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Home);
 
 /***/ }),
-/* 264 */
+/* 265 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-var Loader = function (_Component) {
-    _inherits(Loader, _Component);
-
-    function Loader() {
-        _classCallCheck(this, Loader);
-
-        return _possibleConstructorReturn(this, (Loader.__proto__ || Object.getPrototypeOf(Loader)).apply(this, arguments));
-    }
-
-    _createClass(Loader, [{
-        key: "render",
-        value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("div", { className: "loader" });
-        }
-    }]);
-
-    return Loader;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-/* harmony default export */ __webpack_exports__["a"] = (Loader);
 
 /***/ })
 /******/ ]);

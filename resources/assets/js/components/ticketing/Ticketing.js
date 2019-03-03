@@ -85,7 +85,7 @@ export default class Ticketing extends Component {
 
 
     handleChosenSeats(seat){
-        var chosen_seats = this.state.chosen_seats.slice(); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
+        var chosen_seats = this.state.chosen_seats.slice(0); //slice is needed to CLONE the array. If using the same array referened as the state will not be recognized as prevState
         var bool = false; //id is not yet selected, meaning this should be selected
         var found_index;
 
@@ -262,7 +262,7 @@ export default class Ticketing extends Component {
                             <div className="summary-container">
                                 {this.showSales()}
                             </div>
-                            <div className="total-price">
+                            {/*<div className="total-price">*/}
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
@@ -270,7 +270,7 @@ export default class Ticketing extends Component {
                                         <b>Order Now</b>
                                     </button>
                                 </div>
-                            </div>
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
