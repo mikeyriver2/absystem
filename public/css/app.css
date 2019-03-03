@@ -11938,7 +11938,7 @@ body {
 }
 
 .ticket-module .ticket-module-head .summary .summary-container .sale {
-  max-height: 72px;
+  max-height: 15vh;
   text-align: left;
   overflow: auto;
 }
@@ -12116,6 +12116,15 @@ body {
 }
 
 .seat {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
           box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
   border-radius: 50%;
@@ -12132,6 +12141,7 @@ body {
 }
 
 .seat-reserved {
+  color: white;
   background-color: #2741af;
 }
 
@@ -12140,6 +12150,7 @@ body {
 }
 
 .seat-taken {
+  color: white;
   background-color: #f1b850;
 }
 

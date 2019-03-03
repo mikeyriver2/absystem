@@ -121,15 +121,16 @@ export default class Singson extends Component{
                     height: from_dashboard ? "2.5vh" : ""
                 }
                 seats.push(
-                    // <OverlayTrigger causes it to slow down for some stupid ass reason
-                    //     placement="top"
-                    //     delay={{ show: 250 }}
-                    //     overlay={this.renderSeatPopOver(section,row,i+1)}
-                    //     onClick={this.handleSeatClick}
-                    // >
+                    /*<OverlayTrigger || causes handleorder to slow down for some stupid ass reason
+                         placement="top" ||sayang, this would had been nice. will be used for dashboard though
+                         delay={{ show: 250 }}
+                         overlay={this.renderSeatPopOver(section,row,i+1)}
+                         onClick={this.handleSeatClick}
+                    >*/
                         <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
+                            {i+1}
                         </div>
-                    // </OverlayTrigger>
+                    /*</OverlayTrigger>*/
                 )
             }
             return seats
