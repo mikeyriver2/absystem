@@ -259,7 +259,7 @@ body{
       //}
       .summary-container{
         .sale{
-          max-height:72px;
+          max-height:15vh;
           text-align:left;
           overflow: auto;
           .sale-container{
@@ -411,6 +411,9 @@ body{
 }
 
 .seat{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
   border-radius:50%;
   border: 1px;
@@ -425,12 +428,14 @@ body{
   }
 }
 .seat-reserved{
+  color:white;
   background-color: #2741af;
 }
 .seat-not-taken{
   background-color: white;
 }
 .seat-taken{
+  color:white;
   background-color: #f1b850
 }
 .venue{
