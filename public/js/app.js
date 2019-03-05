@@ -4125,9 +4125,8 @@ var Singson = function (_Component) {
     }, {
         key: 'handleSeatClick',
         value: function handleSeatClick(e) {
-            /*axios.get('/api/test').then(res=>{
-                console.log(res.data);
-            })*/
+            // axios.get('/api/test').then(res=>{
+            // })
 
             /*console.log('ive been reserved baby')
             console.log('className ='+e.target.className)
@@ -4208,14 +4207,18 @@ var Singson = function (_Component) {
                         height: from_dashboard ? "2.5vh" : ""
                     };
                     seats.push(
-                    // <OverlayTrigger causes it to slow down for some stupid ass reason
-                    //     placement="top"
-                    //     delay={{ show: 250 }}
-                    //     overlay={this.renderSeatPopOver(section,row,i+1)}
-                    //     onClick={this.handleSeatClick}
-                    // >
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name })
-                    // </OverlayTrigger>
+                    /*<OverlayTrigger || causes handleorder to slow down for some stupid ass reason
+                         placement="top" ||sayang, this would had been nice. will be used for dashboard though
+                         delay={{ show: 250 }}
+                         overlay={this.renderSeatPopOver(section,row,i+1)}
+                         onClick={this.handleSeatClick}
+                    >*/
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name },
+                        i + 1
+                    )
+                    /*</OverlayTrigger>*/
                     );
                 }
                 return seats;
@@ -32774,6 +32777,36 @@ var Ticketing = function (_Component) {
     _createClass(Ticketing, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
+            /*var venue_object = {
+                venue_name: "",
+                venue: []
+            }
+            axios.get('/api/ticketing/venue').then(res=>{
+                venue_object.venue_name = res.data.venue.name;
+                res.data.section_types.map((type)=>{
+                    venue_object.venue.push({
+                        type: type.type,
+                        number_of_sections: 0,
+                        number_of_rows: [],
+                        number_of_columns: []
+                    })
+                });
+                res.data.venue.sections.map((section)=>{
+                    venue_object.venue.map((map,index)=>{
+                        if(map.type == section.type){
+                            venue_object.venue[index].number_of_sections += 1;
+                            venue_object.venue[index].number_of_rows.push(section.number_of_rows);
+                            venue_object.venue[index].number_of_columns.push(section.number_of_columns);
+                        }
+                    })
+                });
+                console.log(venue_object);
+                this.setState({
+                    venue_name: venue_object.venue_name,
+                    venue: venue_object.venue
+                })
+            })*/
+
             this.setState({
                 venue_name: "Singson Hall",
                 venue: [{

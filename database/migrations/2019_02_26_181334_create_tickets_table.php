@@ -19,7 +19,7 @@ class CreateTicketsTable extends Migration
             $table->unsignedInteger('order_id')->foreign('order_id')->references('id')->on('orders');
             $table->string('slug');
             $table->enum('status',['validated','unvalidated']);
-
+            $table->unsignedInteger('section_id')->foreign('section_id')->references('id')->on('sections');
         });
     }
 

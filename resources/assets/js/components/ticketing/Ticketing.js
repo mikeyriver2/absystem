@@ -24,6 +24,36 @@ export default class Ticketing extends Component {
     }
 
     componentDidMount(){
+        /*var venue_object = {
+            venue_name: "",
+            venue: []
+        }
+        axios.get('/api/ticketing/venue').then(res=>{
+            venue_object.venue_name = res.data.venue.name;
+            res.data.section_types.map((type)=>{
+                venue_object.venue.push({
+                    type: type.type,
+                    number_of_sections: 0,
+                    number_of_rows: [],
+                    number_of_columns: []
+                })
+            });
+            res.data.venue.sections.map((section)=>{
+                venue_object.venue.map((map,index)=>{
+                    if(map.type == section.type){
+                        venue_object.venue[index].number_of_sections += 1;
+                        venue_object.venue[index].number_of_rows.push(section.number_of_rows);
+                        venue_object.venue[index].number_of_columns.push(section.number_of_columns);
+                    }
+                })
+            });
+            console.log(venue_object);
+            this.setState({
+                venue_name: venue_object.venue_name,
+                venue: venue_object.venue
+            })
+        })*/
+
         this.setState({
             venue_name: "Singson Hall",
             venue: [
@@ -40,7 +70,7 @@ export default class Ticketing extends Component {
                     number_of_columns: [6,16,6]
                 }
             ]
-        })
+        });
     }
 
     componentDidUpdate(prevProps, prevState){

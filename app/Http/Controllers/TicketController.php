@@ -9,4 +9,5 @@ class TicketController extends Controller
     public function test(Request $request){
         return "Tangina mooooo";
     }
+
 }

@@ -42,9 +42,8 @@ export default class Singson extends Component{
     }
 
     handleSeatClick(e){
-        /*axios.get('/api/test').then(res=>{
-            console.log(res.data);
-        })*/
+        // axios.get('/api/test').then(res=>{
+        // })
 
         /*console.log('ive been reserved baby')
         console.log('className ='+e.target.className)
