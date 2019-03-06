@@ -11,8 +11,25 @@ export default class ConfirmModal extends Component{
         this.state={
             loading:false,
             thanks:false,
+            first_name: "",
+            last_name: "",
+            email: "",
+            cell_number: "",
+            id_number: 0,
+            year_course: "",
+            error: true //there is error
         }
         this.toggleLoading = this.toggleLoading.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.submitOrder = this.submitOrder.bind(this)
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.show_order_modal){
+            setTimeout(()=>{
+                document.getElementById('submit-order').disabled = true
+            },10)
+        }
     }
 
     toggleLoading(){
@@ -28,21 +45,77 @@ export default class ConfirmModal extends Component{
     }
 
     submitOrder(){
-        this.toggleLoading();
-        setTimeout(()=>{
-            this.setState({
-                thanks: true
-            })
+        if(!this.state.error || this.state.error == "false"){
+            var params = {
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                cell_number: this.state.cell_number,
+                id_number: this.state.cell_number,
+                year_course: this.state.year_course,
+                chosen_seats: this.props.chosen_seats
+            }
             this.toggleLoading();
-            this.props.clearOrder()
-        },2000)
-        //clearOrder will show thank you for 5 secs
-        setTimeout(()=>{
-            this.setState({
-                thanks: false
+            axios.post('/api/ticketing/orderTicket',params).then(res=>{
+                this.setState({
+                    thanks: true,
+                    loading:false,
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    cell_number: "",
+                    id_number: 0,
+                    year_course: "",
+                    error: true //there is error
+                })
+                this.toggleLoading();
+                this.props.clearOrder()
+                setTimeout(()=>{
+                    this.setState({
+                        thanks: false
+                    })
+                },5000)
+            }).catch(error=>{
+
             })
-        },7000) //7000 because 2000+5000
+        }
+
         
+    }
+
+    handleChange(e){
+
+        if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
+            this.setState({error:false},()=>{
+                document.getElementById('submit-order').disabled = false
+            })
+        }else{
+            this.setState({error:true})
+            document.getElementById('submit-order').disabled = true
+        }
+
+        var value = e.target.value
+        var name = e.target.name;
+        switch(name){
+            case "first_name":
+                this.setState({first_name: value});
+                break;
+            case "last_name":
+                this.setState({last_name: value});
+                break;
+            case "email":
+                this.setState({email: value});
+                break;
+            case "cell":
+                this.setState({cell_number: value});
+                break;
+            case "id_number":
+                this.setState({id_number: value});
+                break;
+            case "year_course":
+                this.setState({year_course: value});
+                break;
+        }
     }
 
     renderInputs(){
@@ -50,31 +123,31 @@ export default class ConfirmModal extends Component{
             <div>
                 <div className="form-span first-name">
                     <span>First Name*</span>
-                    <input type="text"></input>
+                    <input name="first_name" onChange={this.handleChange} type="text" required></input>
                 </div>
                 <div className="form-span last-name">
                     <span>Last Name*</span>
-                    <input type="text"></input>
+                    <input name="last_name" onChange={this.handleChange} type="text" required></input>
                 </div>
                 <div className="form-span email">
                     <span>Email Address*</span>
-                    <input type="text"></input>
+                    <input name="email" onChange={this.handleChange} type="text" required></input>
                 </div>
                 <div className="form-span cell">
                     <span>Cellphone Number:</span>
-                    <input type="text"></input>
+                    <input name="cell" onChange={this.handleChange} type="text"></input>
                 </div>
                 <div className="form-span-two">
                     <div className="id_number">
                         <span>ID Number</span>
-                        <input type="text"></input>
+                        <input name="id_number" onChange={this.handleChange} type="text"></input>
                     </div>
                     <div className="id_number">
                         <span>Year and Course</span>
-                        <input type="text"></input>
+                        <input name="year_course" onChange={this.handleChange} type="text"></input>
                     </div>
                 </div>
-                <button onClick={this.submitOrder.bind(this)} className="confirm-button btn btn-primary">
+                <button id="submit-order" onClick={this.submitOrder} className="confirm-button btn btn-primary">
                     {!this.state.loading ? "Confirm Order" : <Loader />}
                 </button>
             </div>

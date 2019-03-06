@@ -24,7 +24,7 @@ export default class Ticketing extends Component {
     }
 
     componentDidMount(){
-        /*var venue_object = {
+        var venue_object = {
             venue_name: "",
             venue: []
         }
@@ -35,7 +35,8 @@ export default class Ticketing extends Component {
                     type: type.type,
                     number_of_sections: 0,
                     number_of_rows: [],
-                    number_of_columns: []
+                    number_of_columns: [],
+                    section_order: []
                 })
             });
             res.data.venue.sections.map((section)=>{
@@ -44,6 +45,7 @@ export default class Ticketing extends Component {
                         venue_object.venue[index].number_of_sections += 1;
                         venue_object.venue[index].number_of_rows.push(section.number_of_rows);
                         venue_object.venue[index].number_of_columns.push(section.number_of_columns);
+                        venue_object.venue[index].section_order.push(section.name);
                     }
                 })
             });
@@ -52,8 +54,8 @@ export default class Ticketing extends Component {
                 venue_name: venue_object.venue_name,
                 venue: venue_object.venue
             })
-        })*/
-
+        })
+        /*
         this.setState({
             venue_name: "Singson Hall",
             venue: [
@@ -71,6 +73,7 @@ export default class Ticketing extends Component {
                 }
             ]
         });
+        */
     }
 
     componentDidUpdate(prevProps, prevState){
@@ -323,6 +326,7 @@ export default class Ticketing extends Component {
                     show_order_modal = {this.state.show_order_modal}
                     show_order_modal_fnc = {this.handleOrder}
                     clearOrder = {this.clearOrder}
+                    chosen_seats = {this.state.chosen_seats}
                 />
             </div>
         );

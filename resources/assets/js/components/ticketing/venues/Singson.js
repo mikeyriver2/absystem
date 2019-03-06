@@ -10,9 +10,44 @@ export default class Singson extends Component{
                 ol: 350.00,
                 vip: 500.00,
                 or: 350.00
-            }
+            },
+            venue: [] //re-arranged section (if needed)
         }
         this.handleSeatClick = this.handleSeatClick.bind(this)
+    }
+
+    componentWillReceiveProps(nextProps){
+        //this.reArrangeSeats(nextProps)
+    }
+
+    reArrangeSeats(){
+        /* //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
+        var proper_order = {
+            balcony: ["Balcony Left","Balcony Center","Balcony Right"],
+            ground_floor: ["Orchestra Left","Orchestra Center","Orchestra Right"]
+        }
+        var cloned_venue = nextProps.venue.slice(0)
+
+        nextProps.venue.map((venue,parent_index)=>{
+            for(var key in proper_order){
+                if(key == venue.type){
+                    console.log('asd')
+                    var swap_obj = {}
+                    proper_order[key].map((section,index_of_proper)=>{
+                        var bool_index = (index_of_proper == venue.section_order.indexOf(section)) //check if section_order index is same as proper_order
+                        if(!bool_index){
+                            var index_to_swap = venue.section_order.indexOf(section)
+                            cloned_venue[parent_index].section_order[index_of_proper] = section;
+                        }
+                    })
+                }
+            }
+        })
+
+        this.setState({
+            venue: cloned_venue
+        })
+        */
     }
 
     componentDidUpdate(prevProps){
@@ -42,12 +77,6 @@ export default class Singson extends Component{
     }
 
     handleSeatClick(e){
-        // axios.get('/api/test').then(res=>{
-        // })
-
-        /*console.log('ive been reserved baby')
-        console.log('className ='+e.target.className)
-        console.log('className ='+e.target.id)*/
 
         var class_name = e.target.className;
         var id = e.target.id
@@ -76,7 +105,7 @@ export default class Singson extends Component{
         var seat = {
             section_name: section_name,
             seat_id: id,
-            ticket_price: ticket_price
+            ticket_price: ticket_price,
         }
         
         this.props.handleChosenSeats(seat);

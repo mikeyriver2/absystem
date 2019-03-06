@@ -4085,13 +4085,48 @@ var Singson = function (_Component) {
                 ol: 350.00,
                 vip: 500.00,
                 or: 350.00
-            }
+            },
+            venue: [] //re-arranged section (if needed)
         };
         _this.handleSeatClick = _this.handleSeatClick.bind(_this);
         return _this;
     }
 
     _createClass(Singson, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            //this.reArrangeSeats(nextProps)
+        }
+    }, {
+        key: 'reArrangeSeats',
+        value: function reArrangeSeats() {
+            /* //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
+            var proper_order = {
+                balcony: ["Balcony Left","Balcony Center","Balcony Right"],
+                ground_floor: ["Orchestra Left","Orchestra Center","Orchestra Right"]
+            }
+            var cloned_venue = nextProps.venue.slice(0)
+              nextProps.venue.map((venue,parent_index)=>{
+                for(var key in proper_order){
+                    if(key == venue.type){
+                        console.log('asd')
+                        var swap_obj = {}
+                        proper_order[key].map((section,index_of_proper)=>{
+                            var bool_index = (index_of_proper == venue.section_order.indexOf(section)) //check if section_order index is same as proper_order
+                            if(!bool_index){
+                                var index_to_swap = venue.section_order.indexOf(section)
+                                cloned_venue[parent_index].section_order[index_of_proper] = section;
+                            }
+                        })
+                    }
+                }
+            })
+              this.setState({
+                venue: cloned_venue
+            })
+            */
+        }
+    }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps) {
             var _this2 = this;
@@ -4125,12 +4160,6 @@ var Singson = function (_Component) {
     }, {
         key: 'handleSeatClick',
         value: function handleSeatClick(e) {
-            // axios.get('/api/test').then(res=>{
-            // })
-
-            /*console.log('ive been reserved baby')
-            console.log('className ='+e.target.className)
-            console.log('className ='+e.target.id)*/
 
             var class_name = e.target.className;
             var id = e.target.id;
@@ -32777,50 +32806,58 @@ var Ticketing = function (_Component) {
     _createClass(Ticketing, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            /*var venue_object = {
+            var _this2 = this;
+
+            var venue_object = {
                 venue_name: "",
                 venue: []
-            }
-            axios.get('/api/ticketing/venue').then(res=>{
+            };
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.get('/api/ticketing/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
-                res.data.section_types.map((type)=>{
+                res.data.section_types.map(function (type) {
                     venue_object.venue.push({
                         type: type.type,
                         number_of_sections: 0,
                         number_of_rows: [],
-                        number_of_columns: []
-                    })
+                        number_of_columns: [],
+                        section_order: []
+                    });
                 });
-                res.data.venue.sections.map((section)=>{
-                    venue_object.venue.map((map,index)=>{
-                        if(map.type == section.type){
+                res.data.venue.sections.map(function (section) {
+                    venue_object.venue.map(function (map, index) {
+                        if (map.type == section.type) {
                             venue_object.venue[index].number_of_sections += 1;
                             venue_object.venue[index].number_of_rows.push(section.number_of_rows);
                             venue_object.venue[index].number_of_columns.push(section.number_of_columns);
+                            venue_object.venue[index].section_order.push(section.name);
                         }
-                    })
+                    });
                 });
                 console.log(venue_object);
-                this.setState({
+                _this2.setState({
                     venue_name: venue_object.venue_name,
                     venue: venue_object.venue
-                })
-            })*/
-
+                });
+            });
+            /*
             this.setState({
                 venue_name: "Singson Hall",
-                venue: [{
-                    type: "ground floor",
-                    number_of_sections: 3,
-                    number_of_rows: [15, 15, 15],
-                    number_of_columns: [10, 15, 10]
-                }, {
-                    type: "balcony",
-                    number_of_sections: 3,
-                    number_of_rows: [4, 5, 4],
-                    number_of_columns: [6, 16, 6]
-                }]
+                venue: [
+                    {
+                        type: "ground floor",
+                        number_of_sections: 3,
+                        number_of_rows: [15,15,15],
+                        number_of_columns: [10,15,10]
+                    },
+                    {
+                        type: "balcony",
+                        number_of_sections: 3,
+                        number_of_rows: [4,5,4],
+                        number_of_columns: [6,16,6]
+                    }
+                ]
             });
+            */
         }
     }, {
         key: 'componentDidUpdate',
@@ -32846,14 +32883,14 @@ var Ticketing = function (_Component) {
     }, {
         key: 'clearOrder',
         value: function clearOrder() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.setState({
                 chosen_seats: [],
                 total_price: 0
             });
             setTimeout(function () {
-                _this2.setState({
+                _this3.setState({
                     show_order_modal: false
                 });
             }, 5000);
@@ -32953,7 +32990,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'removeSeat',
         value: function removeSeat(seat) {
-            var _this3 = this;
+            var _this4 = this;
 
             var chosen_seats = this.state.chosen_seats;
             chosen_seats.map(function (chosen_seat, index) {
@@ -32961,7 +32998,7 @@ var Ticketing = function (_Component) {
                     var filtered = chosen_seats.filter(function (value, f_index) {
                         return f_index != index;
                     });
-                    _this3.setState({
+                    _this4.setState({
                         chosen_seats: filtered
                     });
                 }
@@ -32970,7 +33007,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'displayOrders',
         value: function displayOrders() {
-            var _this4 = this;
+            var _this5 = this;
 
             console.log("displaying orders");
             var rows = [];
@@ -33006,7 +33043,7 @@ var Ticketing = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { onClick: function onClick() {
-                                    return _this4.removeSeat(seat);
+                                    return _this5.removeSeat(seat);
                                 }, className: 'cancel' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { style: { height: "2vh", marginRight: ".3vw" }, src: '/images/error.svg' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -33204,7 +33241,8 @@ var Ticketing = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__ConfirmModal__["a" /* default */], {
                     show_order_modal: this.state.show_order_modal,
                     show_order_modal_fnc: this.handleOrder,
-                    clearOrder: this.clearOrder
+                    clearOrder: this.clearOrder,
+                    chosen_seats: this.state.chosen_seats
                 })
             );
         }
@@ -43490,13 +43528,31 @@ var ConfirmModal = function (_Component) {
 
         _this.state = {
             loading: false,
-            thanks: false
+            thanks: false,
+            first_name: "",
+            last_name: "",
+            email: "",
+            cell_number: "",
+            id_number: 0,
+            year_course: "",
+            error: true //there is error
         };
         _this.toggleLoading = _this.toggleLoading.bind(_this);
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.submitOrder = _this.submitOrder.bind(_this);
         return _this;
     }
 
     _createClass(ConfirmModal, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            if (nextProps.show_order_modal) {
+                setTimeout(function () {
+                    document.getElementById('submit-order').disabled = true;
+                }, 10);
+            }
+        }
+    }, {
         key: 'toggleLoading',
         value: function toggleLoading() {
             if (!this.state.loading) {
@@ -43514,20 +43570,74 @@ var ConfirmModal = function (_Component) {
         value: function submitOrder() {
             var _this2 = this;
 
-            this.toggleLoading();
-            setTimeout(function () {
-                _this2.setState({
-                    thanks: true
+            if (!this.state.error || this.state.error == "false") {
+                var params = {
+                    first_name: this.state.first_name,
+                    last_name: this.state.last_name,
+                    email: this.state.email,
+                    cell_number: this.state.cell_number,
+                    id_number: this.state.cell_number,
+                    year_course: this.state.year_course,
+                    chosen_seats: this.props.chosen_seats
+                };
+                this.toggleLoading();
+                __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {
+                    _this2.setState({
+                        thanks: true,
+                        loading: false,
+                        first_name: "",
+                        last_name: "",
+                        email: "",
+                        cell_number: "",
+                        id_number: 0,
+                        year_course: "",
+                        error: true //there is error
+                    });
+                    _this2.toggleLoading();
+                    _this2.props.clearOrder();
+                    setTimeout(function () {
+                        _this2.setState({
+                            thanks: false
+                        });
+                    }, 5000);
+                }).catch(function (error) {});
+            }
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(e) {
+
+            if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
+                this.setState({ error: false }, function () {
+                    document.getElementById('submit-order').disabled = false;
                 });
-                _this2.toggleLoading();
-                _this2.props.clearOrder();
-            }, 2000);
-            //clearOrder will show thank you for 5 secs
-            setTimeout(function () {
-                _this2.setState({
-                    thanks: false
-                });
-            }, 7000); //7000 because 2000+5000
+            } else {
+                this.setState({ error: true });
+                document.getElementById('submit-order').disabled = true;
+            }
+
+            var value = e.target.value;
+            var name = e.target.name;
+            switch (name) {
+                case "first_name":
+                    this.setState({ first_name: value });
+                    break;
+                case "last_name":
+                    this.setState({ last_name: value });
+                    break;
+                case "email":
+                    this.setState({ email: value });
+                    break;
+                case "cell":
+                    this.setState({ cell_number: value });
+                    break;
+                case "id_number":
+                    this.setState({ id_number: value });
+                    break;
+                case "year_course":
+                    this.setState({ year_course: value });
+                    break;
+            }
         }
     }, {
         key: 'renderInputs',
@@ -43543,7 +43653,7 @@ var ConfirmModal = function (_Component) {
                         null,
                         'First Name*'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'first_name', onChange: this.handleChange, type: 'text', required: true })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -43553,7 +43663,7 @@ var ConfirmModal = function (_Component) {
                         null,
                         'Last Name*'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'last_name', onChange: this.handleChange, type: 'text', required: true })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -43563,7 +43673,7 @@ var ConfirmModal = function (_Component) {
                         null,
                         'Email Address*'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'email', onChange: this.handleChange, type: 'text', required: true })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -43573,7 +43683,7 @@ var ConfirmModal = function (_Component) {
                         null,
                         'Cellphone Number:'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'cell', onChange: this.handleChange, type: 'text' })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -43586,7 +43696,7 @@ var ConfirmModal = function (_Component) {
                             null,
                             'ID Number'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'id_number', onChange: this.handleChange, type: 'text' })
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
@@ -43596,12 +43706,12 @@ var ConfirmModal = function (_Component) {
                             null,
                             'Year and Course'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'text' })
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'year_course', onChange: this.handleChange, type: 'text' })
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'button',
-                    { onClick: this.submitOrder.bind(this), className: 'confirm-button btn btn-primary' },
+                    { id: 'submit-order', onClick: this.submitOrder, className: 'confirm-button btn btn-primary' },
                     !this.state.loading ? "Confirm Order" : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__["a" /* default */], null)
                 )
             );

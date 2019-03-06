@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('ticketing')->group(function(){
     Route::get('venue','VenueController@index');
+    Route::post('orderTicket', 'TicketController@Order');
 });
