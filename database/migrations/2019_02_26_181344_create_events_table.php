@@ -17,7 +17,6 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('name');
-            $table->dateTime('date');
             $table->unsignedInteger('venue_id')->foreign('venue_id')->references('id')->on('venues');
         });
     }

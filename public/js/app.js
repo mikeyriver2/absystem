@@ -32792,7 +32792,11 @@ var Ticketing = function (_Component) {
             venue: [],
             chosen_seats: [],
             total_price: 0,
-            show_order_modal: false
+            show_order_modal: false,
+            dates: [],
+            selected_date: "",
+            event: {},
+            sold_seats: {}
         };
         _this.test = _this.test.bind(_this);
         _this.handleChosenSeats = _this.handleChosenSeats.bind(_this);
@@ -32800,6 +32804,8 @@ var Ticketing = function (_Component) {
         _this.removeSeat = _this.removeSeat.bind(_this);
         _this.handleOrder = _this.handleOrder.bind(_this);
         _this.clearOrder = _this.clearOrder.bind(_this);
+        _this.handleSetDate = _this.handleSetDate.bind(_this);
+
         return _this;
     }
 
@@ -32808,10 +32814,13 @@ var Ticketing = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
+            var array = [];
             var venue_object = {
                 venue_name: "",
                 venue: []
             };
+            var sold_seats = {};
+
             __WEBPACK_IMPORTED_MODULE_5_axios___default.a.get('/api/ticketing/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
                 res.data.section_types.map(function (type) {
@@ -32833,12 +32842,34 @@ var Ticketing = function (_Component) {
                         }
                     });
                 });
+                res.data.venue.event.event_days.map(function (date) {
+                    array.push(date.date);
+                });
+                res.data.venue.event.ticket_orders.map(function (order) {
+                    order.tickets.map(function (ticket) {
+                        if (!sold_seats[order.event_day.date]) {
+                            sold_seats[order.event_day.date] = [];
+                        }
+                        sold_seats[order.event_day.date].push(ticket.slug);
+                    });
+                });
+
                 console.log(venue_object);
                 _this2.setState({
+                    sold_seats: sold_seats,
+                    dates: array,
                     venue_name: venue_object.venue_name,
-                    venue: venue_object.venue
+                    venue: venue_object.venue,
+                    event: res.data.venue.event,
+                    selected_date: array[0]
                 });
             });
+            /*
+                sold_seats: {
+                    date1: [tickets]
+                    date2: [tickets]
+                }
+            */
             /*
             this.setState({
                 venue_name: "Singson Hall",
@@ -32887,7 +32918,8 @@ var Ticketing = function (_Component) {
 
             this.setState({
                 chosen_seats: [],
-                total_price: 0
+                total_price: 0,
+                selected_date: ""
             });
             setTimeout(function () {
                 _this3.setState({
@@ -33063,6 +33095,13 @@ var Ticketing = function (_Component) {
             return rows;
         }
     }, {
+        key: 'handleSetDate',
+        value: function handleSetDate(e) {
+            this.setState({
+                selected_date: e
+            });
+        }
+    }, {
         key: 'test',
         value: function test() {
             console.log('Fok me baby one more time');
@@ -33083,6 +33122,8 @@ var Ticketing = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this6 = this;
+
             var window_width = window.innerWidth + "px";
             var window_height = window.innerHeight + "px";
             var number_of_columnSection = [10, 13, 10]; //# of items must match number of sections
@@ -33104,7 +33145,9 @@ var Ticketing = function (_Component) {
                             { className: 'date-dropdown' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */],
-                                null,
+                                { onSelect: function onSelect(e) {
+                                        _this6.handleSetDate(e);
+                                    } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Toggle,
                                     { id: 'dropdown-date' },
@@ -33112,26 +33155,27 @@ var Ticketing = function (_Component) {
                                         'div',
                                         { className: 'dropdown-container' },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: '/images/clapperboard.png' }),
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        this.state.selected_date == "" ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'span',
                                             null,
                                             'Select Reservation Date'
+                                        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            null,
+                                            this.state.selected_date
                                         )
                                     )
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Menu,
                                     null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
-                                        null,
-                                        'Day 1 [May 5, 2019]'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
-                                        null,
-                                        'Day 2 [May 6, 2019]'
-                                    )
+                                    this.state.dates.map(function (date, index) {
+                                        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Dropdown */].Item,
+                                            { eventKey: date },
+                                            date
+                                        );
+                                    })
                                 )
                             )
                         ),
@@ -33242,7 +33286,10 @@ var Ticketing = function (_Component) {
                     show_order_modal: this.state.show_order_modal,
                     show_order_modal_fnc: this.handleOrder,
                     clearOrder: this.clearOrder,
-                    chosen_seats: this.state.chosen_seats
+                    chosen_seats: this.state.chosen_seats,
+                    chosen_date: this.state.selected_date,
+                    event: this.state.event,
+                    sold_seats: this.state.sold_seats
                 })
             );
         }
@@ -43578,7 +43625,9 @@ var ConfirmModal = function (_Component) {
                     cell_number: this.state.cell_number,
                     id_number: this.state.cell_number,
                     year_course: this.state.year_course,
-                    chosen_seats: this.props.chosen_seats
+                    chosen_seats: this.props.chosen_seats,
+                    selected_date: this.props.chosen_date,
+                    event: this.props.event
                 };
                 this.toggleLoading();
                 __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {

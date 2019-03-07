@@ -53,7 +53,9 @@ export default class ConfirmModal extends Component{
                 cell_number: this.state.cell_number,
                 id_number: this.state.cell_number,
                 year_course: this.state.year_course,
-                chosen_seats: this.props.chosen_seats
+                chosen_seats: this.props.chosen_seats,
+                selected_date: this.props.chosen_date,
+                event: this.props.event
             }
             this.toggleLoading();
             axios.post('/api/ticketing/orderTicket',params).then(res=>{

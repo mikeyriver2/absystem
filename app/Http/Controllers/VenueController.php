@@ -11,7 +11,7 @@ class VenueController extends Controller
         $venue = Venue::where('name','Singson')
                 ->with(['sections' => function($query){
                     $query->orderBy('order','asc');
-                }])->first();
+                },'event.ticketOrders.eventDay','event.ticketOrders','event.ticketOrders.tickets','event','event.eventDays'])->first();
 
         $section_types = Section::select('type')
                             ->where('venue_id',$venue->id)

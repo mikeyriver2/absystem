@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTicketOrdersTable extends Migration
+class CreateEventDaysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateTicketOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('ticket_orders', function (Blueprint $table) {
+        Schema::create('event_days', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('buyer_first_name');
-            $table->string('buyer_last_name');
-            $table->string('buyer_email')->nullable();
-            $table->integer('buyer_cell_number')->nullable();
+            $table->dateTime('date');
             $table->unsignedInteger('event_id')->foreign('event_id')->references('id')->on('events');
-            $table->unsignedInteger('event_day_id')->foreign('event_day_id')->references('id')->on('event_days');
         });
     }
 
@@ -32,6 +28,6 @@ class CreateTicketOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ticket_orders');
+        Schema::dropIfExists('event_days');
     }
 }

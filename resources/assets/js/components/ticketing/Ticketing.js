@@ -13,7 +13,11 @@ export default class Ticketing extends Component {
             venue: [],
             chosen_seats: [],
             total_price: 0,
-            show_order_modal: false
+            show_order_modal: false,
+            dates: [],
+            selected_date: "",
+            event: {},
+            sold_seats: {}
         }
         this.test = this.test.bind(this);
         this.handleChosenSeats = this.handleChosenSeats.bind(this);
@@ -21,13 +25,18 @@ export default class Ticketing extends Component {
         this.removeSeat = this.removeSeat.bind(this);
         this.handleOrder = this.handleOrder.bind(this);
         this.clearOrder = this.clearOrder.bind(this);
+        this.handleSetDate = this.handleSetDate.bind(this);
+
     }
 
     componentDidMount(){
+        let array = [];
         var venue_object = {
             venue_name: "",
             venue: []
         }
+        var sold_seats = {}
+
         axios.get('/api/ticketing/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
             res.data.section_types.map((type)=>{
@@ -49,12 +58,34 @@ export default class Ticketing extends Component {
                     }
                 })
             });
+            res.data.venue.event.event_days.map((date)=>{
+                array.push(date.date)
+            });
+            res.data.venue.event.ticket_orders.map((order)=>{
+                order.tickets.map((ticket)=>{
+                    if(!sold_seats[order.event_day.date]){
+                        sold_seats[order.event_day.date] = []
+                    }
+                    sold_seats[order.event_day.date].push(ticket.slug)
+                })
+            })
+
             console.log(venue_object);
             this.setState({
+                sold_seats: sold_seats,
+                dates:array,
                 venue_name: venue_object.venue_name,
-                venue: venue_object.venue
+                venue: venue_object.venue,
+                event: res.data.venue.event,
+                selected_date:array[0]
             })
         })
+        /*
+            sold_seats: {
+                date1: [tickets]
+                date2: [tickets]
+            }
+        */
         /*
         this.setState({
             venue_name: "Singson Hall",
@@ -98,6 +129,7 @@ export default class Ticketing extends Component {
         this.setState({
             chosen_seats: [],
             total_price: 0,
+            selected_date: ""
         })
         setTimeout(()=>{
             this.setState({
@@ -231,6 +263,12 @@ export default class Ticketing extends Component {
         return rows;
     }
 
+    handleSetDate(e){
+        this.setState({
+            selected_date: e
+        })
+    }
+
     test(){
         console.log('Fok me baby one more time')
         const ass = [];
@@ -256,17 +294,23 @@ export default class Ticketing extends Component {
                 <div className="ticket-module">
                     <div className="ticket-module-head">
                         <div className="date-dropdown">
-                            <Dropdown>
+                            <Dropdown onSelect={(e)=>{this.handleSetDate(e)}}>
                                 <Dropdown.Toggle id="dropdown-date">
                                     <div className="dropdown-container">
                                         <img src="/images/clapperboard.png"/>
-                                        <span>Select Reservation Date</span>
+                                        {this.state.selected_date == "" ?
+                                            <span>Select Reservation Date</span>
+                                            :
+                                            <span>{this.state.selected_date}</span>
+                                        }
                                     </div>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item>Day 1 [May 5, 2019]</Dropdown.Item>
-                                    <Dropdown.Item>Day 2 [May 6, 2019]</Dropdown.Item>
+                                    {this.state.dates.map((date,index)=>{
+                                        return <Dropdown.Item eventKey={date}>{date}</Dropdown.Item>
+                                    })
+                                    }
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
@@ -327,6 +371,9 @@ export default class Ticketing extends Component {
                     show_order_modal_fnc = {this.handleOrder}
                     clearOrder = {this.clearOrder}
                     chosen_seats = {this.state.chosen_seats}
+                    chosen_date = {this.state.selected_date}
+                    event = {this.state.event}
+                    sold_seats = {this.state.sold_seats}
                 />
             </div>
         );

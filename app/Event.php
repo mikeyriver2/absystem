@@ -11,6 +11,10 @@ class Event extends Model
     }
 
     public function venue(){
-        return $this->hasOne('App\Venue');
+        return $this->belongsTo('App\Venue');
+    }
+
+    public function eventDays(){
+        return $this->hasMany('App\EventDay');
     }
 }
