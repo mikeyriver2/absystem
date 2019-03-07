@@ -137,6 +137,8 @@ export default class Singson extends Component{
             var sections = ['OL','VIP','OR']
             var sections_balcony = ['BL','BC','BR']
             var section = "";
+            var selected_date = this.props.chosen_date;
+
             if(type == "balcony"){
                 section = sections_balcony[section_number];
             }else{
@@ -144,7 +146,16 @@ export default class Singson extends Component{
             }
             var row = rows[row_number];
             for(var i = 0; i < number_of_seats; i++){
-                let class_name = "seat seat-not-taken" 
+                let class_name = "seat"
+                if(this.props.sold_seats[selected_date]){
+                    if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
+                        class_name+=" seat-taken"
+                    }else{
+                        class_name+=" seat-not-taken"
+                    }
+                }else{
+                    class_name+=" seat-not-taken"
+                }
                 var style={
                     height: from_dashboard ? "2.5vh" : ""
                 }

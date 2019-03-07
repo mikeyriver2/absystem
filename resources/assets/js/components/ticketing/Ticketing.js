@@ -26,10 +26,58 @@ export default class Ticketing extends Component {
         this.handleOrder = this.handleOrder.bind(this);
         this.clearOrder = this.clearOrder.bind(this);
         this.handleSetDate = this.handleSetDate.bind(this);
+        this.setVenue = this.setVenue.bind(this);
 
     }
 
     componentDidMount(){
+        this.setVenue();
+        /*
+            sold_seats: {
+                date1: [tickets]
+                date2: [tickets]
+            }
+        */
+        /*
+        this.setState({
+            venue_name: "Singson Hall",
+            venue: [
+                {
+                    type: "ground floor",
+                    number_of_sections: 3,
+                    number_of_rows: [15,15,15],
+                    number_of_columns: [10,15,10]
+                },
+                {
+                    type: "balcony",
+                    number_of_sections: 3,
+                    number_of_rows: [4,5,4],
+                    number_of_columns: [6,16,6]
+                }
+            ]
+        });
+        */
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
+        //IMPORTANCE OF CLONING ELEMENT FIRST
+        //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
+
+        //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
+        if(prevState.chosen_seats.length != this.state.chosen_seats.length){
+            console.log('updating yo');
+            var total_price = 0;
+            this.state.chosen_seats.map((seat)=>{
+                total_price += seat.ticket_price;
+            })          
+            this.setState((prevState)=>({
+                total_price: total_price
+            }));
+        }
+    }
+
+    setVenue(){
         let array = [];
         var venue_object = {
             venue_name: "",
@@ -80,52 +128,10 @@ export default class Ticketing extends Component {
                 selected_date:array[0]
             })
         })
-        /*
-            sold_seats: {
-                date1: [tickets]
-                date2: [tickets]
-            }
-        */
-        /*
-        this.setState({
-            venue_name: "Singson Hall",
-            venue: [
-                {
-                    type: "ground floor",
-                    number_of_sections: 3,
-                    number_of_rows: [15,15,15],
-                    number_of_columns: [10,15,10]
-                },
-                {
-                    type: "balcony",
-                    number_of_sections: 3,
-                    number_of_rows: [4,5,4],
-                    number_of_columns: [6,16,6]
-                }
-            ]
-        });
-        */
-    }
-
-    componentDidUpdate(prevProps, prevState){
-        //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
-        //IMPORTANCE OF CLONING ELEMENT FIRST
-        //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
-
-        //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
-        if(prevState.chosen_seats.length != this.state.chosen_seats.length){
-            console.log('updating yo');
-            var total_price = 0;
-            this.state.chosen_seats.map((seat)=>{
-                total_price += seat.ticket_price;
-            })          
-            this.setState((prevState)=>({
-                total_price: total_price
-            }));
-        }
     }
 
     clearOrder(){
+        this.setVenue();
         this.setState({
             chosen_seats: [],
             total_price: 0,
@@ -362,6 +368,8 @@ export default class Ticketing extends Component {
                             venue = {this.state.venue}
                             handleChosenSeats = {this.handleChosenSeats}
                             chosen_seats = {this.state.chosen_seats}
+                            chosen_date = {this.state.selected_date}
+                            sold_seats = {this.state.sold_seats}
                         />
                     </div>
                         {/*this.test()*/}
@@ -373,7 +381,6 @@ export default class Ticketing extends Component {
                     chosen_seats = {this.state.chosen_seats}
                     chosen_date = {this.state.selected_date}
                     event = {this.state.event}
-                    sold_seats = {this.state.sold_seats}
                 />
             </div>
         );
