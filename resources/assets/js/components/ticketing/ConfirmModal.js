@@ -46,6 +46,7 @@ export default class ConfirmModal extends Component{
 
     submitOrder(){
         if(!this.state.error || this.state.error == "false"){
+            this.toggleLoading();
             var params = {
                 first_name: this.state.first_name,
                 last_name: this.state.last_name,
@@ -57,11 +58,9 @@ export default class ConfirmModal extends Component{
                 selected_date: this.props.chosen_date,
                 event: this.props.event
             }
-            this.toggleLoading();
             axios.post('/api/ticketing/orderTicket',params).then(res=>{
                 this.setState({
                     thanks: true,
-                    loading:false,
                     first_name: "",
                     last_name: "",
                     email: "",

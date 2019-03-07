@@ -1,4 +1,4 @@
-import {Row, Col, OverlayTrigger} from 'react-bootstrap'
+import {Row, Col, OverlayTrigger, Popover} from 'react-bootstrap'
 import React, { Component } from 'react';
 import axios from 'axios';
 
@@ -68,54 +68,62 @@ export default class Singson extends Component{
         }
     }
 
-    renderSeatPopOver(section,row,column_number){
+    renderSeatPopOver(section,row,column_number,status){
         return(
-        <div className="">
-            {section+row+column_number}
-        </div>
+            <Popover id="popover-seat-info">
+                {section+row+column_number}{status != "free"  && <div><a href="#">View Order</a></div>}
+            </Popover>
         )
     }
 
     handleSeatClick(e){
-
         var class_name = e.target.className;
         var id = e.target.id
         var section_name = "";
         var ticket_price = 350;
         var status = class_name.split(" ");
+        var seat_exists = false;
         
-        if(id.includes('OL')){
-            section_name = "Orchestra Left"
-        }else if(id.includes('OR')){
-            section_name = "Orchestra Right"
-        }else if(id.includes('VIP')){
-            section_name = "VIP"
-            ticket_price = 500;
-        }else if(id.includes('BL')){
-            section_name = "Balcony Left"
-            ticket_price = 250;
-        }else if(id.includes('BC')){
-            section_name = "Balcony Center"
-            ticket_price = 250;
-        }else if(id.includes('BR')){
-            section_name = "Balcony Right"
-            ticket_price = 250;
-        }
-
-        var seat = {
-            section_name: section_name,
-            seat_id: id,
-            ticket_price: ticket_price,
+        if(this.props.sold_seats[this.props.chosen_date].includes(id)){
+            seat_exists = true
         }
         
-        this.props.handleChosenSeats(seat);
+        if(!this.props.hasOwnProperty('from_dashboard') && !seat_exists){
+            if(id.includes('OL')){
+                section_name = "Orchestra Left"
+            }else if(id.includes('OR')){
+                section_name = "Orchestra Right"
+            }else if(id.includes('VIP')){
+                section_name = "VIP"
+                ticket_price = 500;
+            }else if(id.includes('BL')){
+                section_name = "Balcony Left"
+                ticket_price = 250;
+            }else if(id.includes('BC')){
+                section_name = "Balcony Center"
+                ticket_price = 250;
+            }else if(id.includes('BR')){
+                section_name = "Balcony Right"
+                ticket_price = 250;
+            }
 
-        if(status.includes("seat-not-taken")){
-            document.getElementById(e.target.id).classList.add('seat-reserved');
-            document.getElementById(e.target.id).classList.remove('seat-not-taken');
-        }else if(status.includes("seat-reserved")){
-            document.getElementById(e.target.id).classList.remove('seat-reserved');
-            document.getElementById(e.target.id).classList.add('seat-not-taken');
+            var seat = {
+                section_name: section_name,
+                seat_id: id,
+                ticket_price: ticket_price,
+            }
+            
+            this.props.handleChosenSeats(seat);
+
+            if(status.includes("seat-not-taken")){
+                document.getElementById(e.target.id).classList.add('seat-reserved');
+                document.getElementById(e.target.id).classList.remove('seat-not-taken');
+            }else if(status.includes("seat-reserved")){
+                document.getElementById(e.target.id).classList.remove('seat-reserved');
+                document.getElementById(e.target.id).classList.add('seat-not-taken');
+            }
+        }else{
+            console.log('show_modal');
         }
     }
 
@@ -138,6 +146,7 @@ export default class Singson extends Component{
             var sections_balcony = ['BL','BC','BR']
             var section = "";
             var selected_date = this.props.chosen_date;
+            let status = "";
 
             if(type == "balcony"){
                 section = sections_balcony[section_number];
@@ -150,26 +159,33 @@ export default class Singson extends Component{
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
                         class_name+=" seat-taken"
+                        status = "sold"
                     }else{
                         class_name+=" seat-not-taken"
+                        status = "free"
                     }
                 }else{
                     class_name+=" seat-not-taken"
+                    status = "free"
                 }
                 var style={
-                    height: from_dashboard ? "2.5vh" : ""
+                    height: from_dashboard ? "2.5vh" : "",
+                    cursor: from_dashboard ? "pointer" : ""
                 }
                 seats.push(
-                    /*<OverlayTrigger || causes handleorder to slow down for some stupid ass reason
-                         placement="top" ||sayang, this would had been nice. will be used for dashboard though
-                         delay={{ show: 250 }}
-                         overlay={this.renderSeatPopOver(section,row,i+1)}
-                         onClick={this.handleSeatClick}
-                    >*/
+                    from_dashboard ?
+                        <OverlayTrigger 
+                            placement="top"
+                            trigger="click" 
+                            overlay={this.renderSeatPopOver(section,row,i+1,status)}
+                        >
+                            <div id={section+row+(i+1)} style={style} className={class_name}>
+                            </div>
+                        </OverlayTrigger>
+                    :
                         <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
-                            {i+1}
+                            {!this.props.hasOwnProperty('from_dashboard') ? i+1 : ""}
                         </div>
-                    /*</OverlayTrigger>*/
                 )
             }
             return seats

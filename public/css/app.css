@@ -11683,14 +11683,14 @@ body {
 }
 
 .home .main .main-footer {
-  margin: 3vh;
+  margin-bottom: 20px;
+  margin-left: 1.5vw;
   font-weight: bold;
-  font-size: 1.3em;
-  margin-top: 6vh;
+  font-size: 1em;
 }
 
 .home .main .main-top {
-  padding: 7vh 4vw 3vh 1.5vw;
+  padding: 7vh 4vw 0 1.5vw;
 }
 
 .home .main .main-top h3 {
@@ -11704,7 +11704,7 @@ body {
 .home .main .main-venue {
   border: 1px;
   border-style: solid;
-  height: 50vh;
+  height: 60vh;
   -webkit-box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
           box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
   width: 60vw;
@@ -12073,19 +12073,27 @@ body {
 .ticket-module .ticket-module-head #dropdown-date::after {
   margin-left: 5em;
   color: #b6b4b4;
+  margin-top: 12px;
 }
 
 .ticket-module .ticket-module-head #dropdown-date .dropdown-container {
   float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 5px;
 }
 
 .ticket-module .ticket-module-head #dropdown-date .dropdown-container span {
   color: #b6b4b4;
+  margin-left: 10px;
 }
 
 .ticket-module .ticket-module-head #dropdown-date .dropdown-container img {
   height: 3vh;
-  margin: 5px;
 }
 
 .container-vanilla {
@@ -12152,6 +12160,7 @@ body {
 .seat-taken {
   color: white;
   background-color: #f1b850;
+  cursor: context-menu;
 }
 
 .venue .clickables .clickables-container {

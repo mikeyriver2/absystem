@@ -349,9 +349,15 @@ export default class Ticketing extends Component {
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
-                                    <button onClick={this.handleOrder} className="btn btn-default">
-                                        <b>Order Now</b>
-                                    </button>
+                                    {this.state.chosen_seats.length > 0 ?
+                                        <button onClick={this.handleOrder} className="btn btn-default">
+                                            <b>Order Now</b>
+                                        </button>
+                                    :
+                                        <button className="btn btn-default" disabled>
+                                            <b>Order Now</b>
+                                        </button>
+                                    }
                                 </div>
                             {/*</div>*/}
                         </div>
