@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Home from './Home'
+import Tickets from './Tickets'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 
 
@@ -41,7 +42,7 @@ export default class Head extends Component{
                 </Row>
                 <Route exact path={`${this.props.match.url}`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/home`} component={Home}/>
-                <Route exact path={`${this.props.match.url}/example`} component={Example}/>
+                <Route exact path={`${this.props.match.url}/tickets`} component={Tickets}/>
             </div>
             
         )

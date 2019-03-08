@@ -381,14 +381,14 @@ body{
         }
       }
     }
-  }
+  } 
 }
 
 .container-vanilla{
   margin-left: 0;
   display: grid;
   grid-template-columns: 25% 75%;
-  //height: 95vh;
+  height: 100vh;
 }
 .venue{
   overflow:auto;
