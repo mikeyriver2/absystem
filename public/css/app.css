@@ -11779,7 +11779,7 @@ body {
   display: inline-block;
 }
 
-.home .side-bar {
+.side-bar {
   margin-top: 5vh;
   border-left: 0px;
   /* border-style: solid; */
@@ -11791,23 +11791,23 @@ body {
   height: 80vh;
 }
 
-.home .side-bar .main-info {
+.side-bar .main-info {
   background: #f8fafc;
   padding-right: 0px;
 }
 
-.home .side-bar .row {
+.side-bar .row {
   margin: 0px;
 }
 
-.home .side-bar .side-icon {
+.side-bar .side-icon {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   margin: 5vh 0px;
 }
 
-.home .side-bar .side-icon img {
+.side-bar .side-icon img {
   border: 0;
   border-bottom: 1px;
   border-style: solid;
@@ -11820,12 +11820,12 @@ body {
   cursor: pointer;
 }
 
-.home .side-bar .side-icon img:hover {
+.side-bar .side-icon img:hover {
   color: #a7a8a9;
 }
 
-.home .side-bar .side-icon label {
-  z-index: 1000000000000;
+.side-bar .side-icon label {
+  z-index: -1000000000000;
   opacity: 0;
   position: absolute;
   margin-left: 6.5vw;
@@ -11840,11 +11840,12 @@ body {
   transition: opacity .2s;
 }
 
-.home .side-bar .side-icon .show {
+.side-bar .side-icon .show {
+  z-index: 1;
   opacity: 1;
 }
 
-.home .side-bar .show-icon {
+.side-bar .show-icon {
   color: #a7a8a9;
 }
 
@@ -12138,7 +12139,7 @@ body {
           box-shadow: 1px 1px 1px 1px rgba(128, 128, 128, 0.8) inset;
   border-radius: 50%;
   border: 1px;
-  height: 3.5vh;
+  height: 22px;
   -webkit-transition: background-color .2s;
   transition: background-color .2s;
   margin-bottom: 5px;
@@ -12231,6 +12232,10 @@ body {
 
 #confirm-order-modal .modal-content .modal-body .form-span-two .id_number span {
   margin-right: 1vw;
+}
+
+.tickets-container {
+  padding: 30px 50px 0px 40px;
 }
 
 .confirm-button .loader {

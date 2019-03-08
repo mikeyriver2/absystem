@@ -10,8 +10,18 @@ use App\EventDay;
 
 class TicketController extends Controller
 {
-   
+    
     public function Order(Request $request){
+        $orders = TicketOrder::where('event_id',1)
+                    ->with('tickets')
+                    ->paginate(5);
+        
+        return response()->json([
+            'orders' => $orders
+        ]);
+    }
+
+    public function NewOrder(Request $request){
 
         $order = TicketOrder::create([
             'buyer_first_name'  =>  $request->first_name,

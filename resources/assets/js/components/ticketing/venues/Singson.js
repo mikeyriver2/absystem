@@ -207,7 +207,7 @@ export default class Singson extends Component{
 
         const row = (number_of_rows,number_of_columns,numberOfSections) => {
             var rows_array = [];
-            var spacing = from_dashboard ? " 2.2vh" : " 3vh"
+            var spacing = from_dashboard ? " 2.2vh" : " 20px"
             console.log('row called')
             for(var i = 0; i < number_of_rows; i++){
                 rows_array.push(

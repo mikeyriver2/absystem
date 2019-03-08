@@ -43,6 +43,9 @@ export default class Head extends Component{
                 <Route exact path={`${this.props.match.url}`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/home`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/tickets`} component={Tickets}/>
+                <Route exact path={`${this.props.match.url}/tickets/order/:id`} component={Tickets}/>
+                <Route exact path={`${this.props.match.url}/tickets/ticket/:id`} component={Tickets}/>
+
             </div>
             
         )

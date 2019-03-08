@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Singson from '../ticketing/venues/Singson'
 import SideBar from './SideBar'
+import SideSummary from './SideSummary'
 import axios from 'axios';
 
 export default class Home extends Component{
@@ -25,7 +26,8 @@ export default class Home extends Component{
     }
 
     componentDidMount(){
-        this.setVenue();
+        this.setVenue()
+        setInterval(()=>{this.setVenue()}, 10000)
 
     }
 
@@ -37,7 +39,7 @@ export default class Home extends Component{
         }
         var sold_seats = {}
 
-        axios.get('/api/ticketing/venue').then(res=>{
+        axios.get('/api/dashboard/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
             res.data.section_types.map((type)=>{
                 venue_object.venue.push({
@@ -104,26 +106,11 @@ export default class Home extends Component{
         return sales;
     }
 
-    showLabel(e){
-        var labels = document.getElementsByTagName('LABEL');
-        for (var i = 0; i < labels.length; i++) {
-            if (labels[i].htmlFor == e.target.id) {
-                var label_classes = document.getElementById(labels[i].id).classList   
-                if(label_classes.contains("show")){
-                    label_classes.remove('show')
-                }else{
-                    label_classes.add('show')
-                }          
-            }
-        }
-    }
 
     render(){
         return (
             <Row className="home">
                 <SideBar 
-                    showLabel = {this.showLabel}
-                    current_url = {this.props.match.url}
                 />
                 <Col md={8} className="main">
                     <div className="main-top">
@@ -144,34 +131,9 @@ export default class Home extends Component{
                         />
                     </div>
                 </Col>
-                <Col md={3} className="main-info">
-                    <div className="summary-main-container">
-                        <div className="summary-main">
-                            <div className="rev-today">
-                                <div className="amount">
-                                    P50,000
-                                </div>
-                                <div className="label">
-                                    Revenue Today
-                                </div>
-                            </div>
-                            <div className="tickets-sold">
-                                <div className="amount">
-                                    100
-                                </div>
-                                <div className="label">
-                                    Tickets sold
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="breakdown">
-                        <h4>RECENT SALES</h4>
-                        <div className="breakdown-sales">
-                            {this.handleShowSales()}
-                        </div>
-                    </div>
-                </Col>
+                <SideSummary
+                    handleShowSales = {this.handleShowSales}
+                />
             </Row>
         )
     }
