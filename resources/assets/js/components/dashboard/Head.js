@@ -5,18 +5,36 @@ import Example from '../Example';
 import Home from './Home'
 import Tickets from './Tickets'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import axios from 'axios';
 
 
 export default class Head extends Component{
     constructor(props){
         super(props);
         this.state = {
-
+            showLogout: false
         }
+        this.showLogout = this.showLogout.bind(this);
     }
 
     componentDidMount(){
         console.log(`${this.props.match.path}/example`)
+    }
+
+    showLogout(){
+        var bool = false;
+        if(!this.state.showLogout){
+            bool = true
+        }
+        this.setState({
+            showLogout: bool
+        })
+    }
+
+    handleLogout(){
+        axios.get('/logout').then(res=>{
+            window.location.href = '/';
+        });
     }
 
     render(){
@@ -29,7 +47,7 @@ export default class Head extends Component{
                     <Col md={4} className="abs-title">
                     ATENEO BLUE SYMPHONY ORCHESTRA
                     </Col>
-                    <Col md={4} className="hi-username">
+                    <Col onClick={this.showLogout} md={4} className="hi-username">
                         <Row style={{height:"100%"}}>
                             <Col md={7} className="username">
                                 Hi there, <br /> Michael Rivera!
@@ -39,6 +57,9 @@ export default class Head extends Component{
                             </Col>
                         </Row>
                     </Col>
+                    {this.state.showLogout &&
+                        <div onClick={this.handleLogout} id="logout" className="logout">Logout</div>
+                    }
                 </Row>
                 <Route exact path={`${this.props.match.url}`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/home`} component={Home}/>

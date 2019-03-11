@@ -11,10 +11,15 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('app');
-});*/
+Route::middleware('auth:web')->group(function(){
+    Route::get('login-check','AuthController@checkIfLoggedIn');
+    Route::get('logout','AuthController@clearSession');
+});
+
+Auth::routes();
 
 Route::get('{any}', function(){
     return view('app');
 })->where('any', '.*');
+
+Route::get('/home', 'HomeController@index')->name('home');
