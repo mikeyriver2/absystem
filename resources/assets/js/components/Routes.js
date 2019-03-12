@@ -41,6 +41,7 @@ class Routes extends Component{
                     {this.state.logged &&
                      <Route path="/dashboard" component={Head} /> 
                     }
+                    <Route exact path="/home" component={Ticketing} />
                     <Route exact path="/ticketing" component={Ticketing} />
                     <Route exact path="/" component={Ticketing} />
                 </div>

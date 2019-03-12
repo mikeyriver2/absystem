@@ -62,18 +62,24 @@ export default class Singson extends Component{
                     })
                     if(!bool){
                         document.getElementById(seat.seat_id).classList.remove('seat-reserved');
-                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');                } 
+                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');                
+                    } 
                 })
             }
         }
     }
 
-    renderSeatPopOver(section,row,column_number,status){
-        return(
+    renderSeatPopOver(e,status){
+        console.log(status)
+        console.log(e.target.id)
+        //if(status == "sold"){
+            this.props.getOrderInfo(e.target.id)
+        //}
+        /*return(
             <Popover id="popover-seat-info">
-                {section+row+column_number}{status != "free"  && <div><a href="#">View Order</a></div>}
+                {section+row+column_number}{status != "free"  && <div onClick={e => {this.props.getOrderInfo(section+row+column_number)}}><a href="#">View Order</a></div>}
             </Popover>
-        )
+        )*/
     }
 
     handleSeatClick(e){
@@ -174,14 +180,15 @@ export default class Singson extends Component{
                 }
                 seats.push(
                     from_dashboard ?
-                        <OverlayTrigger 
-                            placement="top"
-                            trigger="click" 
-                            overlay={this.renderSeatPopOver(section,row,i+1,status)}
-                        >
-                            <div id={section+row+(i+1)} style={style} className={class_name}>
+                        // <OverlayTrigger 
+                        //     placement="top"
+                        //     trigger="click" 
+                        //     overlay={e=>{this.renderSeatPopOver(section,row,i+1,status)}}
+                        // >
+                            <div onClick={(e)=>{this.renderSeatPopOver(e,status)}} id={section+row+(i+1)} style={style} className={class_name}>
+                            
                             </div>
-                        </OverlayTrigger>
+                        //</OverlayTrigger>
                     :
                         <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
                             {!this.props.hasOwnProperty('from_dashboard') ? i+1 : ""}

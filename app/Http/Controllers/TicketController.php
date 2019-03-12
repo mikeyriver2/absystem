@@ -10,10 +10,26 @@ use App\EventDay;
 
 class TicketController extends Controller
 {
+
+    public function ViewOrder(Request $request, $code){
+        $ticket = Ticket::where('slug',$code)
+                        ->whereHas('ticketOrder',function($order){
+                            $order->whereHas('event',function($event){
+                                $event->where('id',1);
+                            });
+                        })
+                        ->first();
+        $order = $ticket->ticketOrder->load('tickets.section','tickets','tickets.ticketOrder','event','eventDay');
+        
+        return response()->json([
+            'order' => $order,
+            'ticket' => $ticket
+        ]);
+    }
     
     public function Order(Request $request){
         $orders = TicketOrder::where('event_id',1)
-                    ->with('tickets')
+                    ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
                     ->paginate(5);
         
         return response()->json([

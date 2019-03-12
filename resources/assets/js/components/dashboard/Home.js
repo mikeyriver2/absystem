@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import Example from '../Example';
-import Singson from '../ticketing/venues/Singson'
-import SideBar from './SideBar'
-import SideSummary from './SideSummary'
+import Singson from '../ticketing/venues/Singson';
+import SideBar from './SideBar';
+import SideSummary from './SideSummary';
+import OrderInfoModal from './OrderInfoModal';
 import axios from 'axios';
 
 export default class Home extends Component{
@@ -20,9 +21,14 @@ export default class Home extends Component{
             dates: [],
             selected_date: "",
             event: {},
-            sold_seats: {}
+            sold_seats: {},
+            show_ticket_info: false,
+            ticket_info: {},
         }
-        this.setVenue = this.setVenue.bind(this)
+        this.setVenue = this.setVenue.bind(this);
+        this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
+        this.getOrderInfo = this.getOrderInfo.bind(this);
+
     }
 
     componentDidMount(){
@@ -106,6 +112,23 @@ export default class Home extends Component{
         return sales;
     }
 
+    getOrderInfo(code){
+        console.log(code);
+        axios.get('/api/dashboard/view-order/'+code+'').then(res=>{
+            this.handleShowTicketInfo(null,res.data.order)
+        });
+    }
+
+    handleShowTicketInfo(e=null,order={}){
+        let bool = false;
+        if(!this.state.show_ticket_info){
+          bool = true;
+        }
+        this.setState({
+          show_ticket_info: bool,
+          ticket_info: order
+        })
+      }    
 
     render(){
         return (
@@ -128,11 +151,17 @@ export default class Home extends Component{
                             from_dashboard={true}
                             chosen_date = {this.state.selected_date}
                             sold_seats = {this.state.sold_seats}
+                            getOrderInfo = {this.getOrderInfo}
                         />
                     </div>
                 </Col>
                 <SideSummary
                     handleShowSales = {this.handleShowSales}
+                />
+                <OrderInfoModal 
+                    show_ticket_info = {this.state.show_ticket_info}
+                    toggle_show = {this.handleShowTicketInfo}
+                    ticket_info = {this.state.ticket_info}
                 />
             </Row>
         )

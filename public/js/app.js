@@ -1063,6 +1063,12 @@ module.exports = exports["default"];
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(246);
+
+/***/ }),
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1157,20 +1163,20 @@ module.exports = exports["default"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__Overlay__ = __webpack_require__(120);
 /* unused harmony reexport Overlay */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__OverlayTrigger__ = __webpack_require__(234);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_45__OverlayTrigger__["a"]; });
+/* unused harmony reexport OverlayTrigger */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__PageItem__ = __webpack_require__(121);
 /* unused harmony reexport PageItem */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__Pagination__ = __webpack_require__(235);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_47__Pagination__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_47__Pagination__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__Popover__ = __webpack_require__(236);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_48__Popover__["a"]; });
+/* unused harmony reexport Popover */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__ProgressBar__ = __webpack_require__(237);
 /* unused harmony reexport ProgressBar */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__ResponsiveEmbed__ = __webpack_require__(238);
 /* unused harmony reexport ResponsiveEmbed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__Row__ = __webpack_require__(239);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_51__Row__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__SafeAnchor__ = __webpack_require__(16);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_51__Row__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__SafeAnchor__ = __webpack_require__(17);
 /* unused harmony reexport SafeAnchor */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__SplitButton__ = __webpack_require__(240);
 /* unused harmony reexport SplitButton */
@@ -1181,7 +1187,7 @@ module.exports = exports["default"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__TabContent__ = __webpack_require__(68);
 /* unused harmony reexport TabContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__Table__ = __webpack_require__(242);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_57__Table__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_57__Table__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__TabPane__ = __webpack_require__(69);
 /* unused harmony reexport TabPane */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__Tabs__ = __webpack_require__(243);
@@ -1324,7 +1330,7 @@ module.exports = exports["default"];
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1434,7 +1440,7 @@ SafeAnchor.defaultProps = defaultProps;
 /* harmony default export */ __webpack_exports__["a"] = (SafeAnchor);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1524,7 +1530,7 @@ function mapContextToProps(maybeOpts, mapToProps, Component) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1538,12 +1544,6 @@ var makeEventKey = function makeEventKey(eventKey, href) {
   return href || null;
 };
 /* harmony default export */ __webpack_exports__["a"] = (SelectableContext);
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(246);
 
 /***/ }),
 /* 20 */
@@ -2038,10 +2038,10 @@ module.exports = exports["default"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -2133,21 +2133,17 @@ var Singson = function (_Component) {
         }
     }, {
         key: 'renderSeatPopOver',
-        value: function renderSeatPopOver(section, row, column_number, status) {
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["g" /* Popover */],
-                { id: 'popover-seat-info' },
-                section + row + column_number,
-                status != "free" && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'div',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'a',
-                        { href: '#' },
-                        'View Order'
-                    )
-                )
-            );
+        value: function renderSeatPopOver(e, status) {
+            console.log(status);
+            console.log(e.target.id);
+            //if(status == "sold"){
+            this.props.getOrderInfo(e.target.id);
+            //}
+            /*return(
+                <Popover id="popover-seat-info">
+                    {section+row+column_number}{status != "free"  && <div onClick={e => {this.props.getOrderInfo(section+row+column_number)}}><a href="#">View Order</a></div>}
+                </Popover>
+            )*/
         }
     }, {
         key: 'handleSeatClick',
@@ -2251,15 +2247,17 @@ var Singson = function (_Component) {
                         height: from_dashboard ? "2.5vh" : "",
                         cursor: from_dashboard ? "pointer" : ""
                     };
-                    seats.push(from_dashboard ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* OverlayTrigger */],
-                        {
-                            placement: 'top',
-                            trigger: 'click',
-                            overlay: _this3.renderSeatPopOver(section, row, i + 1, status)
-                        },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { id: section + row + (i + 1), style: style, className: _class_name })
-                    ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    seats.push(from_dashboard ?
+                    // <OverlayTrigger 
+                    //     placement="top"
+                    //     trigger="click" 
+                    //     overlay={e=>{this.renderSeatPopOver(section,row,i+1,status)}}
+                    // >
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { onClick: function onClick(e) {
+                            _this3.renderSeatPopOver(e, status);
+                        }, id: section + row + (i + 1), style: style, className: _class_name })
+                    //</OverlayTrigger>
+                    : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name },
                         !_this3.props.hasOwnProperty('from_dashboard') ? i + 1 : ""
@@ -2591,7 +2589,7 @@ function forwardRef(renderFn, _ref) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ThemeProvider__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SafeAnchor__ = __webpack_require__(17);
 
 
 
@@ -2710,7 +2708,7 @@ function forEach(children, func) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_overlays_Dropdown__ = __webpack_require__(186);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_overlays_Dropdown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_overlays_Dropdown__);
@@ -2719,7 +2717,7 @@ function forEach(children, func) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__DropdownMenu__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__DropdownToggle__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__DropdownItem__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SelectableContext__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__utils_createWithBsPrefix__ = __webpack_require__(12);
 
 
@@ -4117,7 +4115,7 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__SafeAnchor__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__AbstractNavItem__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThemeProvider__ = __webpack_require__(5);
 
@@ -4169,7 +4167,7 @@ NavLink.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_uncontrollable__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_uncontrollable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_uncontrollable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TabContext__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SelectableContext__ = __webpack_require__(19);
 
 
 
@@ -4319,11 +4317,11 @@ TabContent.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThemeProvider__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__TabContext__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__SelectableContext__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Fade__ = __webpack_require__(26);
 
 
@@ -6101,7 +6099,7 @@ module.exports = exports["default"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SafeAnchor__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ThemeProvider__ = __webpack_require__(5);
 
 
@@ -6581,7 +6579,7 @@ var _DropdownContext = _interopRequireDefault(__webpack_require__(59));
 
 var _RootCloseWrapper = _interopRequireDefault(__webpack_require__(92));
 
-var _mapContextToProps = _interopRequireDefault(__webpack_require__(17));
+var _mapContextToProps = _interopRequireDefault(__webpack_require__(18));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7171,7 +7169,7 @@ FormGroup.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_warning__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_warning__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Feedback__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__FormContext__ = __webpack_require__(24);
@@ -7429,7 +7427,7 @@ DecoratedFormCheck.Label = __WEBPACK_IMPORTED_MODULE_9__FormCheckLabel__["a" /* 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_warning__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_warning___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_warning__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Col__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__FormContext__ = __webpack_require__(24);
@@ -7588,9 +7586,9 @@ Image.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dom_helpers_query_querySelectorAll__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dom_helpers_query_querySelectorAll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_dom_helpers_query_querySelectorAll__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__NavContext__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__TabContext__ = __webpack_require__(62);
 
@@ -7764,7 +7762,7 @@ AbstractNav.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__AbstractNavItem__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ThemeProvider__ = __webpack_require__(5);
 
 
@@ -7852,7 +7850,7 @@ ListGroupItem.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__NavContext__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SelectableContext__ = __webpack_require__(19);
 
 
 
@@ -8592,7 +8590,7 @@ ModalTitle.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_prop_types_extra_lib_all___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_prop_types_extra_lib_all__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_uncontrollable__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_uncontrollable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_uncontrollable__);
@@ -8820,7 +8818,7 @@ Overlay.defaultProps = defaultProps;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SafeAnchor__ = __webpack_require__(17);
 
 
 
@@ -9273,7 +9271,7 @@ module.exports = Cancel;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(6);
@@ -9282,7 +9280,7 @@ module.exports = Cancel;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Home__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Tickets__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9346,7 +9344,7 @@ var Head = function (_Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'head' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
@@ -9362,7 +9360,7 @@ var Head = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                         { onClick: this.showLogout, md: 4, className: 'hi-username' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                             { style: { height: "100%" } },
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
@@ -9403,7 +9401,7 @@ var Head = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(20);
@@ -9413,8 +9411,9 @@ var Head = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ticketing_venues_Singson__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SideBar__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__SideSummary__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9422,6 +9421,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -9450,9 +9450,14 @@ var Home = function (_Component) {
             dates: [],
             selected_date: "",
             event: {},
-            sold_seats: {}
+            sold_seats: {},
+            show_ticket_info: false,
+            ticket_info: {}
         };
         _this.setVenue = _this.setVenue.bind(_this);
+        _this.handleShowTicketInfo = _this.handleShowTicketInfo.bind(_this);
+        _this.getOrderInfo = _this.getOrderInfo.bind(_this);
+
         return _this;
     }
 
@@ -9478,7 +9483,7 @@ var Home = function (_Component) {
             };
             var sold_seats = {};
 
-            __WEBPACK_IMPORTED_MODULE_8_axios___default.a.get('/api/dashboard/venue').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/api/dashboard/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
                 res.data.section_types.map(function (type) {
                     venue_object.venue.push({
@@ -9528,7 +9533,7 @@ var Home = function (_Component) {
             var sales = [];
             for (var i = 0; i < 5; i++) {
                 sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'breakdown-item' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
@@ -9554,10 +9559,35 @@ var Home = function (_Component) {
             return sales;
         }
     }, {
+        key: 'getOrderInfo',
+        value: function getOrderInfo(code) {
+            var _this4 = this;
+
+            console.log(code);
+            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/api/dashboard/view-order/' + code + '').then(function (res) {
+                _this4.handleShowTicketInfo(null, res.data.order);
+            });
+        }
+    }, {
+        key: 'handleShowTicketInfo',
+        value: function handleShowTicketInfo() {
+            var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            var bool = false;
+            if (!this.state.show_ticket_info) {
+                bool = true;
+            }
+            this.setState({
+                show_ticket_info: bool,
+                ticket_info: order
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                 { className: 'home' },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__SideBar__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9606,12 +9636,18 @@ var Home = function (_Component) {
                             venue: this.state.venue,
                             from_dashboard: true,
                             chosen_date: this.state.selected_date,
-                            sold_seats: this.state.sold_seats
+                            sold_seats: this.state.sold_seats,
+                            getOrderInfo: this.getOrderInfo
                         })
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], {
                     handleShowSales: this.handleShowSales
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
+                    show_ticket_info: this.state.show_ticket_info,
+                    toggle_show: this.handleShowTicketInfo,
+                    ticket_info: this.state.ticket_info
                 })
             );
         }
@@ -9627,7 +9663,7 @@ var Home = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(20);
@@ -9635,7 +9671,7 @@ var Home = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Example__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ticketing_venues_Singson__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -9688,7 +9724,7 @@ var SideBar = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                 { md: 1, className: 'side-bar' },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon home-icon' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
@@ -9702,7 +9738,7 @@ var SideBar = function (_Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon ticket-icon' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
@@ -9716,7 +9752,7 @@ var SideBar = function (_Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon event-icon' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/stage.png', id: 'event-icon' }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9726,7 +9762,7 @@ var SideBar = function (_Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon member-icon' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/audience.png', id: 'member-icon' }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9749,7 +9785,7 @@ var SideBar = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(20);
@@ -9757,7 +9793,7 @@ var SideBar = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Example__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ticketing_venues_Singson__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33221,7 +33257,7 @@ module.exports = hoistNonReactStatics;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ticketing_Ticketing__ = __webpack_require__(165);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dashboard_Head__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__index__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33289,6 +33325,7 @@ var Routes = function (_Component) {
                     'div',
                     null,
                     this.state.logged && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/dashboard', component: __WEBPACK_IMPORTED_MODULE_5__dashboard_Head__["a" /* default */] }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { exact: true, path: '/home', component: __WEBPACK_IMPORTED_MODULE_4__ticketing_Ticketing__["a" /* default */] }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { exact: true, path: '/ticketing', component: __WEBPACK_IMPORTED_MODULE_4__ticketing_Ticketing__["a" /* default */] }),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { exact: true, path: '/', component: __WEBPACK_IMPORTED_MODULE_4__ticketing_Ticketing__["a" /* default */] })
                 )
@@ -33310,10 +33347,10 @@ var Routes = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__venues_Singson__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ConfirmModal__ = __webpack_require__(265);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33603,7 +33640,7 @@ var Ticketing = function (_Component) {
             var rows = [];
             var row = function row(seat) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Row */],
+                    __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Row */],
                     { className: 'order' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Col */],
@@ -33741,7 +33778,7 @@ var Ticketing = function (_Component) {
                             'div',
                             { className: 'concert-detail' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["h" /* Row */],
+                                __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["f" /* Row */],
                                 null,
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Col */],
@@ -33886,7 +33923,7 @@ var Ticketing = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ThemeProvider__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Fade__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CloseButton__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__SafeAnchor__ = __webpack_require__(17);
 
 
 
@@ -34700,7 +34737,7 @@ DecoratedCard.ImgOverlay = Object(__WEBPACK_IMPORTED_MODULE_6__utils_createWithB
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_uncontrollable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_uncontrollable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__CarouselCaption__ = __webpack_require__(185);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__CarouselItem__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__SafeAnchor__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__SafeAnchor__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__utils_ElementChildren__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__utils_triggerBrowserReflow__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ThemeProvider__ = __webpack_require__(5);
@@ -38908,11 +38945,11 @@ DropdownToggle.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_classnames__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react_context_toolbox_mapContextToProps__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_createChainedFunction__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__SafeAnchor__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__SafeAnchor__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__SelectableContext__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ThemeProvider__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__NavContext__ = __webpack_require__(61);
 
@@ -41246,7 +41283,7 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__NavbarToggle__ = __webpack_require__(231);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ThemeProvider__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__NavbarContext__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SelectableContext__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__SelectableContext__ = __webpack_require__(19);
 
 
 
@@ -42164,7 +42201,7 @@ function (_React$Component2) {
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
 OverlayTrigger.defaultProps = defaultProps;
-/* harmony default export */ __webpack_exports__["a"] = (OverlayTrigger);
+/* unused harmony default export */ var _unused_webpack_default_export = (OverlayTrigger);
 
 /***/ }),
 /* 235 */
@@ -42285,7 +42322,7 @@ function Popover(_ref) {
 }
 
 Popover.defaultProps = defaultProps;
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_5__ThemeProvider__["a" /* createBootstrapComponent */])(Popover, 'popover'));
+/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_5__ThemeProvider__["a" /* createBootstrapComponent */])(Popover, 'popover'));
 
 /***/ }),
 /* 237 */
@@ -44112,10 +44149,10 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__venues_Singson__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__ = __webpack_require__(266);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -44426,7 +44463,7 @@ var Loader = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(6);
@@ -44436,8 +44473,9 @@ var Loader = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_router_dom__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__SideBar__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__SideSummary__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44445,6 +44483,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -44467,11 +44506,14 @@ var Tickets = function (_Component) {
     _this.state = {
       orders: [],
       current_page: 1,
-      total_pages: 1
+      total_pages: 1,
+      show_ticket_info: false,
+      ticket_info: {}
     };
     _this.handleShowSales = _this.handleShowSales.bind(_this);
     _this.renderSmallPaginate = _this.renderSmallPaginate.bind(_this);
     _this.loadPaginatedData = _this.loadPaginatedData.bind(_this);
+    _this.handleShowTicketInfo = _this.handleShowTicketInfo.bind(_this);
     return _this;
   }
 
@@ -44480,7 +44522,7 @@ var Tickets = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      __WEBPACK_IMPORTED_MODULE_8_axios___default.a.get('/api/dashboard/orders').then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/api/dashboard/orders').then(function (res) {
         _this2.setState({
           orders: res.data.orders.data,
           total_pages: res.data.orders.last_page
@@ -44493,7 +44535,7 @@ var Tickets = function (_Component) {
       var sales = [];
       for (var i = 0; i < 5; i++) {
         sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
           { className: 'breakdown-item' },
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
@@ -44524,7 +44566,7 @@ var Tickets = function (_Component) {
       var _this3 = this;
 
       var url = '/api/dashboard/orders?page=' + page;
-      __WEBPACK_IMPORTED_MODULE_8_axios___default.a.get(url).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get(url).then(function (res) {
         _this3.setState({
           current_page: page,
           orders: res.data.orders.data
@@ -44541,7 +44583,7 @@ var Tickets = function (_Component) {
       var _loop = function _loop(foo) {
         console.log(window.location.hostname);
         items.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           { onClick: function onClick() {
               return _this4.loadPaginatedData(foo);
             }, key: foo, active: foo === _this4.state.current_page },
@@ -44553,7 +44595,7 @@ var Tickets = function (_Component) {
         _loop(foo);
       }
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */],
+        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */],
         null,
         items
       );
@@ -44562,56 +44604,72 @@ var Tickets = function (_Component) {
     key: 'renderBigPaginate',
     value: function renderBigPaginate() {
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */],
+        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */],
         null,
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].First, null),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Prev, null),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].First, null),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Prev, null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           null,
           1
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Ellipsis, null),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Ellipsis, null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           null,
           10
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           null,
           11
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           { active: true },
           12
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           null,
           13
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           { disabled: true },
           14
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Ellipsis, null),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Ellipsis, null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Item,
+          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Item,
           null,
           20
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Next, null),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Pagination */].Last, null)
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Next, null),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["e" /* Pagination */].Last, null)
       );
+    }
+  }, {
+    key: 'handleShowTicketInfo',
+    value: function handleShowTicketInfo(e) {
+      var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      var bool = false;
+      if (!this.state.show_ticket_info) {
+        bool = true;
+      }
+      this.setState({
+        show_ticket_info: bool,
+        ticket_info: order
+      });
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this5 = this;
+
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["h" /* Row */],
+        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
         { className: 'home' },
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__SideBar__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -44626,7 +44684,7 @@ var Tickets = function (_Component) {
             'div',
             { className: 'tickets-table' },
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["i" /* Table */],
+              __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["g" /* Table */],
               { hover: true },
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'thead',
@@ -44659,7 +44717,9 @@ var Tickets = function (_Component) {
                   var full_name = order.buyer_last_name + ', ' + order.buyer_first_name;
                   return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'tr',
-                    null,
+                    { onClick: function onClick(e) {
+                        return _this5.handleShowTicketInfo(e, order);
+                      } },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
@@ -44697,6 +44757,11 @@ var Tickets = function (_Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], {
           handleShowSales: this.handleShowSales
+        }),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
+          show_ticket_info: this.state.show_ticket_info,
+          toggle_show: this.handleShowTicketInfo,
+          ticket_info: this.state.ticket_info
         })
       );
     }
@@ -44712,6 +44777,180 @@ var Tickets = function (_Component) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var OrderInfoModal = function (_Component) {
+    _inherits(OrderInfoModal, _Component);
+
+    function OrderInfoModal() {
+        _classCallCheck(this, OrderInfoModal);
+
+        var _this = _possibleConstructorReturn(this, (OrderInfoModal.__proto__ || Object.getPrototypeOf(OrderInfoModal)).call(this));
+
+        _this.state = {};
+        return _this;
+    }
+
+    _createClass(OrderInfoModal, [{
+        key: 'listTickets',
+        value: function listTickets(tickets) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'table',
+                { className: 'table' },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'thead',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'tr',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'th',
+                            null,
+                            'ticket id'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'th',
+                            null,
+                            'section'
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'tbody',
+                    null,
+                    tickets.map(function (ticket) {
+                        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'tr',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'td',
+                                null,
+                                ticket.slug
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'td',
+                                null,
+                                ticket.section.name
+                            )
+                        );
+                    })
+                )
+            );
+        }
+    }, {
+        key: 'renderModal',
+        value: function renderModal(ticket) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */],
+                { id: 'ticket-info-modal', show: this.props.show_ticket_info, onHide: this.props.toggle_show },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Header,
+                    { closeButton: true },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'h4',
+                        null,
+                        'Order ID: ',
+                        ticket.id
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Body,
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Buyer Name:'
+                    ),
+                    '  ',
+                    ticket.buyer_first_name + ' ' + ticket.buyer_last_name,
+                    '  ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Email Address:'
+                    ),
+                    '  ',
+                    '' + ticket.buyer_email,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Cell Number:'
+                    ),
+                    '  ',
+                    '' + ticket.buyer_email,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Event:'
+                    ),
+                    '   ',
+                    ticket.event.name,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Date Chosen:'
+                    ),
+                    ' ',
+                    ticket.event_day.date,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Bought Tickets:'
+                    ),
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    this.listTickets(ticket.tickets)
+                )
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var ticket = this.props.ticket_info;
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                this.props.show_ticket_info ? this.renderModal(ticket) : ""
+            );
+        }
+    }]);
+
+    return OrderInfoModal;
+}(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (OrderInfoModal);
 
 /***/ })
 /******/ ]);

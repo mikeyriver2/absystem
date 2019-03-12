@@ -6,6 +6,7 @@ import Home from './Home'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import SideBar from './SideBar'
 import SideSummary from './SideSummary'
+import OrderInfoModal from './OrderInfoModal'
 import axios from 'axios';
 
 export default class Tickets extends Component{
@@ -15,10 +16,13 @@ export default class Tickets extends Component{
       orders: [],
       current_page: 1,
       total_pages: 1,
+      show_ticket_info: false,
+      ticket_info: {}
     }
     this.handleShowSales = this.handleShowSales.bind(this);
     this.renderSmallPaginate = this.renderSmallPaginate.bind(this);
     this.loadPaginatedData = this.loadPaginatedData.bind(this);
+    this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this)
   }
 
   componentDidMount(){
@@ -103,6 +107,17 @@ export default class Tickets extends Component{
     )
   }
 
+  handleShowTicketInfo(e,order={}){
+    let bool = false;
+    if(!this.state.show_ticket_info){
+      bool = true;
+    }
+    this.setState({
+      show_ticket_info: bool,
+      ticket_info: order
+    })
+  }
+
   render(){
     return (
       <Row className="home">
@@ -125,7 +140,7 @@ export default class Tickets extends Component{
                   {this.state.orders.length > 0 && this.state.orders.map((order)=>{
                     let full_name = `${order.buyer_last_name}, ${order.buyer_first_name}`
                     return (
-                      <tr>
+                      <tr onClick={e => this.handleShowTicketInfo(e,order)}>
                         <td>{full_name}</td>
                         <td>{order.buyer_email}</td>
                         <td>{order.buyer_cell_number}</td>
@@ -142,6 +157,11 @@ export default class Tickets extends Component{
         </Col>
         <SideSummary
           handleShowSales = {this.handleShowSales}
+        />
+        <OrderInfoModal 
+          show_ticket_info = {this.state.show_ticket_info}
+          toggle_show = {this.handleShowTicketInfo}
+          ticket_info = {this.state.ticket_info}
         />
       </Row>
     )
