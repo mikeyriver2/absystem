@@ -83,6 +83,7 @@ export default class Singson extends Component{
     }
 
     handleSeatClick(e){
+        console.log(e.target.id);
         var class_name = e.target.className;
         var id = e.target.id
         var section_name = "";
@@ -90,8 +91,10 @@ export default class Singson extends Component{
         var status = class_name.split(" ");
         var seat_exists = false;
         
-        if(this.props.sold_seats[this.props.chosen_date].includes(id)){
-            seat_exists = true
+        if(this.props.sold_seats[this.props.chosen_date]){
+            if(this.props.sold_seats[this.props.chosen_date].includes(id)){
+                seat_exists = true
+            }
         }
         
         if(!this.props.hasOwnProperty('from_dashboard') && !seat_exists){

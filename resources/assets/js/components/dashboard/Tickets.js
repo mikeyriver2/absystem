@@ -22,11 +22,12 @@ export default class Tickets extends Component{
     this.handleShowSales = this.handleShowSales.bind(this);
     this.renderSmallPaginate = this.renderSmallPaginate.bind(this);
     this.loadPaginatedData = this.loadPaginatedData.bind(this);
-    this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this)
+    this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount(){
-    axios.get('/api/dashboard/orders').then(res=>{
+    axios.post('/api/dashboard/orders').then(res=>{
       this.setState({
         orders: res.data.orders.data,
         total_pages: res.data.orders.last_page
@@ -60,7 +61,7 @@ export default class Tickets extends Component{
 
   loadPaginatedData(page){
     let url = `/api/dashboard/orders?page=${page}`
-    axios.get(url).then((res)=>{
+    axios.post(url).then((res)=>{
       this.setState({
         current_page: page,
         orders: res.data.orders.data,
@@ -118,13 +119,24 @@ export default class Tickets extends Component{
     })
   }
 
+  handleSearch(e){
+    axios.post('/api/dashboard/orders',{search: e.target.value}).then(res=>{
+      this.setState({
+        orders: res.data.orders.data,
+        total_pages: res.data.orders.last_page
+      })
+    }).catch(
+
+    )
+  }
+
   render(){
     return (
       <Row className="home">
         <SideBar />
         <Col md={8} className="tickets-container">
           <div className="search-table">
-            I'm a search bar
+            <input onChange={this.handleSearch} type="text" class="form-control" placeholder="Search"/>
           </div>
           <div className="tickets-table">
             <Table hover>
@@ -133,7 +145,7 @@ export default class Tickets extends Component{
                   <th>Buyer Full Name</th>
                   <th>Email Address</th>
                   <th>Cell Number</th>
-                  <th></th>
+                  <th>Payment Status</th>
                 </tr>
               </thead>
               <tbody>

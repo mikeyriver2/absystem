@@ -19,7 +19,9 @@ class CreateTicketOrdersTable extends Migration
             $table->string('buyer_first_name');
             $table->string('buyer_last_name');
             $table->string('buyer_email')->nullable();
-            $table->integer('buyer_cell_number')->nullable();
+            $table->string('buyer_cell_number')->nullable();
+            $table->string('student_id_number')->nullable();
+            $table->string('year_course')->nullable();
             $table->unsignedInteger('event_id')->foreign('event_id')->references('id')->on('events');
             $table->unsignedInteger('event_day_id')->foreign('event_day_id')->references('id')->on('event_days');
         });

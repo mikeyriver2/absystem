@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::middleware('auth:api')->group(function(){
     Route::prefix('dashboard')->group(function(){
         Route::get('venue','VenueController@index');
-        Route::get('orders','TicketController@Order');
+        Route::post('orders','TicketController@Order');
         Route::get('view-order/{code}','TicketController@ViewOrder');
         Route::post('orderTicket', 'TicketController@NewOrder');
     });

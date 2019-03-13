@@ -28,9 +28,24 @@ class TicketController extends Controller
     }
     
     public function Order(Request $request){
-        $orders = TicketOrder::where('event_id',1)
-                    ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
-                    ->paginate(5);
+        if(!isset($request->search)){
+            $orders = TicketOrder::where('event_id',1)
+                        ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
+                        ->paginate(5);
+        }else{
+            $search = $request->search;
+            $orders = TicketOrder::where('buyer_first_name','like',"%".$search."%")
+                        ->orWhere('buyer_last_name','like',"%".$search."%")
+                        ->orWhere('buyer_email','like',"%".$search."%")
+                        ->orWhere('buyer_cell_number',$search)
+                        ->orWhereHas('tickets',function($ticket)use($search){
+                            $ticket->where('slug','like',"%".$search."%");
+                        })
+                        ->where('event_id',1)
+                        ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
+                        ->paginate(5);
+        }
+
         
         return response()->json([
             'orders' => $orders
