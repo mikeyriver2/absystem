@@ -1,4 +1,4 @@
-import {Row, Col} from 'react-bootstrap'
+import {Row, Col, Dropdown} from 'react-bootstrap'
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import ReactDOM from 'react-dom';
@@ -90,28 +90,6 @@ export default class Home extends Component{
         })
     }
 
-    handleShowSales(){
-        var sales = [];
-        for(var i = 0; i < 5; i++){
-            sales.push(
-                <Row className="breakdown-item">
-                    <Col md={8} className="breakdown-order"> 
-                        <div className="sale-order"> 
-                            Order No. 12 | 4 tickets
-                        </div>
-                        <div className="sale-codes">
-                            OLA1, OLA2, VIPA1, VIPA2
-                        </div>
-                    </Col>
-                    <Col md={2} className="breakdown-functions"> 
-                        view
-                    </Col>
-                </Row>
-            )
-        }
-        return sales;
-    }
-
     getOrderInfo(code){
         console.log(code);
         axios.get('/api/dashboard/view-order/'+code+'').then(res=>{
@@ -128,7 +106,14 @@ export default class Home extends Component{
           show_ticket_info: bool,
           ticket_info: order
         })
-      }    
+    }
+    
+    handleSetDate(e){
+        this.setState({
+            selected_date: e
+        })
+    }
+      
 
     render(){
         return (
@@ -141,9 +126,32 @@ export default class Home extends Component{
                         <h4>Live Status of Singson</h4>
                     </div>
                     <div className="main-footer"> {/* it was a footer before I moved it hahah */}
-                        <Link to={"/ticketing"}>Ticketing Module </Link>|
-                        <Link to={"/dashboard"}> Ticket Sales </Link>|
-                        <Link to={"/dashboard"}> Export Sales .xlsx </Link>
+                        <div className="main-functions">
+                            <Link to={"/ticketing"}>Ticketing Module </Link>|
+                            <Link to={"/dashboard"}> Ticket Sales </Link>|
+                            <Link to={"/dashboard"}> Export Sales .xlsx </Link>
+                        </div>
+                        <div className="date-dropdown">
+                            <Dropdown onSelect={(e)=>{this.handleSetDate(e)}}>
+                                <Dropdown.Toggle id="dropdown-date">
+                                    <div className="dropdown-container">
+                                        <img src="/images/clapperboard.png"/>
+                                        {this.state.selected_date == "" ?
+                                            <span>Select Reservation Date</span>
+                                            :
+                                            <span>{this.state.selected_date}</span>
+                                        }
+                                    </div>
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {this.state.dates.map((date,index)=>{
+                                        return <Dropdown.Item eventKey={date}>{date}</Dropdown.Item>
+                                    })
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
                     </div>
                     <div className="main-venue">
                         <Singson

@@ -55,10 +55,43 @@ body{
   }
   .main{
     .main-footer{
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       margin-left: 1.5vw;
+      margin-right: 4vw;
       font-weight: bold;
       font-size: 1em;
+      .main-functions{
+        vertical-align: -webkit-baseline-middle;
+        display: inline-block;
+      }
+      .date-dropdown{
+        display: block;
+        float: right;
+      }
+      #dropdown-date{
+        border: 0;
+        background: #f5f6f7;
+        //width: 100%;
+        border-radius: 0%;
+        &::after{
+          margin-left: 5em;
+          color: #b6b4b4;
+          margin-top: 12px; 
+        }
+        .dropdown-container{
+          float:left;
+          display: flex;
+          align-items: center;
+          margin: 5px;
+          span{
+            color: black;
+            margin-left: 10px;
+          }
+          img{
+            height: 3vh;
+          }
+        }
+      }
     }
     .main-top{
       padding: 7vh 4vw 0 1.5vw;

@@ -70,7 +70,8 @@ class TicketController extends Controller
                 'order_id' => $order->id,
                 'slug' => $value["seat_id"],
                 'status' => "unvalidated",
-                'section_id' => Section::where('name',$value["section_name"])->first()->id
+                'section_id' => Section::where('name',$value["section_name"])->first()->id,
+                'ticket_price' => $value['ticket_price']
             ]);
         }
     }

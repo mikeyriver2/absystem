@@ -9531,37 +9531,6 @@ var Home = function (_Component) {
             });
         }
     }, {
-        key: 'handleShowSales',
-        value: function handleShowSales() {
-            var sales = [];
-            for (var i = 0; i < 5; i++) {
-                sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
-                    { className: 'breakdown-item' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                        { md: 8, className: 'breakdown-order' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            { className: 'sale-order' },
-                            'Order No. 12 | 4 tickets'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            'div',
-                            { className: 'sale-codes' },
-                            'OLA1, OLA2, VIPA1, VIPA2'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                        { md: 2, className: 'breakdown-functions' },
-                        'view'
-                    )
-                ));
-            }
-            return sales;
-        }
-    }, {
         key: 'getOrderInfo',
         value: function getOrderInfo(code) {
             var _this4 = this;
@@ -9587,8 +9556,17 @@ var Home = function (_Component) {
             });
         }
     }, {
+        key: 'handleSetDate',
+        value: function handleSetDate(e) {
+            this.setState({
+                selected_date: e
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this5 = this;
+
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                 { className: 'home' },
@@ -9615,21 +9593,64 @@ var Home = function (_Component) {
                         { className: 'main-footer' },
                         ' ',
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
-                            { to: "/ticketing" },
-                            'Ticketing Module '
+                            'div',
+                            { className: 'main-functions' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
+                                { to: "/ticketing" },
+                                'Ticketing Module '
+                            ),
+                            '|',
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
+                                { to: "/dashboard" },
+                                ' Ticket Sales '
+                            ),
+                            '|',
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
+                                { to: "/dashboard" },
+                                ' Export Sales .xlsx '
+                            )
                         ),
-                        '|',
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
-                            { to: "/dashboard" },
-                            ' Ticket Sales '
-                        ),
-                        '|',
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
-                            { to: "/dashboard" },
-                            ' Export Sales .xlsx '
+                            'div',
+                            { className: 'date-dropdown' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */],
+                                { onSelect: function onSelect(e) {
+                                        _this5.handleSetDate(e);
+                                    } },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Toggle,
+                                    { id: 'dropdown-date' },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'div',
+                                        { className: 'dropdown-container' },
+                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/clapperboard.png' }),
+                                        this.state.selected_date == "" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                            'span',
+                                            null,
+                                            'Select Reservation Date'
+                                        ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                            'span',
+                                            null,
+                                            this.state.selected_date
+                                        )
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Menu,
+                                    null,
+                                    this.state.dates.map(function (date, index) {
+                                        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Item,
+                                            { eventKey: date },
+                                            date
+                                        );
+                                    })
+                                )
+                            )
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9822,11 +9843,91 @@ var SideSummary = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (SideSummary.__proto__ || Object.getPrototypeOf(SideSummary)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            orders: [],
+            total_revenue: 0,
+            number_of_tickets_sold: 0
+        };
         return _this;
     }
 
     _createClass(SideSummary, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_6_axios___default.a.get('/api/ticketing/venue').then(function (res) {
+                _this2.setState({
+                    orders: res.data.venue.event.ticket_orders
+                }, function () {
+                    var rev = 0;
+                    var tix_count = 0;
+                    this.state.orders.map(function (order) {
+                        order.tickets.map(function (ticket) {
+                            rev += ticket.ticket_price;
+                            tix_count += 1;
+                        });
+                    });
+                    this.setState({
+                        total_revenue: rev,
+                        number_of_tickets_sold: tix_count
+                    });
+                });
+            });
+        }
+    }, {
+        key: 'handleShowSales',
+        value: function handleShowSales(orders) {
+            var sales = [];
+
+            var _loop = function _loop(i) {
+                var tix_ids = [];
+                if (orders[i]) {
+                    orders[i].tickets.map(function (ticket) {
+                        tix_ids.push(ticket.slug);
+                    });
+                    var string = tix_ids.join(" ").substr(0, 19);
+                    sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
+                        { className: 'breakdown-item' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
+                            { md: 8, className: 'breakdown-order' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'sale-order' },
+                                'Order No. ',
+                                orders[i].id,
+                                ' | ',
+                                orders[i].tickets.length,
+                                ' tickets'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'sale-codes' },
+                                string.length >= 19 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    string,
+                                    '...'
+                                ) : string
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
+                            { md: 2, className: 'breakdown-functions' },
+                            'view'
+                        )
+                    ));
+                }
+            };
+
+            for (var i = 0; i < 5; i++) {
+                _loop(i);
+            }
+            return sales;
+        }
+    }, {
         key: 'render',
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -9844,7 +9945,8 @@ var SideSummary = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'amount' },
-                                'P50,000'
+                                'P',
+                                this.state.total_revenue
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
@@ -9858,7 +9960,7 @@ var SideSummary = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'amount' },
-                                '100'
+                                this.state.number_of_tickets_sold
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
@@ -9879,7 +9981,7 @@ var SideSummary = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'breakdown-sales' },
-                        this.props.handleShowSales()
+                        this.handleShowSales(this.state.orders)
                     )
                 )
             );
@@ -44410,7 +44512,6 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {
                     _this2.setState({
                         thanks: true,
-                        first_name: "",
                         last_name: "",
                         email: "",
                         cell_number: "",
@@ -44422,7 +44523,8 @@ var ConfirmModal = function (_Component) {
                     _this2.props.clearOrder();
                     setTimeout(function () {
                         _this2.setState({
-                            thanks: false
+                            thanks: false,
+                            first_name: ""
                         });
                     }, 5000);
                 }).catch(function (error) {});
@@ -44550,7 +44652,8 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'h5',
                     null,
-                    'THANK YOU FOR YOUR PURCHASE, MIKEY'
+                    'THANK YOU FOR YOUR PURCHASE, ',
+                    this.state.first_name
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'p',

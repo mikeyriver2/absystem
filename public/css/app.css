@@ -11683,10 +11683,53 @@ body {
 }
 
 .home .main .main-footer {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   margin-left: 1.5vw;
+  margin-right: 4vw;
   font-weight: bold;
   font-size: 1em;
+}
+
+.home .main .main-footer .main-functions {
+  vertical-align: -webkit-baseline-middle;
+  display: inline-block;
+}
+
+.home .main .main-footer .date-dropdown {
+  display: block;
+  float: right;
+}
+
+.home .main .main-footer #dropdown-date {
+  border: 0;
+  background: #f5f6f7;
+  border-radius: 0%;
+}
+
+.home .main .main-footer #dropdown-date::after {
+  margin-left: 5em;
+  color: #b6b4b4;
+  margin-top: 12px;
+}
+
+.home .main .main-footer #dropdown-date .dropdown-container {
+  float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 5px;
+}
+
+.home .main .main-footer #dropdown-date .dropdown-container span {
+  color: black;
+  margin-left: 10px;
+}
+
+.home .main .main-footer #dropdown-date .dropdown-container img {
+  height: 3vh;
 }
 
 .home .main .main-top {
