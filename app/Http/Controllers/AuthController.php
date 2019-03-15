@@ -10,7 +10,8 @@ class AuthController extends Controller
         $user = $request->user ? $request->user : Auth::user() ? Auth::user() : null;
         if(isset($user)){
             return response()->json([
-                'logged' => true
+                'logged' => true,
+                'user'  => $user
             ]);
         }else{
             return response()->json([

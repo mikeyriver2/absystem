@@ -12,13 +12,19 @@ export default class Head extends Component{
     constructor(props){
         super(props);
         this.state = {
-            showLogout: false
+            showLogout: false,
+            user: {}
         }
         this.showLogout = this.showLogout.bind(this);
     }
 
     componentDidMount(){
         console.log(`${this.props.match.path}/example`)
+        axios.get('/login-check').then(res=>{
+            this.setState({
+                user: res.data.user
+            })
+        });
     }
 
     showLogout(){
@@ -50,7 +56,7 @@ export default class Head extends Component{
                     <Col onClick={this.showLogout} md={4} className="hi-username">
                         <Row style={{height:"100%"}}>
                             <Col md={7} className="username">
-                                Hi there, <br /> Michael Rivera!
+                                Hi there, <br /> {this.state.user.email}!
                             </Col>
                             <Col md={5} className="dp">
                                 <img src="/images/dp.svg" />
