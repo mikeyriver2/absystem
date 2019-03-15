@@ -1,5 +1,6 @@
-import {Modal} from 'react-bootstrap'
+import {Modal,Button} from 'react-bootstrap'
 import React, { Component } from 'react';
+import Axios from 'axios';
 
 export default class OrderInfoModal extends Component{
     constructor(){
@@ -7,6 +8,7 @@ export default class OrderInfoModal extends Component{
         this.state = {
 
         }
+        this.handleVerify = this.handleVerify.bind(this);
     }
 
     listTickets(tickets){
@@ -16,6 +18,7 @@ export default class OrderInfoModal extends Component{
                     <tr>
                         <th>ticket id</th>
                         <th>section</th>
+                        <th>Attendance Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,6 +27,16 @@ export default class OrderInfoModal extends Component{
                             <tr>
                                 <td>{ticket.slug}</td>
                                 <td>{ticket.section.name}</td>
+                                <td>
+                                    {ticket.status != "validated" ?
+                                        <Button onClick={(e)=>{this.handleVerify(ticket)}} variant="success">Verify Attendance</Button>
+                                    :
+                                        <div className="verifed-payment">
+                                            <img src="/images/checked.svg" />
+                                            <span>Attended</span>
+                                        </div>
+                                    }
+                                </td>
                             </tr>
                         )
                     })
@@ -31,6 +44,12 @@ export default class OrderInfoModal extends Component{
                 </tbody>
             </table>
         )
+    }
+
+    handleVerify(ticket){
+        Axios.post('/api/dashboard/verify-attendance',ticket).then(res=>{
+            this.props.handleVerifyAttendance(this.props.ticket_info)
+        })
     }
 
     renderModal(ticket){

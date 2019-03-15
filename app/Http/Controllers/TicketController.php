@@ -97,11 +97,17 @@ class TicketController extends Controller
         }
     }
 
-    public function Verify(Request $request){
+    public function VerifyPayment(Request $request){
         $order = TicketOrder::find($request->id);
         $order->paid = true;
         $order->save();
         return 'saved';
+    }
+
+    public function VerifyAttendance(Request $request){
+        $ticket = Ticket::find($request->id);
+        $ticket->status = "validated";
+        $ticket->save();
     }
 
 }

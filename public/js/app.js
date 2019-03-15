@@ -4530,6 +4530,8 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -4537,6 +4539,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -4550,12 +4553,15 @@ var OrderInfoModal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (OrderInfoModal.__proto__ || Object.getPrototypeOf(OrderInfoModal)).call(this));
 
         _this.state = {};
+        _this.handleVerify = _this.handleVerify.bind(_this);
         return _this;
     }
 
     _createClass(OrderInfoModal, [{
         key: 'listTickets',
         value: function listTickets(tickets) {
+            var _this2 = this;
+
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'table',
                 { className: 'table' },
@@ -4574,6 +4580,11 @@ var OrderInfoModal = function (_Component) {
                             'th',
                             null,
                             'section'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Attendance Status'
                         )
                     )
                 ),
@@ -4593,11 +4604,40 @@ var OrderInfoModal = function (_Component) {
                                 'td',
                                 null,
                                 ticket.section.name
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'td',
+                                null,
+                                ticket.status != "validated" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
+                                    { onClick: function onClick(e) {
+                                            _this2.handleVerify(ticket);
+                                        }, variant: 'success' },
+                                    'Verify Attendance'
+                                ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'verifed-payment' },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/checked.svg' }),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'span',
+                                        null,
+                                        'Attended'
+                                    )
+                                )
                             )
                         );
                     })
                 )
             );
+        }
+    }, {
+        key: 'handleVerify',
+        value: function handleVerify(ticket) {
+            var _this3 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/dashboard/verify-attendance', ticket).then(function (res) {
+                _this3.props.handleVerifyAttendance(_this3.props.ticket_info);
+            });
         }
     }, {
         key: 'renderModal',
@@ -44835,6 +44875,7 @@ var Tickets = function (_Component) {
     _this.handleSearch = _this.handleSearch.bind(_this);
     _this.handleSetDate = _this.handleSetDate.bind(_this);
     _this.handleVerify = _this.handleVerify.bind(_this);
+    _this.handleVerifyAttendance = _this.handleVerifyAttendance.bind(_this);
     return _this;
   }
 
@@ -44865,6 +44906,8 @@ var Tickets = function (_Component) {
     value: function loadPaginatedData(page) {
       var _this3 = this;
 
+      var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      //order second param is from verify  attendance
       var values = {
         search: this.state.search,
         selected_date: this.state.selected_date
@@ -44875,6 +44918,13 @@ var Tickets = function (_Component) {
           current_page: page,
           orders: res.data.orders.data
         });
+        if (order) {
+          res.data.orders.data.map(function (_order) {
+            if (_order.id == order.id) {
+              _this3.handleShowTicketInfo(null, _order, true); //3rd param is to not reload modal
+            }
+          });
+        }
       });
     }
   }, {
@@ -44968,13 +45018,15 @@ var Tickets = function (_Component) {
     key: 'handleShowTicketInfo',
     value: function handleShowTicketInfo(e) {
       var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var just_refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
       var bool = false;
       if (!this.state.show_ticket_info) {
         bool = true;
       }
+
       this.setState({
-        show_ticket_info: bool,
+        show_ticket_info: just_refresh ? true : bool,
         ticket_info: order
       });
     }
@@ -45012,9 +45064,14 @@ var Tickets = function (_Component) {
     value: function handleVerify(e, order) {
       var _this7 = this;
 
-      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/verify', order).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/verify-payment', order).then(function (res) {
         _this7.loadPaginatedData(_this7.state.current_page);
       });
+    }
+  }, {
+    key: 'handleVerifyAttendance',
+    value: function handleVerifyAttendance(ticket) {
+      this.loadPaginatedData(this.state.current_page, ticket);
     }
   }, {
     key: 'render',
@@ -45183,6 +45240,7 @@ var Tickets = function (_Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
+          handleVerifyAttendance: this.handleVerifyAttendance,
           show_ticket_info: this.state.show_ticket_info,
           toggle_show: this.handleShowTicketInfo,
           ticket_info: this.state.ticket_info

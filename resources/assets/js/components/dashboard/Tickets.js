@@ -28,6 +28,7 @@ export default class Tickets extends Component{
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSetDate = this.handleSetDate.bind(this);
     this.handleVerify = this.handleVerify.bind(this);
+    this.handleVerifyAttendance = this.handleVerifyAttendance.bind(this);
   }
 
   componentDidMount(){
@@ -51,7 +52,7 @@ export default class Tickets extends Component{
     )
   }
 
-  loadPaginatedData(page){
+  loadPaginatedData(page,order=null){ //order second param is from verify  attendance
     var values = {
       search: this.state.search,
       selected_date: this.state.selected_date
@@ -62,6 +63,13 @@ export default class Tickets extends Component{
         current_page: page,
         orders: res.data.orders.data,
       })
+      if(order){
+        res.data.orders.data.map((_order)=>{
+          if(_order.id == order.id){
+            this.handleShowTicketInfo(null,_order,true) //3rd param is to not reload modal
+          }
+        })
+      }                                             
     })
   }
 
@@ -112,13 +120,14 @@ export default class Tickets extends Component{
     )
   }
 
-  handleShowTicketInfo(e,order={}){
+  handleShowTicketInfo(e,order={},just_refresh=false){
     let bool = false;
     if(!this.state.show_ticket_info){
       bool = true;
     }
+
     this.setState({
-      show_ticket_info: bool,
+      show_ticket_info: just_refresh ? true : bool,
       ticket_info: order
     })
   }
@@ -147,10 +156,14 @@ export default class Tickets extends Component{
   }
 
   handleVerify(e,order){
-    axios.post('/api/dashboard/verify',order).then(res=>{
+    axios.post('/api/dashboard/verify-payment',order).then(res=>{
       this.loadPaginatedData(this.state.current_page)
     })
 
+  }
+
+  handleVerifyAttendance(ticket){
+    this.loadPaginatedData(this.state.current_page,ticket)
   }
 
   render(){
@@ -227,6 +240,7 @@ export default class Tickets extends Component{
         <SideSummary
         />
         <OrderInfoModal 
+          handleVerifyAttendance = {this.handleVerifyAttendance}
           show_ticket_info = {this.state.show_ticket_info}
           toggle_show = {this.handleShowTicketInfo}
           ticket_info = {this.state.ticket_info}
