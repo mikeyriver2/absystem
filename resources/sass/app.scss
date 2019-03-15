@@ -103,11 +103,11 @@ body{
       }
     }
     .main-venue{
-      border: 1px;
+      //border: 1px;
       //margin-top: 15vh;
-      border-style: solid;
+      //border-style: solid;
       height: 60vh;
-      box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
+      //box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
       width: 60vw;
       border-color: #c3c0c085;
       overflow-y: auto;
@@ -467,6 +467,16 @@ body{
   }
 }
 
+.verifed-payment{
+  img{
+    height: 3vh;
+  }
+  span{
+    color: green;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+}
 
 .seat{
   display: flex;

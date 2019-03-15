@@ -44834,6 +44834,7 @@ var Tickets = function (_Component) {
     _this.handleShowTicketInfo = _this.handleShowTicketInfo.bind(_this);
     _this.handleSearch = _this.handleSearch.bind(_this);
     _this.handleSetDate = _this.handleSetDate.bind(_this);
+    _this.handleVerify = _this.handleVerify.bind(_this);
     return _this;
   }
 
@@ -44864,8 +44865,12 @@ var Tickets = function (_Component) {
     value: function loadPaginatedData(page) {
       var _this3 = this;
 
+      var values = {
+        search: this.state.search,
+        selected_date: this.state.selected_date
+      };
       var url = '/api/dashboard/orders?page=' + page;
-      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post(url).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post(url, values).then(function (res) {
         _this3.setState({
           current_page: page,
           orders: res.data.orders.data
@@ -45003,9 +45008,18 @@ var Tickets = function (_Component) {
       });
     }
   }, {
+    key: 'handleVerify',
+    value: function handleVerify(e, order) {
+      var _this7 = this;
+
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/verify', order).then(function (res) {
+        _this7.loadPaginatedData(_this7.state.current_page);
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this7 = this;
+      var _this8 = this;
 
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
@@ -45028,7 +45042,7 @@ var Tickets = function (_Component) {
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */],
                 { onSelect: function onSelect(e) {
-                    _this7.handleSetDate(e);
+                    _this8.handleSetDate(e);
                   } },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                   __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Toggle,
@@ -45128,10 +45142,21 @@ var Tickets = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
-                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      !order.paid ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
-                        { variant: 'success' },
+                        { onClick: function onClick(e) {
+                            return _this8.handleVerify(e, order);
+                          }, variant: 'success' },
                         'Verify Payment'
+                      ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { className: 'verifed-payment' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/checked.svg' }),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                          'span',
+                          null,
+                          'Payment Verified'
+                        )
                       )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45140,7 +45165,7 @@ var Tickets = function (_Component) {
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
                         { onClick: function onClick(e) {
-                            return _this7.handleShowTicketInfo(e, order);
+                            return _this8.handleShowTicketInfo(e, order);
                           }, variant: 'primary' },
                         'View'
                       )

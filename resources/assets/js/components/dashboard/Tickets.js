@@ -27,6 +27,7 @@ export default class Tickets extends Component{
     this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSetDate = this.handleSetDate.bind(this);
+    this.handleVerify = this.handleVerify.bind(this);
   }
 
   componentDidMount(){
@@ -51,8 +52,12 @@ export default class Tickets extends Component{
   }
 
   loadPaginatedData(page){
+    var values = {
+      search: this.state.search,
+      selected_date: this.state.selected_date
+    }
     let url = `/api/dashboard/orders?page=${page}`
-    axios.post(url).then((res)=>{
+    axios.post(url,values).then((res)=>{
       this.setState({
         current_page: page,
         orders: res.data.orders.data,
@@ -141,6 +146,13 @@ export default class Tickets extends Component{
     })
   }
 
+  handleVerify(e,order){
+    axios.post('/api/dashboard/verify',order).then(res=>{
+      this.loadPaginatedData(this.state.current_page)
+    })
+
+  }
+
   render(){
     return (
       <Row className="home">
@@ -191,7 +203,16 @@ export default class Tickets extends Component{
                         <td>{order.created_at}</td>
                         <td>{full_name}</td>
                         <td>{order.buyer_email}</td>
-                        <td><Button variant="success">Verify Payment</Button></td>
+                        <td>
+                        {!order.paid ? 
+                          <Button onClick={e => this.handleVerify(e,order)} variant="success">Verify Payment</Button>
+                          :
+                          <div className="verifed-payment">
+                            <img src="/images/checked.svg" />
+                            <span>Payment Verified</span>
+                          </div>
+                        }
+                        </td>
                         <td><Button onClick={e => this.handleShowTicketInfo(e,order)} variant="primary">View</Button></td>
                     </tr> )
                   })

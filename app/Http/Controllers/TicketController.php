@@ -67,7 +67,7 @@ class TicketController extends Controller
                 //
             }
         }
-        
+        $orders->orderBy('created_at','desc');
         return response()->json([
             'orders' => $orders->paginate(5)
         ]);
@@ -95,6 +95,13 @@ class TicketController extends Controller
                 'ticket_price' => $value['ticket_price']
             ]);
         }
+    }
+
+    public function Verify(Request $request){
+        $order = TicketOrder::find($request->id);
+        $order->paid = true;
+        $order->save();
+        return 'saved';
     }
 
 }

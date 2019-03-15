@@ -11745,11 +11745,7 @@ body {
 }
 
 .home .main .main-venue {
-  border: 1px;
-  border-style: solid;
   height: 60vh;
-  -webkit-box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
-          box-shadow: 1px 10px 15px rgba(128, 128, 128, 0.6);
   width: 60vw;
   border-color: #c3c0c085;
   overflow-y: auto;
@@ -12184,6 +12180,16 @@ body {
 .absolute-column-counter small {
   position: absolute;
   top: 100px;
+}
+
+.verifed-payment img {
+  height: 3vh;
+}
+
+.verifed-payment span {
+  color: green;
+  font-weight: bold;
+  margin-left: 5px;
 }
 
 .seat {
