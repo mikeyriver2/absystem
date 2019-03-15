@@ -1,5 +1,5 @@
-import {Row, Col, Table, Button, Pagination} from 'react-bootstrap'
-import React, { Component } from 'react';
+import {Row, Col, Table, Dropdown, Button, Pagination} from 'react-bootstrap'
+import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Home from './Home'
@@ -17,16 +17,29 @@ export default class Tickets extends Component{
       current_page: 1,
       total_pages: 1,
       show_ticket_info: false,
-      ticket_info: {}
+      ticket_info: {},
+      dates: [],
+      selected_date: "",
+      search: "",
     }
-    this.handleShowSales = this.handleShowSales.bind(this);
     this.renderSmallPaginate = this.renderSmallPaginate.bind(this);
     this.loadPaginatedData = this.loadPaginatedData.bind(this);
     this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSetDate = this.handleSetDate.bind(this);
   }
 
   componentDidMount(){
+    axios.get('/api/dashboard/venue').then(res=>{
+      let array = [];
+      res.data.venue.event.event_days.map((date)=>{
+        array.push(date.date)
+      });
+      this.setState({
+        dates: array
+      })
+    })
+
     axios.post('/api/dashboard/orders').then(res=>{
       this.setState({
         orders: res.data.orders.data,
@@ -35,28 +48,6 @@ export default class Tickets extends Component{
     }).catch(
 
     )
-  }
-
-  handleShowSales(){
-    var sales = [];
-    for(var i = 0; i < 5; i++){
-        sales.push(
-            <Row className="breakdown-item">
-                <Col md={8} className="breakdown-order"> 
-                    <div className="sale-order"> 
-                        Order No. 12 | 4 tickets
-                    </div>
-                    <div className="sale-codes">
-                        OLA1, OLA2, VIPA1, VIPA2
-                    </div>
-                </Col>
-                <Col md={2} className="breakdown-functions"> 
-                    view
-                </Col>
-            </Row>
-        )
-    }
-    return sales;
   }
 
   loadPaginatedData(page){
@@ -84,6 +75,14 @@ export default class Tickets extends Component{
         {items}
       </Pagination>
     )
+  }
+
+  handleSetDate(e){
+    this.setState({
+        selected_date: e
+    },()=>{
+      this.handleSearch();
+    })
   }
 
   renderBigPaginate(){
@@ -119,15 +118,27 @@ export default class Tickets extends Component{
     })
   }
 
-  handleSearch(e){
-    axios.post('/api/dashboard/orders',{search: e.target.value}).then(res=>{
-      this.setState({
-        orders: res.data.orders.data,
-        total_pages: res.data.orders.last_page
-      })
-    }).catch(
-
-    )
+  handleSearch(e=null){
+    let value = null;
+    if(e){
+      value = e.target.value;
+      console.log(value);
+    }
+    this.setState((prevState,props)=>({
+      search: value || value == "" ? value : prevState.search
+    }),()=>{
+      var values = {
+        search: this.state.search,
+        selected_date: this.state.selected_date
+      }
+      axios.post('/api/dashboard/orders',values).then(res=>{
+        this.setState({
+          orders: res.data.orders.data,
+          total_pages: res.data.orders.last_page
+        })
+      }).catch(
+      )
+    })
   }
 
   render(){
@@ -135,28 +146,53 @@ export default class Tickets extends Component{
       <Row className="home">
         <SideBar />
         <Col md={8} className="tickets-container">
-          <div className="search-table">
-            <input onChange={this.handleSearch} type="text" class="form-control" placeholder="Search"/>
+          <div className="stuff">
+            <div className="search-table">
+              <input onChange={this.handleSearch} type="text" class="form-control" placeholder="Search"/>
+            </div>
+            <div className="date-dropdown">
+              <Dropdown onSelect={(e)=>{this.handleSetDate(e)}}>
+                <Dropdown.Toggle id="dropdown-date">
+                  <div className="dropdown-container">
+                    <img src="/images/clapperboard.png"/>
+                    {this.state.selected_date == "" ?
+                      <span>Select Reservation Date</span>
+                        :
+                      <span>{this.state.selected_date}</span>
+                    }
+                  </div>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item eventKey="all">All dates</Dropdown.Item>
+                  {this.state.dates.map((date,index)=>{
+                    return <Dropdown.Item eventKey={date}>{date}</Dropdown.Item>
+                  })
+                  }
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
           <div className="tickets-table">
             <Table hover>
               <thead>
                 <tr>
+                  <th>Bought at</th>
                   <th>Buyer Full Name</th>
                   <th>Email Address</th>
-                  <th>Cell Number</th>
                   <th>Payment Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                   {this.state.orders.length > 0 && this.state.orders.map((order)=>{
                     let full_name = `${order.buyer_last_name}, ${order.buyer_first_name}`
                     return (
-                      <tr onClick={e => this.handleShowTicketInfo(e,order)}>
+                      <tr>
+                        <td>{order.created_at}</td>
                         <td>{full_name}</td>
                         <td>{order.buyer_email}</td>
-                        <td>{order.buyer_cell_number}</td>
                         <td><Button variant="success">Verify Payment</Button></td>
+                        <td><Button onClick={e => this.handleShowTicketInfo(e,order)} variant="primary">View</Button></td>
                     </tr> )
                   })
                   }
@@ -168,7 +204,6 @@ export default class Tickets extends Component{
             </div>
         </Col>
         <SideSummary
-          handleShowSales = {this.handleShowSales}
         />
         <OrderInfoModal 
           show_ticket_info = {this.state.show_ticket_info}

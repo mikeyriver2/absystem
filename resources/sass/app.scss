@@ -576,6 +576,40 @@ body{
 
 .tickets-container{
   padding: 30px 50px 0px 40px;
+  .stuff{
+    margin-bottom: 25px;
+    .search-table{
+      width: 30vw;
+      display: inline-block;
+    }
+    .date-dropdown{
+      float:right;
+      #dropdown-date{
+        border: 0;
+        background: #f5f6f7;
+        width: 20vw;
+        border-radius: 0%;
+        &::after{
+          margin-left: 2em;
+          color: #b6b4b4;
+          margin-top: 12px; 
+        }
+        .dropdown-container{
+          float:left;
+          display: flex;
+          align-items: center;
+          margin: 5px;
+          span{
+            color: #b6b4b4;
+            margin-left: 10px;
+          }
+          img{
+            height: 3vh;
+          }
+        }
+      }
+    }
+  }
 }
 .confirm-button{
   .loader{

@@ -44824,13 +44824,16 @@ var Tickets = function (_Component) {
       current_page: 1,
       total_pages: 1,
       show_ticket_info: false,
-      ticket_info: {}
+      ticket_info: {},
+      dates: [],
+      selected_date: "",
+      search: ""
     };
-    _this.handleShowSales = _this.handleShowSales.bind(_this);
     _this.renderSmallPaginate = _this.renderSmallPaginate.bind(_this);
     _this.loadPaginatedData = _this.loadPaginatedData.bind(_this);
     _this.handleShowTicketInfo = _this.handleShowTicketInfo.bind(_this);
     _this.handleSearch = _this.handleSearch.bind(_this);
+    _this.handleSetDate = _this.handleSetDate.bind(_this);
     return _this;
   }
 
@@ -44839,43 +44842,22 @@ var Tickets = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/api/dashboard/venue').then(function (res) {
+        var array = [];
+        res.data.venue.event.event_days.map(function (date) {
+          array.push(date.date);
+        });
+        _this2.setState({
+          dates: array
+        });
+      });
+
       __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/orders').then(function (res) {
         _this2.setState({
           orders: res.data.orders.data,
           total_pages: res.data.orders.last_page
         });
       }).catch();
-    }
-  }, {
-    key: 'handleShowSales',
-    value: function handleShowSales() {
-      var sales = [];
-      for (var i = 0; i < 5; i++) {
-        sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
-          { className: 'breakdown-item' },
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-            { md: 8, className: 'breakdown-order' },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-              'div',
-              { className: 'sale-order' },
-              'Order No. 12 | 4 tickets'
-            ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-              'div',
-              { className: 'sale-codes' },
-              'OLA1, OLA2, VIPA1, VIPA2'
-            )
-          ),
-          __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-            { md: 2, className: 'breakdown-functions' },
-            'view'
-          )
-        ));
-      }
-      return sales;
     }
   }, {
     key: 'loadPaginatedData',
@@ -44916,6 +44898,17 @@ var Tickets = function (_Component) {
         null,
         items
       );
+    }
+  }, {
+    key: 'handleSetDate',
+    value: function handleSetDate(e) {
+      var _this5 = this;
+
+      this.setState({
+        selected_date: e
+      }, function () {
+        _this5.handleSearch();
+      });
     }
   }, {
     key: 'renderBigPaginate',
@@ -44982,20 +44975,37 @@ var Tickets = function (_Component) {
     }
   }, {
     key: 'handleSearch',
-    value: function handleSearch(e) {
-      var _this5 = this;
+    value: function handleSearch() {
+      var _this6 = this;
 
-      __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/orders', { search: e.target.value }).then(function (res) {
-        _this5.setState({
-          orders: res.data.orders.data,
-          total_pages: res.data.orders.last_page
-        });
-      }).catch();
+      var e = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      var value = null;
+      if (e) {
+        value = e.target.value;
+        console.log(value);
+      }
+      this.setState(function (prevState, props) {
+        return {
+          search: value || value == "" ? value : prevState.search
+        };
+      }, function () {
+        var values = {
+          search: _this6.state.search,
+          selected_date: _this6.state.selected_date
+        };
+        __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/orders', values).then(function (res) {
+          _this6.setState({
+            orders: res.data.orders.data,
+            total_pages: res.data.orders.last_page
+          });
+        }).catch();
+      });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
@@ -45006,8 +45016,56 @@ var Tickets = function (_Component) {
           { md: 8, className: 'tickets-container' },
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
-            { className: 'search-table' },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { onChange: this.handleSearch, type: 'text', 'class': 'form-control', placeholder: 'Search' })
+            { className: 'stuff' },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+              'div',
+              { className: 'search-table' },
+              __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { onChange: this.handleSearch, type: 'text', 'class': 'form-control', placeholder: 'Search' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+              'div',
+              { className: 'date-dropdown' },
+              __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */],
+                { onSelect: function onSelect(e) {
+                    _this7.handleSetDate(e);
+                  } },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Toggle,
+                  { id: 'dropdown-date' },
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: 'dropdown-container' },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/clapperboard.png' }),
+                    this.state.selected_date == "" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      'span',
+                      null,
+                      'Select Reservation Date'
+                    ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      'span',
+                      null,
+                      this.state.selected_date
+                    )
+                  )
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Menu,
+                  null,
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Item,
+                    { eventKey: 'all' },
+                    'All dates'
+                  ),
+                  this.state.dates.map(function (date, index) {
+                    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Item,
+                      { eventKey: date },
+                      date
+                    );
+                  })
+                )
+              )
+            )
           ),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
@@ -45024,6 +45082,11 @@ var Tickets = function (_Component) {
                   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'th',
                     null,
+                    'Bought at'
+                  ),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'th',
+                    null,
                     'Buyer Full Name'
                   ),
                   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45034,13 +45097,9 @@ var Tickets = function (_Component) {
                   __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'th',
                     null,
-                    'Cell Number'
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'th',
-                    null,
                     'Payment Status'
-                  )
+                  ),
+                  __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('th', null)
                 )
               ),
               __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45050,9 +45109,12 @@ var Tickets = function (_Component) {
                   var full_name = order.buyer_last_name + ', ' + order.buyer_first_name;
                   return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'tr',
-                    { onClick: function onClick(e) {
-                        return _this6.handleShowTicketInfo(e, order);
-                      } },
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      'td',
+                      null,
+                      order.created_at
+                    ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
@@ -45066,15 +45128,21 @@ var Tickets = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
-                      order.buyer_cell_number
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
+                        { variant: 'success' },
+                        'Verify Payment'
+                      )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
                       __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
-                        { variant: 'success' },
-                        'Verify Payment'
+                        { onClick: function onClick(e) {
+                            return _this7.handleShowTicketInfo(e, order);
+                          }, variant: 'primary' },
+                        'View'
                       )
                     )
                   );
@@ -45088,9 +45156,7 @@ var Tickets = function (_Component) {
             this.renderSmallPaginate()
           )
         ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], {
-          handleShowSales: this.handleShowSales
-        }),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
           show_ticket_info: this.state.show_ticket_info,
           toggle_show: this.handleShowTicketInfo,

@@ -28,27 +28,48 @@ class TicketController extends Controller
     }
     
     public function Order(Request $request){
-        if(!isset($request->search)){
-            $orders = TicketOrder::where('event_id',1)
-                        ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
-                        ->paginate(5);
-        }else{
-            $search = $request->search;
-            $orders = TicketOrder::where('buyer_first_name','like',"%".$search."%")
-                        ->orWhere('buyer_last_name','like',"%".$search."%")
-                        ->orWhere('buyer_email','like',"%".$search."%")
-                        ->orWhere('buyer_cell_number',$search)
-                        ->orWhereHas('tickets',function($ticket)use($search){
-                            $ticket->where('slug','like',"%".$search."%");
-                        })
-                        ->where('event_id',1)
-                        ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay')
-                        ->paginate(5);
-        }
+        $orders = TicketOrder::where('event_id',1)
+                            ->with('tickets.section','tickets','tickets.ticketOrder','event','eventDay');
 
+        //return EventDay::where('date',$request->selected_date)->get();   
+        $bool_date = isset($request->selected_date);
+        $bool_search = isset($request->search);
+        if($bool_search){
+            $search = $request->search;
+            if(!$bool_date ||  $request->selected_date == "all"){
+            $orders->where('buyer_first_name','like',"%".$search."%")
+                ->orWhere('buyer_last_name','like',"%".$search."%")
+                ->orWhere('buyer_email','like',"%".$search."%")
+                ->orWhere('buyer_cell_number',$search)
+                ->orWhereHas('tickets',function($ticket)use($search){
+                    $ticket->where('slug','like',"%".$search."%");
+                });
+            }
+        }
+        
+        if($bool_date){
+            $date = $request->selected_date;
+            $search = $request->search;
+            if($date != "all"){
+                $orders->whereHas('eventDay',function($event)use($date){
+                    $event->where('date',$date);
+                });
+                $orders->where(function($query)use($search){
+                    $query->where('buyer_first_name','like',"%".$search."%")
+                    ->orWhere('buyer_last_name','like',"%".$search."%")
+                    ->orWhere('buyer_email','like',"%".$search."%")
+                    ->orWhere('buyer_cell_number',$search)
+                    ->orWhereHas('tickets',function($ticket)use($search){
+                        $ticket->where('slug','like',"%".$search."%");
+                    });
+                });
+            }else{
+                //
+            }
+        }
         
         return response()->json([
-            'orders' => $orders
+            'orders' => $orders->paginate(5)
         ]);
     }
 

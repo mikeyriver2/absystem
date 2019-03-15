@@ -12299,6 +12299,52 @@ body {
   padding: 30px 50px 0px 40px;
 }
 
+.tickets-container .stuff {
+  margin-bottom: 25px;
+}
+
+.tickets-container .stuff .search-table {
+  width: 30vw;
+  display: inline-block;
+}
+
+.tickets-container .stuff .date-dropdown {
+  float: right;
+}
+
+.tickets-container .stuff .date-dropdown #dropdown-date {
+  border: 0;
+  background: #f5f6f7;
+  width: 20vw;
+  border-radius: 0%;
+}
+
+.tickets-container .stuff .date-dropdown #dropdown-date::after {
+  margin-left: 2em;
+  color: #b6b4b4;
+  margin-top: 12px;
+}
+
+.tickets-container .stuff .date-dropdown #dropdown-date .dropdown-container {
+  float: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 5px;
+}
+
+.tickets-container .stuff .date-dropdown #dropdown-date .dropdown-container span {
+  color: #b6b4b4;
+  margin-left: 10px;
+}
+
+.tickets-container .stuff .date-dropdown #dropdown-date .dropdown-container img {
+  height: 3vh;
+}
+
 .confirm-button .loader {
   margin: 0 auto;
 }
