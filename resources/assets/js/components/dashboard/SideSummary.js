@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import Example from '../Example';
-import Singson from '../ticketing/venues/Singson'
+import Singson from '../ticketing/venues/Singson';
+import OrderInfoModal from './OrderInfoModal';
 import axios from 'axios';
 
 
@@ -13,8 +14,11 @@ export default class SideSummary extends Component{
         this.state={
             orders : [],
             total_revenue: 0,
-            number_of_tickets_sold: 0
+            number_of_tickets_sold: 0,
+            show_ticket_info: false
         }
+        this.getOrderInfo = this.getOrderInfo.bind(this);
+        this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
     }
 
     componentDidMount(){
@@ -39,6 +43,25 @@ export default class SideSummary extends Component{
 
     }
 
+    getOrderInfo(e){
+        let code = e.target.id
+        console.log(code);
+        axios.get('/api/dashboard/view-order/'+code+'').then(res=>{
+            this.handleShowTicketInfo(null,res.data.order)
+        });
+    }
+
+    handleShowTicketInfo(e=null,order={}){
+        let bool = false;
+        if(!this.state.show_ticket_info){
+          bool = true;
+        }
+        this.setState({
+          show_ticket_info: bool,
+          ticket_info: order
+        })
+    }
+
     handleShowSales(orders){
         var sales = [];
         for(let i = 0; i < 5; i++){
@@ -58,7 +81,7 @@ export default class SideSummary extends Component{
                                 {string.length >= 19 ? <span>{string}...</span> : string}
                             </div>
                         </Col>
-                        <Col md={2} className="breakdown-functions"> 
+                        <Col onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
                             view
                         </Col>
                     </Row>
@@ -97,6 +120,11 @@ export default class SideSummary extends Component{
                             {this.handleShowSales(this.state.orders)}
                         </div>
                     </div>
+                    <OrderInfoModal 
+                        show_ticket_info = {this.state.show_ticket_info}
+                        toggle_show = {this.handleShowTicketInfo}
+                        ticket_info = {this.state.ticket_info}
+                    />
                 </Col>
             )
     }

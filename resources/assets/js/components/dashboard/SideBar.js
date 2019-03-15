@@ -11,7 +11,7 @@ export default class SideBar extends Component{
     constructor(props){
         super(props)
         this.state={
-
+            show_ticket_info: false
         }
         this.showLabel = this.showLabel.bind(this)
     }
