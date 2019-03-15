@@ -240,6 +240,7 @@ export default class Tickets extends Component{
         <SideSummary
         />
         <OrderInfoModal 
+          from_tickets = {true}
           handleVerifyAttendance = {this.handleVerifyAttendance}
           show_ticket_info = {this.state.show_ticket_info}
           toggle_show = {this.handleShowTicketInfo}

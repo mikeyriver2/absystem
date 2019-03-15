@@ -12,13 +12,17 @@ export default class OrderInfoModal extends Component{
     }
 
     listTickets(tickets){
+        let from_tickets = this.props.hasOwnProperty('from_tickets');
         return (
             <table className="table">
                 <thead>
                     <tr>
                         <th>ticket id</th>
                         <th>section</th>
-                        <th>Attendance Status</th>
+                        {
+                            from_tickets &&
+                            <th>Attendance Status</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +31,7 @@ export default class OrderInfoModal extends Component{
                             <tr>
                                 <td>{ticket.slug}</td>
                                 <td>{ticket.section.name}</td>
+                                {from_tickets &&
                                 <td>
                                     {ticket.status != "validated" ?
                                         <Button onClick={(e)=>{this.handleVerify(ticket)}} variant="success">Verify Attendance</Button>
@@ -37,6 +42,7 @@ export default class OrderInfoModal extends Component{
                                         </div>
                                     }
                                 </td>
+                                }
                             </tr>
                         )
                     })

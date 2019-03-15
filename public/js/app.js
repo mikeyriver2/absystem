@@ -4562,6 +4562,7 @@ var OrderInfoModal = function (_Component) {
         value: function listTickets(tickets) {
             var _this2 = this;
 
+            var from_tickets = this.props.hasOwnProperty('from_tickets');
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'table',
                 { className: 'table' },
@@ -4581,7 +4582,7 @@ var OrderInfoModal = function (_Component) {
                             null,
                             'section'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        from_tickets && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'th',
                             null,
                             'Attendance Status'
@@ -4605,7 +4606,7 @@ var OrderInfoModal = function (_Component) {
                                 null,
                                 ticket.section.name
                             ),
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            from_tickets && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'td',
                                 null,
                                 ticket.status != "validated" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45250,6 +45251,7 @@ var Tickets = function (_Component) {
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
+          from_tickets: true,
           handleVerifyAttendance: this.handleVerifyAttendance,
           show_ticket_info: this.state.show_ticket_info,
           toggle_show: this.handleShowTicketInfo,
