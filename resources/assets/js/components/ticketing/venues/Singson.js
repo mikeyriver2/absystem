@@ -50,7 +50,9 @@ export default class Singson extends Component{
         */
     }
 
+
     componentDidUpdate(prevProps){
+        //incoming weird ass code
         if(prevProps.chosen_seats){
             if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
                 prevProps.chosen_seats.map((seat)=>{
@@ -67,11 +69,36 @@ export default class Singson extends Component{
                 })
             }
         }
+        
+        if((prevProps.chosen_seats[0] && !this.props.chosen_seats[0]) ||
+        (!prevProps.chosen_seats[0] && this.props.chosen_seats[0])){
+            console.log(prevProps.chosen_seats);
+            console.log(this.props.chosen_seats);
+            prevProps.chosen_seats.map((seat)=>{
+                document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+            });
+            this.props.chosen_seats.map((seat)=>{
+                document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+            })
+        }
+
+        else if(prevProps.chosen_seats[0] && this.props.chosen_seats[0]){
+            if(prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date){
+                prevProps.chosen_seats.map((seat)=>{
+                    document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                    document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                });
+                this.props.chosen_seats.map((seat)=>{
+                    document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                    document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+                })
+            }
+        }
     }
 
     renderSeatPopOver(e,status){
-        console.log(status)
-        console.log(e.target.id)
         //if(status == "sold"){
             this.props.getOrderInfo(e.target.id)
         //}
@@ -83,7 +110,6 @@ export default class Singson extends Component{
     }
 
     handleSeatClick(e){
-        console.log(e.target.id);
         var class_name = e.target.className;
         var id = e.target.id
         var section_name = "";
@@ -120,6 +146,7 @@ export default class Singson extends Component{
                 section_name: section_name,
                 seat_id: id,
                 ticket_price: ticket_price,
+                date: this.props.chosen_date
             }
             
             this.props.handleChosenSeats(seat);
@@ -132,7 +159,6 @@ export default class Singson extends Component{
                 document.getElementById(e.target.id).classList.add('seat-not-taken');
             }
         }else{
-            console.log('show_modal');
         }
     }
 
@@ -218,7 +244,6 @@ export default class Singson extends Component{
         const row = (number_of_rows,number_of_columns,numberOfSections) => {
             var rows_array = [];
             var spacing = from_dashboard ? " 2.2vh" : " 20px"
-            console.log('row called')
             for(var i = 0; i < number_of_rows; i++){
                 rows_array.push(
                     <div style={{gridTemplateColumns: `repeat(${number_of_columns},${spacing})` }} id={i} className={"row-notBS row-"+i}>
@@ -246,7 +271,6 @@ export default class Singson extends Component{
             
 
             if(i==0 && !this.props.hasOwnProperty('from_dashboard')){ //for row label
-                console.log('rows label called bitch ass bitch')
                 sections.push(
                     <div className="row-labels">
                         <h4 style={{color:'#f2f2f2'}} className="section-names"> a{/* this is really just a space place holder */}</h4>

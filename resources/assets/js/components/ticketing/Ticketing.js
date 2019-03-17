@@ -12,6 +12,7 @@ export default class Ticketing extends Component {
             venue_name: "",
             venue: [],
             chosen_seats: [],
+            chosen_seats_buffer: [], //didn't want to touch original chosen_seats state code too much, hence dis 
             total_price: 0,
             show_order_modal: false,
             dates: [],
@@ -60,13 +61,41 @@ export default class Ticketing extends Component {
     }
 
     componentDidUpdate(prevProps, prevState){
+        if(prevState.selected_date != this.state.selected_date){
+            let buffer = prevState.chosen_seats_buffer.splice(0);
+            let prev_chosen = prevState.chosen_seats;
+            if(buffer.length > 0){
+                buffer.map((bufer)=>{
+                    if(bufer.selected_date == this.state.selected_date){
+                        this.setState({
+                            chosen_seats: bufer.chosen_seats
+                        })
+                    }else{
+                        this.setState({
+                            chosen_seats: []
+                        })
+                        buffer.push({
+                            selected_date: prevState.selected_date,
+                            chosen_seats: prev_chosen
+                        })
+                    }
+                })    
+            }else{
+                buffer.push({
+                    selected_date: prevState.selected_date,
+                    chosen_seats: prev_chosen
+                })
+            }
+            this.setState({
+                chosen_seats_buffer: buffer
+            });
+        }
         //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
         //IMPORTANCE OF CLONING ELEMENT FIRST
         //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
 
         //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
         if(prevState.chosen_seats.length != this.state.chosen_seats.length){
-            console.log('updating yo');
             var total_price = 0;
             this.state.chosen_seats.map((seat)=>{
                 total_price += seat.ticket_price;
@@ -118,7 +147,6 @@ export default class Ticketing extends Component {
                 })
             })
 
-            console.log(venue_object);
             this.setState({
                 sold_seats: sold_seats,
                 dates:array,
@@ -239,7 +267,6 @@ export default class Ticketing extends Component {
     }
 
     displayOrders(){
-        console.log("displaying orders")
         var rows = [];
         const row = (seat) => { return (
             <Row className="order">

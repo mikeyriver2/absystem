@@ -2114,6 +2114,7 @@ var Singson = function (_Component) {
         value: function componentDidUpdate(prevProps) {
             var _this2 = this;
 
+            //incoming weird ass code
             if (prevProps.chosen_seats) {
                 if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
                     prevProps.chosen_seats.map(function (seat) {
@@ -2130,12 +2131,34 @@ var Singson = function (_Component) {
                     });
                 }
             }
+
+            if (prevProps.chosen_seats[0] && !this.props.chosen_seats[0] || !prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
+                console.log(prevProps.chosen_seats);
+                console.log(this.props.chosen_seats);
+                prevProps.chosen_seats.map(function (seat) {
+                    document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                    document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                });
+                this.props.chosen_seats.map(function (seat) {
+                    document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                    document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+                });
+            } else if (prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
+                if (prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date) {
+                    prevProps.chosen_seats.map(function (seat) {
+                        document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                    });
+                    this.props.chosen_seats.map(function (seat) {
+                        document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                        document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+                    });
+                }
+            }
         }
     }, {
         key: 'renderSeatPopOver',
         value: function renderSeatPopOver(e, status) {
-            console.log(status);
-            console.log(e.target.id);
             //if(status == "sold"){
             this.props.getOrderInfo(e.target.id);
             //}
@@ -2148,7 +2171,6 @@ var Singson = function (_Component) {
     }, {
         key: 'handleSeatClick',
         value: function handleSeatClick(e) {
-            console.log(e.target.id);
             var class_name = e.target.className;
             var id = e.target.id;
             var section_name = "";
@@ -2184,7 +2206,8 @@ var Singson = function (_Component) {
                 var seat = {
                     section_name: section_name,
                     seat_id: id,
-                    ticket_price: ticket_price
+                    ticket_price: ticket_price,
+                    date: this.props.chosen_date
                 };
 
                 this.props.handleChosenSeats(seat);
@@ -2196,9 +2219,7 @@ var Singson = function (_Component) {
                     document.getElementById(e.target.id).classList.remove('seat-reserved');
                     document.getElementById(e.target.id).classList.add('seat-not-taken');
                 }
-            } else {
-                console.log('show_modal');
-            }
+            } else {}
         }
     }, {
         key: 'renderVenue',
@@ -2284,7 +2305,6 @@ var Singson = function (_Component) {
             var row = function row(number_of_rows, number_of_columns, numberOfSections) {
                 var rows_array = [];
                 var spacing = from_dashboard ? " 2.2vh" : " 20px";
-                console.log('row called');
                 for (var i = 0; i < number_of_rows; i++) {
                     rows_array.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
@@ -2312,7 +2332,6 @@ var Singson = function (_Component) {
 
                 if (i == 0 && !this.props.hasOwnProperty('from_dashboard')) {
                     //for row label
-                    console.log('rows label called bitch ass bitch');
                     sections.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'row-labels' },
@@ -33745,6 +33764,7 @@ var Ticketing = function (_Component) {
             venue_name: "",
             venue: [],
             chosen_seats: [],
+            chosen_seats_buffer: [], //didn't want to touch original chosen_seats state code too much, hence dis 
             total_price: 0,
             show_order_modal: false,
             dates: [],
@@ -33797,13 +33817,43 @@ var Ticketing = function (_Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
+            var _this2 = this;
+
+            if (prevState.selected_date != this.state.selected_date) {
+                var buffer = prevState.chosen_seats_buffer.splice(0);
+                var prev_chosen = prevState.chosen_seats;
+                if (buffer.length > 0) {
+                    buffer.map(function (bufer) {
+                        if (bufer.selected_date == _this2.state.selected_date) {
+                            _this2.setState({
+                                chosen_seats: bufer.chosen_seats
+                            });
+                        } else {
+                            _this2.setState({
+                                chosen_seats: []
+                            });
+                            buffer.push({
+                                selected_date: prevState.selected_date,
+                                chosen_seats: prev_chosen
+                            });
+                        }
+                    });
+                } else {
+                    buffer.push({
+                        selected_date: prevState.selected_date,
+                        chosen_seats: prev_chosen
+                    });
+                }
+                this.setState({
+                    chosen_seats_buffer: buffer
+                });
+            }
             //https://github.com/facebook/react/issues/2914 || in regards to my issue of prevstate and this.state being the same
             //IMPORTANCE OF CLONING ELEMENT FIRST
             //https://medium.freecodecamp.org/handling-state-in-react-four-immutable-approaches-to-consider-d1f5c00249d5
 
             //good habit of including prevState when setting state -> https://teamtreehouse.com/community/react-docs-now-recommends-using-function-with-prevstate-inside-of-setstate
             if (prevState.chosen_seats.length != this.state.chosen_seats.length) {
-                console.log('updating yo');
                 var total_price = 0;
                 this.state.chosen_seats.map(function (seat) {
                     total_price += seat.ticket_price;
@@ -33818,7 +33868,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'setVenue',
         value: function setVenue() {
-            var _this2 = this;
+            var _this3 = this;
 
             var array = [];
             var venue_object = {
@@ -33860,8 +33910,7 @@ var Ticketing = function (_Component) {
                     });
                 });
 
-                console.log(venue_object);
-                _this2.setState({
+                _this3.setState({
                     sold_seats: sold_seats,
                     dates: array,
                     venue_name: venue_object.venue_name,
@@ -33874,7 +33923,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'clearOrder',
         value: function clearOrder() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.setVenue();
             this.setState({
@@ -33883,7 +33932,7 @@ var Ticketing = function (_Component) {
                 selected_date: ""
             });
             setTimeout(function () {
-                _this3.setState({
+                _this4.setState({
                     show_order_modal: false
                 });
             }, 5000);
@@ -33983,7 +34032,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'removeSeat',
         value: function removeSeat(seat) {
-            var _this4 = this;
+            var _this5 = this;
 
             var chosen_seats = this.state.chosen_seats;
             chosen_seats.map(function (chosen_seat, index) {
@@ -33991,7 +34040,7 @@ var Ticketing = function (_Component) {
                     var filtered = chosen_seats.filter(function (value, f_index) {
                         return f_index != index;
                     });
-                    _this4.setState({
+                    _this5.setState({
                         chosen_seats: filtered
                     });
                 }
@@ -34000,9 +34049,8 @@ var Ticketing = function (_Component) {
     }, {
         key: 'displayOrders',
         value: function displayOrders() {
-            var _this5 = this;
+            var _this6 = this;
 
-            console.log("displaying orders");
             var rows = [];
             var row = function row(seat) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -34036,7 +34084,7 @@ var Ticketing = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
                             { onClick: function onClick() {
-                                    return _this5.removeSeat(seat);
+                                    return _this6.removeSeat(seat);
                                 }, className: 'cancel' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { style: { height: "2vh", marginRight: ".3vw" }, src: '/images/error.svg' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -34083,7 +34131,7 @@ var Ticketing = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this6 = this;
+            var _this7 = this;
 
             var window_width = window.innerWidth + "px";
             var window_height = window.innerHeight + "px";
@@ -34107,7 +34155,7 @@ var Ticketing = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["c" /* Dropdown */],
                                 { onSelect: function onSelect(e) {
-                                        _this6.handleSetDate(e);
+                                        _this7.handleSetDate(e);
                                     } },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["c" /* Dropdown */].Toggle,
