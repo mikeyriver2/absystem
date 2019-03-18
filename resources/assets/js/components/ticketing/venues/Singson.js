@@ -202,9 +202,6 @@ export default class Singson extends Component{
             var section = "";
             var selected_date = this.props.chosen_date;
             let status = "";
-            let chosen_seats = this.props.chosen_seats.map((seat)=>{
-                return seat.seat_id
-            });
 
             if(type == "balcony"){
                 section = sections_balcony[section_number];
@@ -216,15 +213,23 @@ export default class Singson extends Component{
                 let class_name = "seat"
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
-                        let being_edit = false;
-                        if(chosen_seats.includes(section+row+(i+1))){
-                            being_edit = true
-                        }
-                        if(!being_edit){
+                        if(this.props.edit_mode){
+                            let chosen_seats = this.props.chosen_seats.map((seat)=>{
+                                return seat.seat_id
+                            });
+                            let being_edit = false;
+                            if(chosen_seats.includes(section+row+(i+1))){
+                                being_edit = true
+                            }
+                            if(!being_edit){
+                                class_name+=" seat-taken"
+                                status = "sold"
+                            }else{
+                                class_name+=" seat-reserved editing"
+                            }
+                        }else{
                             class_name+=" seat-taken"
                             status = "sold"
-                        }else{
-                            class_name+=" seat-reserved editing"
                         }
                     }else{
                         class_name+=" seat-not-taken"

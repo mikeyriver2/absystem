@@ -2267,9 +2267,6 @@ var Singson = function (_Component) {
                 var section = "";
                 var selected_date = _this3.props.chosen_date;
                 var status = "";
-                var chosen_seats = _this3.props.chosen_seats.map(function (seat) {
-                    return seat.seat_id;
-                });
 
                 if (type == "balcony") {
                     section = sections_balcony[section_number];
@@ -2281,15 +2278,23 @@ var Singson = function (_Component) {
                     var _class_name = "seat";
                     if (_this3.props.sold_seats[selected_date]) {
                         if (_this3.props.sold_seats[selected_date].includes(section + row + (i + 1))) {
-                            var being_edit = false;
-                            if (chosen_seats.includes(section + row + (i + 1))) {
-                                being_edit = true;
-                            }
-                            if (!being_edit) {
+                            if (_this3.props.edit_mode) {
+                                var chosen_seats = _this3.props.chosen_seats.map(function (seat) {
+                                    return seat.seat_id;
+                                });
+                                var being_edit = false;
+                                if (chosen_seats.includes(section + row + (i + 1))) {
+                                    being_edit = true;
+                                }
+                                if (!being_edit) {
+                                    _class_name += " seat-taken";
+                                    status = "sold";
+                                } else {
+                                    _class_name += " seat-reserved editing";
+                                }
+                            } else {
                                 _class_name += " seat-taken";
                                 status = "sold";
-                            } else {
-                                _class_name += " seat-reserved editing";
                             }
                         } else {
                             _class_name += " seat-not-taken";
