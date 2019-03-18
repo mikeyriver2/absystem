@@ -18,7 +18,8 @@ export default class Ticketing extends Component {
             dates: [],
             selected_date: "",
             event: {},
-            sold_seats: {}
+            sold_seats: {},
+            from_dashboard: false
         }
         this.test = this.test.bind(this);
         this.handleChosenSeats = this.handleChosenSeats.bind(this);
@@ -31,6 +32,26 @@ export default class Ticketing extends Component {
 
     }
 
+    componentWillMount(){
+        if(this.props.location.state){
+            if(this.props.location.state.fromOrderInfo){
+                let order = this.props.location.state.order
+                let chosen_seats = [];
+                order.tickets.map((ticket)=>{
+                    chosen_seats.push({
+                        date: order.event_day.date,
+                        seat_id: ticket.slug,
+                        section_name: ticket.section.name,
+                        ticket_price: ticket.ticket_price,
+                    })
+                });
+                this.setState({
+                    chosen_seats: chosen_seats,
+                    from_dashboard: true
+                })
+            }
+        }
+    }
     componentDidMount(){
         this.setVenue();
         /*
@@ -403,6 +424,7 @@ export default class Ticketing extends Component {
                             chosen_seats = {this.state.chosen_seats}
                             chosen_date = {this.state.selected_date}
                             sold_seats = {this.state.sold_seats}
+                            edit_mode = {this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false}
                         />
                     </div>
                         {/*this.test()*/}

@@ -21,6 +21,7 @@ export default class Tickets extends Component{
       dates: [],
       selected_date: "",
       search: "",
+      edit_mode: false,
     }
     this.renderSmallPaginate = this.renderSmallPaginate.bind(this);
     this.loadPaginatedData = this.loadPaginatedData.bind(this);
@@ -29,6 +30,7 @@ export default class Tickets extends Component{
     this.handleSetDate = this.handleSetDate.bind(this);
     this.handleVerify = this.handleVerify.bind(this);
     this.handleVerifyAttendance = this.handleVerifyAttendance.bind(this);
+    this.handleEditOrder = this.handleEditOrder.bind(this);
   }
 
   componentDidMount(){
@@ -128,7 +130,8 @@ export default class Tickets extends Component{
 
     this.setState({
       show_ticket_info: just_refresh ? true : bool,
-      ticket_info: order
+      ticket_info: order,
+      edit_mode: false
     })
   }
 
@@ -164,6 +167,14 @@ export default class Tickets extends Component{
 
   handleVerifyAttendance(ticket){
     this.loadPaginatedData(this.state.current_page,ticket)
+  }
+
+  handleEditOrder(e,order){
+    this.setState({
+      edit_mode: !this.state.edit_mode,
+      show_ticket_info: !this.state.show_ticket_info,
+      ticket_info: order
+    })
   }
 
   render(){
@@ -227,6 +238,7 @@ export default class Tickets extends Component{
                         }
                         </td>
                         <td><Button onClick={e => this.handleShowTicketInfo(e,order)} variant="primary">View</Button></td>
+                        <td><Button onClick={e => this.handleEditOrder(e,order)} variant="secondary">Edit</Button></td>
                     </tr> )
                   })
                   }
@@ -245,6 +257,8 @@ export default class Tickets extends Component{
           show_ticket_info = {this.state.show_ticket_info}
           toggle_show = {this.handleShowTicketInfo}
           ticket_info = {this.state.ticket_info}
+          edit_mode = {this.state.edit_mode}
+          show_ticket_info = {this.state.show_ticket_info}
         />
       </Row>
     )

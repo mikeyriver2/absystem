@@ -20,9 +20,10 @@ export default class Singson extends Component{
         //this.reArrangeSeats(nextProps)
     }
 
+
     reArrangeSeats(){
-        /* //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
-        var proper_order = {
+         //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
+        /*var proper_order = {
             balcony: ["Balcony Left","Balcony Center","Balcony Right"],
             ground_floor: ["Orchestra Left","Orchestra Center","Orchestra Right"]
         }
@@ -52,40 +53,29 @@ export default class Singson extends Component{
 
 
     componentDidUpdate(prevProps){
-        //incoming weird ass code
-        if(prevProps.chosen_seats){
-            if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
-                prevProps.chosen_seats.map((seat)=>{
-                    var bool = false;
-                    this.props.chosen_seats.map((seat_1)=>{
-                        if(seat_1.seat_id == seat.seat_id){
-                            bool = true
-                        }
+        let from_dashboard = this.props.hasOwnProperty('from_dashboard');
+        if(!from_dashboard){
+            if(prevProps.chosen_seats){ //handle delete from ticketing component (original code)
+                if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
+                    prevProps.chosen_seats.map((seat)=>{
+                        var bool = false;
+                        this.props.chosen_seats.map((seat_1)=>{
+                            if(seat_1.seat_id == seat.seat_id){
+                                bool = true
+                            }
+                        })
+                        if(!bool){
+                            document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                            document.getElementById(seat.seat_id).classList.add('seat-not-taken');                
+                        } 
                     })
-                    if(!bool){
-                        document.getElementById(seat.seat_id).classList.remove('seat-reserved');
-                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');                
-                    } 
-                })
+                }
             }
-        }
-        
-        if((prevProps.chosen_seats[0] && !this.props.chosen_seats[0]) ||
-        (!prevProps.chosen_seats[0] && this.props.chosen_seats[0])){
-            console.log(prevProps.chosen_seats);
-            console.log(this.props.chosen_seats);
-            prevProps.chosen_seats.map((seat)=>{
-                document.getElementById(seat.seat_id).classList.remove('seat-reserved');
-                document.getElementById(seat.seat_id).classList.add('seat-not-taken');
-            });
-            this.props.chosen_seats.map((seat)=>{
-                document.getElementById(seat.seat_id).classList.add('seat-reserved');
-                document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
-            })
-        }
-
-        else if(prevProps.chosen_seats[0] && this.props.chosen_seats[0]){
-            if(prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date){
+            //incoming weird ass code
+            if((prevProps.chosen_seats[0] && !this.props.chosen_seats[0]) || //handle on selected seat based on date
+            (!prevProps.chosen_seats[0] && this.props.chosen_seats[0])){
+                console.log(prevProps.chosen_seats);
+                console.log(this.props.chosen_seats);
                 prevProps.chosen_seats.map((seat)=>{
                     document.getElementById(seat.seat_id).classList.remove('seat-reserved');
                     document.getElementById(seat.seat_id).classList.add('seat-not-taken');
@@ -94,6 +84,36 @@ export default class Singson extends Component{
                     document.getElementById(seat.seat_id).classList.add('seat-reserved');
                     document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
                 })
+            }
+
+            else if(prevProps.chosen_seats[0] && this.props.chosen_seats[0]){
+                if(prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date){
+                    prevProps.chosen_seats.map((seat)=>{
+                        document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                        document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                    });
+                    this.props.chosen_seats.map((seat)=>{
+                        document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                        document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+                    })
+                }
+            }
+        }else{
+            if(prevProps.chosen_seats){ 
+                if(prevProps.chosen_seats.length != this.props.chosen_seats.length){
+                    prevProps.chosen_seats.map((seat)=>{
+                        var bool = false;
+                        this.props.chosen_seats.map((seat_1)=>{
+                            if(seat_1.seat_id == seat.seat_id){
+                                bool = true
+                            }
+                        })
+                        if(!bool){
+                            document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                            document.getElementById(seat.seat_id).classList.add('seat-not-taken');                
+                        } 
+                    })
+                }
             }
         }
     }
@@ -182,6 +202,9 @@ export default class Singson extends Component{
             var section = "";
             var selected_date = this.props.chosen_date;
             let status = "";
+            let chosen_seats = this.props.chosen_seats.map((seat)=>{
+                return seat.seat_id
+            });
 
             if(type == "balcony"){
                 section = sections_balcony[section_number];
@@ -193,8 +216,16 @@ export default class Singson extends Component{
                 let class_name = "seat"
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
-                        class_name+=" seat-taken"
-                        status = "sold"
+                        let being_edit = false;
+                        if(chosen_seats.includes(section+row+(i+1))){
+                            being_edit = true
+                        }
+                        if(!being_edit){
+                            class_name+=" seat-taken"
+                            status = "sold"
+                        }else{
+                            class_name+=" seat-reserved editing"
+                        }
                     }else{
                         class_name+=" seat-not-taken"
                         status = "free"

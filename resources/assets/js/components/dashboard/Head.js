@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Home from './Home'
 import Tickets from './Tickets'
+import Ticketing from '../ticketing/Ticketing'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import axios from 'axios';
 
@@ -72,6 +73,8 @@ export default class Head extends Component{
                 <Route exact path={`${this.props.match.url}/tickets`} component={Tickets}/>
                 <Route exact path={`${this.props.match.url}/tickets/order/:id`} component={Tickets}/>
                 <Route exact path={`${this.props.match.url}/tickets/ticket/:id`} component={Tickets}/>
+                <Route exact path={`${this.props.match.url}/tickets/ticket/edit/:id`} component={Ticketing}/>
+
 
             </div>
             

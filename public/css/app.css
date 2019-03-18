@@ -12217,6 +12217,13 @@ body {
   content: "";
 }
 
+#ticket-info-modal input {
+  margin-left: 10px;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 40%;
+}
+
 .seat-reserved {
   color: white;
   background-color: #2741af;

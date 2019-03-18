@@ -2083,8 +2083,8 @@ var Singson = function (_Component) {
     }, {
         key: 'reArrangeSeats',
         value: function reArrangeSeats() {
-            /* //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
-            var proper_order = {
+            //code to rearrange seats. Fixed in backend side instead. Could be unnecessarily taxing on front end side
+            /*var proper_order = {
                 balcony: ["Balcony Left","Balcony Center","Balcony Right"],
                 ground_floor: ["Orchestra Left","Orchestra Center","Orchestra Right"]
             }
@@ -2114,37 +2114,30 @@ var Singson = function (_Component) {
         value: function componentDidUpdate(prevProps) {
             var _this2 = this;
 
-            //incoming weird ass code
-            if (prevProps.chosen_seats) {
-                if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
-                    prevProps.chosen_seats.map(function (seat) {
-                        var bool = false;
-                        _this2.props.chosen_seats.map(function (seat_1) {
-                            if (seat_1.seat_id == seat.seat_id) {
-                                bool = true;
+            var from_dashboard = this.props.hasOwnProperty('from_dashboard');
+            if (!from_dashboard) {
+                if (prevProps.chosen_seats) {
+                    //handle delete from ticketing component (original code)
+                    if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
+                        prevProps.chosen_seats.map(function (seat) {
+                            var bool = false;
+                            _this2.props.chosen_seats.map(function (seat_1) {
+                                if (seat_1.seat_id == seat.seat_id) {
+                                    bool = true;
+                                }
+                            });
+                            if (!bool) {
+                                document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                                document.getElementById(seat.seat_id).classList.add('seat-not-taken');
                             }
                         });
-                        if (!bool) {
-                            document.getElementById(seat.seat_id).classList.remove('seat-reserved');
-                            document.getElementById(seat.seat_id).classList.add('seat-not-taken');
-                        }
-                    });
+                    }
                 }
-            }
-
-            if (prevProps.chosen_seats[0] && !this.props.chosen_seats[0] || !prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
-                console.log(prevProps.chosen_seats);
-                console.log(this.props.chosen_seats);
-                prevProps.chosen_seats.map(function (seat) {
-                    document.getElementById(seat.seat_id).classList.remove('seat-reserved');
-                    document.getElementById(seat.seat_id).classList.add('seat-not-taken');
-                });
-                this.props.chosen_seats.map(function (seat) {
-                    document.getElementById(seat.seat_id).classList.add('seat-reserved');
-                    document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
-                });
-            } else if (prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
-                if (prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date) {
+                //incoming weird ass code
+                if (prevProps.chosen_seats[0] && !this.props.chosen_seats[0] || //handle on selected seat based on date
+                !prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
+                    console.log(prevProps.chosen_seats);
+                    console.log(this.props.chosen_seats);
                     prevProps.chosen_seats.map(function (seat) {
                         document.getElementById(seat.seat_id).classList.remove('seat-reserved');
                         document.getElementById(seat.seat_id).classList.add('seat-not-taken');
@@ -2153,6 +2146,34 @@ var Singson = function (_Component) {
                         document.getElementById(seat.seat_id).classList.add('seat-reserved');
                         document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
                     });
+                } else if (prevProps.chosen_seats[0] && this.props.chosen_seats[0]) {
+                    if (prevProps.chosen_seats[0].date != this.props.chosen_seats[0].date) {
+                        prevProps.chosen_seats.map(function (seat) {
+                            document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                            document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                        });
+                        this.props.chosen_seats.map(function (seat) {
+                            document.getElementById(seat.seat_id).classList.add('seat-reserved');
+                            document.getElementById(seat.seat_id).classList.remove('seat-not-taken');
+                        });
+                    }
+                }
+            } else {
+                if (prevProps.chosen_seats) {
+                    if (prevProps.chosen_seats.length != this.props.chosen_seats.length) {
+                        prevProps.chosen_seats.map(function (seat) {
+                            var bool = false;
+                            _this2.props.chosen_seats.map(function (seat_1) {
+                                if (seat_1.seat_id == seat.seat_id) {
+                                    bool = true;
+                                }
+                            });
+                            if (!bool) {
+                                document.getElementById(seat.seat_id).classList.remove('seat-reserved');
+                                document.getElementById(seat.seat_id).classList.add('seat-not-taken');
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -2246,6 +2267,9 @@ var Singson = function (_Component) {
                 var section = "";
                 var selected_date = _this3.props.chosen_date;
                 var status = "";
+                var chosen_seats = _this3.props.chosen_seats.map(function (seat) {
+                    return seat.seat_id;
+                });
 
                 if (type == "balcony") {
                     section = sections_balcony[section_number];
@@ -2257,8 +2281,16 @@ var Singson = function (_Component) {
                     var _class_name = "seat";
                     if (_this3.props.sold_seats[selected_date]) {
                         if (_this3.props.sold_seats[selected_date].includes(section + row + (i + 1))) {
-                            _class_name += " seat-taken";
-                            status = "sold";
+                            var being_edit = false;
+                            if (chosen_seats.includes(section + row + (i + 1))) {
+                                being_edit = true;
+                            }
+                            if (!being_edit) {
+                                _class_name += " seat-taken";
+                                status = "sold";
+                            } else {
+                                _class_name += " seat-reserved editing";
+                            }
                         } else {
                             _class_name += " seat-not-taken";
                             status = "free";
@@ -4551,13 +4583,17 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_router_dom__ = __webpack_require__(20);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -4571,12 +4607,34 @@ var OrderInfoModal = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (OrderInfoModal.__proto__ || Object.getPrototypeOf(OrderInfoModal)).call(this));
 
-        _this.state = {};
+        _this.state = {
+            buyer_first_name: "",
+            buyer_last_name: "",
+            buyer_email: "",
+            buyer_event_day: "",
+            paid: false,
+            student_id_number: ""
+
+        };
         _this.handleVerify = _this.handleVerify.bind(_this);
+        _this.renderInfo = _this.renderInfo.bind(_this);
+        _this.handleEditInfo = _this.handleEditInfo.bind(_this);
+        _this.handleRedirectEdit = _this.handleRedirectEdit.bind(_this);
         return _this;
     }
 
     _createClass(OrderInfoModal, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (prevProps.show_ticket_info != this.props.show_ticket_info) {
+                this.setState({
+                    buyer_first_name: this.props.ticket_info.buyer_first_name,
+                    buyer_last_name: this.props.ticket_info.buyer_last_name,
+                    buyer_email: this.props.ticket_info.buyer_email
+                });
+            }
+        }
+    }, {
         key: 'listTickets',
         value: function listTickets(tickets) {
             var _this2 = this;
@@ -4660,6 +4718,158 @@ var OrderInfoModal = function (_Component) {
             });
         }
     }, {
+        key: 'renderInfo',
+        value: function renderInfo(ticket) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Buyer Name:'
+                ),
+                '  ',
+                ticket.buyer_first_name + ' ' + ticket.buyer_last_name,
+                '  ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Email Address:'
+                ),
+                '  ',
+                '' + ticket.buyer_email,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Cell Number:'
+                ),
+                '  ',
+                '' + ticket.buyer_email,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Event:'
+                ),
+                '   ',
+                ticket.event.name,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Date Chosen:'
+                ),
+                ' ',
+                ticket.event_day.date,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Bought Tickets:'
+                ),
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                this.listTickets(ticket.tickets)
+            );
+        }
+    }, {
+        key: 'handleRedirectEdit',
+        value: function handleRedirectEdit() {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */], {
+                to: {
+                    pathname: "/",
+                    state: {
+                        fromOrderInfo: true,
+                        order: this.props.ticket_info
+                    }
+                }
+            });
+        }
+    }, {
+        key: 'handleEditInfo',
+        value: function handleEditInfo(e) {
+            var value = e.target.value;
+            var input = e.target.id;
+            this.setState(_defineProperty({}, input, value));
+        }
+    }, {
+        key: 'renderEditInfo',
+        value: function renderEditInfo(ticket) {
+            var style = {
+                width: "100%",
+                textAlign: "center",
+                marginBottom: "15px"
+            };
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'span',
+                        null,
+                        'Buyer First Name:'
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_first_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_first_name, 'class': 'form-control', placeholder: 'First Name' }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Buyer Last Name:'
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_last_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_last_name, 'class': 'form-control', placeholder: 'Last Name' }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Email Address:'
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_email', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_email, 'class': 'form-control', placeholder: 'Email Address' }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Date Chosen:'
+                ),
+                ' ',
+                ticket.event_day.date,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */],
+                    {
+                        to: {
+                            pathname: '/dashboard/tickets/ticket/edit/' + this.props.ticket_info.id,
+                            state: {
+                                fromOrderInfo: true,
+                                order: this.props.ticket_info
+                            }
+                        }
+                    },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
+                            { style: style, variant: 'primary' },
+                            'Edit Seatings'
+                        )
+                    )
+                ),
+                this.listTickets(ticket.tickets)
+            );
+        }
+    }, {
         key: 'renderModal',
         value: function renderModal(ticket) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -4678,60 +4888,7 @@ var OrderInfoModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Body,
                     null,
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Buyer Name:'
-                    ),
-                    '  ',
-                    ticket.buyer_first_name + ' ' + ticket.buyer_last_name,
-                    '  ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Email Address:'
-                    ),
-                    '  ',
-                    '' + ticket.buyer_email,
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Cell Number:'
-                    ),
-                    '  ',
-                    '' + ticket.buyer_email,
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Event:'
-                    ),
-                    '   ',
-                    ticket.event.name,
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Date Chosen:'
-                    ),
-                    ' ',
-                    ticket.event_day.date,
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'b',
-                        null,
-                        'Bought Tickets:'
-                    ),
-                    ' ',
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                    this.listTickets(ticket.tickets)
+                    this.props.edit_mode ? this.renderEditInfo(ticket) : this.renderInfo(ticket)
                 )
             );
         }
@@ -9512,9 +9669,10 @@ module.exports = Cancel;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Example__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Home__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Tickets__ = __webpack_require__(268);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ticketing_Ticketing__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_router_dom__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9522,6 +9680,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -9554,7 +9713,7 @@ var Head = function (_Component) {
             var _this2 = this;
 
             console.log(this.props.match.path + '/example');
-            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/login-check').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_8_axios___default.a.get('/login-check').then(function (res) {
                 _this2.setState({
                     user: res.data.user
                 });
@@ -9574,7 +9733,7 @@ var Head = function (_Component) {
     }, {
         key: 'handleLogout',
         value: function handleLogout() {
-            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/logout').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_8_axios___default.a.get('/logout').then(function (res) {
                 window.location.href = '/';
             });
         }
@@ -9625,11 +9784,12 @@ var Head = function (_Component) {
                         'Logout'
                     )
                 ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Route */], { exact: true, path: '' + this.props.match.url, component: __WEBPACK_IMPORTED_MODULE_4__Home__["a" /* default */] }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/home', component: __WEBPACK_IMPORTED_MODULE_4__Home__["a" /* default */] }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets/order/:id', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets/ticket/:id', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] })
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: '' + this.props.match.url, component: __WEBPACK_IMPORTED_MODULE_4__Home__["a" /* default */] }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/home', component: __WEBPACK_IMPORTED_MODULE_4__Home__["a" /* default */] }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets/order/:id', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets/ticket/:id', component: __WEBPACK_IMPORTED_MODULE_5__Tickets__["a" /* default */] }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { exact: true, path: this.props.match.url + '/tickets/ticket/edit/:id', component: __WEBPACK_IMPORTED_MODULE_6__ticketing_Ticketing__["a" /* default */] })
             );
         }
     }]);
@@ -33770,7 +33930,8 @@ var Ticketing = function (_Component) {
             dates: [],
             selected_date: "",
             event: {},
-            sold_seats: {}
+            sold_seats: {},
+            from_dashboard: false
         };
         _this.test = _this.test.bind(_this);
         _this.handleChosenSeats = _this.handleChosenSeats.bind(_this);
@@ -33785,6 +33946,28 @@ var Ticketing = function (_Component) {
     }
 
     _createClass(Ticketing, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            if (this.props.location.state) {
+                if (this.props.location.state.fromOrderInfo) {
+                    var order = this.props.location.state.order;
+                    var chosen_seats = [];
+                    order.tickets.map(function (ticket) {
+                        chosen_seats.push({
+                            date: order.event_day.date,
+                            seat_id: ticket.slug,
+                            section_name: ticket.section.name,
+                            ticket_price: ticket.ticket_price
+                        });
+                    });
+                    this.setState({
+                        chosen_seats: chosen_seats,
+                        from_dashboard: true
+                    });
+                }
+            }
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.setVenue();
@@ -34297,7 +34480,8 @@ var Ticketing = function (_Component) {
                             handleChosenSeats: this.handleChosenSeats,
                             chosen_seats: this.state.chosen_seats,
                             chosen_date: this.state.selected_date,
-                            sold_seats: this.state.sold_seats
+                            sold_seats: this.state.sold_seats,
+                            edit_mode: this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false
                         })
                     )
                 ),
@@ -44893,6 +45077,8 @@ var Loader = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_axios__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -44926,7 +45112,8 @@ var Tickets = function (_Component) {
       ticket_info: {},
       dates: [],
       selected_date: "",
-      search: ""
+      search: "",
+      edit_mode: false
     };
     _this.renderSmallPaginate = _this.renderSmallPaginate.bind(_this);
     _this.loadPaginatedData = _this.loadPaginatedData.bind(_this);
@@ -44935,6 +45122,7 @@ var Tickets = function (_Component) {
     _this.handleSetDate = _this.handleSetDate.bind(_this);
     _this.handleVerify = _this.handleVerify.bind(_this);
     _this.handleVerifyAttendance = _this.handleVerifyAttendance.bind(_this);
+    _this.handleEditOrder = _this.handleEditOrder.bind(_this);
     return _this;
   }
 
@@ -45086,7 +45274,8 @@ var Tickets = function (_Component) {
 
       this.setState({
         show_ticket_info: just_refresh ? true : bool,
-        ticket_info: order
+        ticket_info: order,
+        edit_mode: false
       });
     }
   }, {
@@ -45131,6 +45320,15 @@ var Tickets = function (_Component) {
     key: 'handleVerifyAttendance',
     value: function handleVerifyAttendance(ticket) {
       this.loadPaginatedData(this.state.current_page, ticket);
+    }
+  }, {
+    key: 'handleEditOrder',
+    value: function handleEditOrder(e, order) {
+      this.setState({
+        edit_mode: !this.state.edit_mode,
+        show_ticket_info: !this.state.show_ticket_info,
+        ticket_info: order
+      });
     }
   }, {
     key: 'render',
@@ -45285,6 +45483,17 @@ var Tickets = function (_Component) {
                           }, variant: 'primary' },
                         'View'
                       )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                      'td',
+                      null,
+                      __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
+                        { onClick: function onClick(e) {
+                            return _this8.handleEditOrder(e, order);
+                          }, variant: 'secondary' },
+                        'Edit'
+                      )
                     )
                   );
                 })
@@ -45298,13 +45507,14 @@ var Tickets = function (_Component) {
           )
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], null),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], {
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__OrderInfoModal__["a" /* default */], _defineProperty({
           from_tickets: true,
           handleVerifyAttendance: this.handleVerifyAttendance,
           show_ticket_info: this.state.show_ticket_info,
           toggle_show: this.handleShowTicketInfo,
-          ticket_info: this.state.ticket_info
-        })
+          ticket_info: this.state.ticket_info,
+          edit_mode: this.state.edit_mode
+        }, 'show_ticket_info', this.state.show_ticket_info))
       );
     }
   }]);
