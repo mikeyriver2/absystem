@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Dropdown,Col,Row} from 'react-bootstrap';
 import Singson from './venues/Singson'
+import HyundaiHall from './venues/HyundaiHall'
 import ConfirmModal from './ConfirmModal'
 import axios from 'axios';
 
@@ -418,7 +419,15 @@ export default class Ticketing extends Component {
                         </div>
                     </div>
                     <div className="clickables">
-                        <Singson 
+                        {/* <Singson 
+                            venue = {this.state.venue}
+                            handleChosenSeats = {this.handleChosenSeats}
+                            chosen_seats = {this.state.chosen_seats}
+                            chosen_date = {this.state.selected_date}
+                            sold_seats = {this.state.sold_seats}
+                            edit_mode = {this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false}
+                        /> */}
+                        <HyundaiHall 
                             venue = {this.state.venue}
                             handleChosenSeats = {this.handleChosenSeats}
                             chosen_seats = {this.state.chosen_seats}

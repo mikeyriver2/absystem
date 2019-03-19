@@ -8,7 +8,7 @@ use App\Section;
 class VenueController extends Controller
 {
     public function index(){
-        $venue = Venue::where('name','Singson')
+        $venue = Venue::where('name','HyundaiHall')
                 ->with(['sections' => function($query){
                     $query->orderBy('order','asc');
                 },'event.ticketOrders'=>function($query){
