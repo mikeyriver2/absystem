@@ -186,6 +186,7 @@ export default class Singson extends Component{
         var sections = [];
         var from_dashboard = this.props.hasOwnProperty('from_dashboard')
         var rows = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
+        var original_chosen_seats = []; //for edit mode;
 
         const seat = (row_number,number_of_seats,section_number) => {
             var height = 3.5
@@ -209,31 +210,32 @@ export default class Singson extends Component{
                 section = sections[section_number];
             }
             var row = rows[row_number];
+            let edit_mode = false;
+            let chosen_seats = [];
+            if(this.props.edit_mode){ //code to show highlighted reserved
+                chosen_seats = this.props.chosen_seats.map((seat)=>{
+                    return seat.seat_id;
+                });
+                edit_mode = true;
+            }
             for(var i = 0; i < number_of_seats; i++){
                 let class_name = "seat"
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
-                        if(this.props.edit_mode){
-                            let chosen_seats = this.props.chosen_seats.map((seat)=>{
-                                return seat.seat_id
-                            });
-                            let being_edit = false;
-                            if(chosen_seats.includes(section+row+(i+1))){
-                                being_edit = true
-                            }
-                            if(!being_edit){
-                                class_name+=" seat-taken"
-                                status = "sold"
-                            }else{
-                                class_name+=" seat-reserved editing"
-                            }
-                        }else{
-                            class_name+=" seat-taken"
-                            status = "sold"
-                        }
+                        class_name+=" seat-taken"
+                        status = "sold"
                     }else{
-                        class_name+=" seat-not-taken"
-                        status = "free"
+                        if(edit_mode){
+                            if(chosen_seats.includes(section+row+(i+1))){
+                                class_name+=" seat-reserved";
+                            }else{
+                                class_name+=" seat-not-taken"
+                                status = "free"
+                            }    
+                        }else{
+                            class_name+=" seat-not-taken"
+                            status = "free"
+                        }
                     }
                 }else{
                     class_name+=" seat-not-taken"

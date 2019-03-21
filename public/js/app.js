@@ -2251,6 +2251,7 @@ var Singson = function (_Component) {
             var sections = [];
             var from_dashboard = this.props.hasOwnProperty('from_dashboard');
             var rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
+            var original_chosen_seats = []; //for edit mode;
 
             var seat = function seat(row_number, number_of_seats, section_number) {
                 var height = 3.5;
@@ -2274,31 +2275,33 @@ var Singson = function (_Component) {
                     section = sections[section_number];
                 }
                 var row = rows[row_number];
+                var edit_mode = false;
+                var chosen_seats = [];
+                if (_this3.props.edit_mode) {
+                    //code to show highlighted reserved
+                    chosen_seats = _this3.props.chosen_seats.map(function (seat) {
+                        return seat.seat_id;
+                    });
+                    edit_mode = true;
+                }
                 for (var i = 0; i < number_of_seats; i++) {
                     var _class_name = "seat";
                     if (_this3.props.sold_seats[selected_date]) {
                         if (_this3.props.sold_seats[selected_date].includes(section + row + (i + 1))) {
-                            if (_this3.props.edit_mode) {
-                                var chosen_seats = _this3.props.chosen_seats.map(function (seat) {
-                                    return seat.seat_id;
-                                });
-                                var being_edit = false;
+                            _class_name += " seat-taken";
+                            status = "sold";
+                        } else {
+                            if (edit_mode) {
                                 if (chosen_seats.includes(section + row + (i + 1))) {
-                                    being_edit = true;
-                                }
-                                if (!being_edit) {
-                                    _class_name += " seat-taken";
-                                    status = "sold";
+                                    _class_name += " seat-reserved";
                                 } else {
-                                    _class_name += " seat-reserved editing";
+                                    _class_name += " seat-not-taken";
+                                    status = "free";
                                 }
                             } else {
-                                _class_name += " seat-taken";
-                                status = "sold";
+                                _class_name += " seat-not-taken";
+                                status = "free";
                             }
-                        } else {
-                            _class_name += " seat-not-taken";
-                            status = "free";
                         }
                     } else {
                         _class_name += " seat-not-taken";
@@ -5904,7 +5907,8 @@ var Ticketing = function (_Component) {
                             date: order.event_day.date,
                             seat_id: ticket.slug,
                             section_name: ticket.section.name,
-                            ticket_price: ticket.ticket_price
+                            ticket_price: ticket.ticket_price,
+                            from_edit: true
                         });
                     });
                     this.setState({
@@ -6039,6 +6043,20 @@ var Ticketing = function (_Component) {
                         sold_seats[order.event_day.date].push(ticket.slug);
                     });
                 });
+
+                var fromOrderInfo = void 0;
+                if (_this3.state.from_dashboard) {
+                    fromOrderInfo = _this3.props.location.state.order;
+                    var flattened = fromOrderInfo.tickets.map(function (ticket) {
+                        return ticket.slug;
+                    });
+                    var new_array = sold_seats[fromOrderInfo.event_day.date].filter(function (ticket, index) {
+                        return flattened.indexOf(ticket) < 0;
+                    });
+                    // console.log(flattened);
+                    // console.log(new_array);
+                    sold_seats[fromOrderInfo.event_day.date] = new_array;
+                }
 
                 _this3.setState({
                     sold_seats: sold_seats,
@@ -6269,7 +6287,8 @@ var Ticketing = function (_Component) {
             var number_of_rowSection = [4, 5, 4]; //same rule
             var numberOfSections = 3;
             var numberOfRows = 15;
-
+            var edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false;
+            var orders_from_edit = edit_mode ? this.props.location.state.fromOrderInfo : {};
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'container-vanilla' },
@@ -6373,6 +6392,11 @@ var Ticketing = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', { style: { margin: "10px 1vw" }, className: 'summary-hr' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'span',
+                                { onClick: this.clearOrder, className: 'clear-order' },
+                                'Clear Orders'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'price' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -6422,13 +6446,14 @@ var Ticketing = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
                         { className: 'clickables' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__venues_HyundaiHall__["a" /* default */], {
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__venues_Singson__["a" /* default */], {
                             venue: this.state.venue,
                             handleChosenSeats: this.handleChosenSeats,
                             chosen_seats: this.state.chosen_seats,
                             chosen_date: this.state.selected_date,
                             sold_seats: this.state.sold_seats,
-                            edit_mode: this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false
+                            edit_mode: edit_mode,
+                            orders_from_edit: orders_from_edit
                         })
                     )
                 ),
@@ -45221,7 +45246,7 @@ var HyundaiHall = function (_Component) {
     return HyundaiHall;
 }(__WEBPACK_IMPORTED_MODULE_1_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["a"] = (HyundaiHall);
+/* unused harmony default export */ var _unused_webpack_default_export = (HyundaiHall);
 
 /***/ }),
 /* 267 */

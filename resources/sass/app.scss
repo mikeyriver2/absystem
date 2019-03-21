@@ -295,6 +295,13 @@ body{
     .summary{
       flex-grow: 1;
       padding-top:1vh;
+      .clear-order{
+        float: left;
+        margin-left: 10px;
+        color: red;
+        font-weight: bold;
+        cursor: pointer;
+      }
       //.total-price{
         .price{
           text-align: right;

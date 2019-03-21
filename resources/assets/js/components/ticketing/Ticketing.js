@@ -44,6 +44,7 @@ export default class Ticketing extends Component {
                         seat_id: ticket.slug,
                         section_name: ticket.section.name,
                         ticket_price: ticket.ticket_price,
+                        from_edit: true
                     })
                 });
                 this.setState({
@@ -168,6 +169,20 @@ export default class Ticketing extends Component {
                     sold_seats[order.event_day.date].push(ticket.slug)
                 })
             })
+
+            let fromOrderInfo;
+            if(this.state.from_dashboard){
+                fromOrderInfo = this.props.location.state.order
+                let flattened = fromOrderInfo.tickets.map((ticket)=>{
+                    return ticket.slug
+                })
+                let new_array = sold_seats[fromOrderInfo.event_day.date].filter((ticket,index)=>{
+                    return flattened.indexOf(ticket) < 0;
+                })
+                // console.log(flattened);
+                // console.log(new_array);
+                sold_seats[fromOrderInfo.event_day.date] = new_array;
+            }
 
             this.setState({
                 sold_seats: sold_seats,
@@ -343,7 +358,8 @@ export default class Ticketing extends Component {
         var number_of_rowSection = [4,5,4] //same rule
         var numberOfSections = 3;
         var numberOfRows = 15;
-
+        let edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false
+        let orders_from_edit = edit_mode ? this.props.location.state.fromOrderInfo : {}
         return (
             <div className="container-vanilla">
                 <div className="ticket-module">
@@ -396,6 +412,7 @@ export default class Ticketing extends Component {
                             </div>
                             {/*<div className="total-price">*/}
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
+                                <span onClick={this.clearOrder} className="clear-order">Clear Orders</span>
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
                                     {this.state.chosen_seats.length > 0 ?
@@ -419,22 +436,23 @@ export default class Ticketing extends Component {
                         </div>
                     </div>
                     <div className="clickables">
-                        {/* <Singson 
+                        <Singson 
+                            venue = {this.state.venue}
+                            handleChosenSeats = {this.handleChosenSeats}
+                            chosen_seats = {this.state.chosen_seats}
+                            chosen_date = {this.state.selected_date}
+                            sold_seats = {this.state.sold_seats}
+                            edit_mode = {edit_mode}
+                            orders_from_edit = {orders_from_edit}
+                        /> 
+                        {/*<HyundaiHall 
                             venue = {this.state.venue}
                             handleChosenSeats = {this.handleChosenSeats}
                             chosen_seats = {this.state.chosen_seats}
                             chosen_date = {this.state.selected_date}
                             sold_seats = {this.state.sold_seats}
                             edit_mode = {this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false}
-                        /> */}
-                        <HyundaiHall 
-                            venue = {this.state.venue}
-                            handleChosenSeats = {this.handleChosenSeats}
-                            chosen_seats = {this.state.chosen_seats}
-                            chosen_date = {this.state.selected_date}
-                            sold_seats = {this.state.sold_seats}
-                            edit_mode = {this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false}
-                        />
+                        />*/}
                     </div>
                         {/*this.test()*/}
                 </div>
