@@ -11942,10 +11942,18 @@ body {
           justify-content: flex-end;
 }
 
+#logout:hover {
+  background-color: #8080801f;
+}
+
 #logout {
+  -webkit-transition: background-color 1s;
+  transition: background-color 1s;
+  width: 15vw;
+  text-align: center;
   position: absolute;
   top: 10vh;
-  left: 82vw;
+  left: 75vw;
   z-index: 10000000;
   /* font-weight: bold; */
   cursor: pointer;
