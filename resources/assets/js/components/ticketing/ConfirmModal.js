@@ -19,9 +19,10 @@ export default class ConfirmModal extends Component{
             year_course: "",
             error: true //there is error
         }
-        this.toggleLoading = this.toggleLoading.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.submitOrder = this.submitOrder.bind(this)
+        this.toggleLoading = this.toggleLoading.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.submitOrder = this.submitOrder.bind(this);
+        this.renderConfirm = this.renderConfirm.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -165,14 +166,28 @@ export default class ConfirmModal extends Component{
         )
     }
 
+    renderConfirm(){
+        return (
+            <div className="confirm-container">
+                <div className="confirm-message">
+                    Please consult with an executive officer before proceeding. Confirm?
+                </div>
+                <div className="ok">
+                    <button style={{marginTop: "2vh"}} class="btn btn-light">OK</button>    
+                </div>
+            </div>
+        )
+    }
+
     render(){
+        let edit_mode = this.props.edit_mode;
         return (
         <Modal id="confirm-order-modal" show={this.props.show_order_modal} onHide={this.props.show_order_modal_fnc}>
           <Modal.Header closeButton>
-            <h4>Contact Information</h4>
+            {edit_mode ? <h4>Confirm Seat Changes</h4> : <h4>Contact Information</h4>}
           </Modal.Header>
             <Modal.Body closeButton>    
-                {!this.state.thanks ? this.renderInputs() : this.renderThankYou()}
+                {!edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()}
             </Modal.Body>
         </Modal>
         )

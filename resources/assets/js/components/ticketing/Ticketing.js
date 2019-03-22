@@ -85,6 +85,7 @@ export default class Ticketing extends Component {
 
     componentDidUpdate(prevProps, prevState){
         if(prevState.selected_date != this.state.selected_date){
+            let edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false
             let buffer = prevState.chosen_seats_buffer.splice(0);
             let prev_chosen = prevState.chosen_seats;
             if(buffer.length > 0){
@@ -130,6 +131,7 @@ export default class Ticketing extends Component {
     }
 
     setVenue(){
+        let edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false
         let array = [];
         var venue_object = {
             venue_name: "",
@@ -190,7 +192,7 @@ export default class Ticketing extends Component {
                 venue_name: venue_object.venue_name,
                 venue: venue_object.venue,
                 event: res.data.venue.event,
-                selected_date:array[0]
+                selected_date: edit_mode ? this.props.location.state.order.event_day.date : array[0]
             })
         })
     }
@@ -337,6 +339,10 @@ export default class Ticketing extends Component {
         this.setState({
             selected_date: e
         })
+        let edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true :false : false;
+        if(edit_mode){
+            alert(`You've changed your date to ${e}`);            
+        }
     }
 
     test(){
@@ -416,8 +422,8 @@ export default class Ticketing extends Component {
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
                                     {this.state.chosen_seats.length > 0 ?
-                                        <button onClick={this.handleOrder} className="btn btn-default">
-                                            <b>Order Now</b>
+                                        <button style={{left: edit_mode ? "6%" : ""}}onClick={this.handleOrder} className="btn btn-default">
+                                            {edit_mode ? <b>Confirm Seat Change</b> : <b>Order Now</b>}
                                         </button>
                                     :
                                         <button className="btn btn-default" disabled>
@@ -463,6 +469,8 @@ export default class Ticketing extends Component {
                     chosen_seats = {this.state.chosen_seats}
                     chosen_date = {this.state.selected_date}
                     event = {this.state.event}
+                    edit_mode = {edit_mode}
+                    orders_from_edit = {orders_from_edit}
                 />
             </div>
         );

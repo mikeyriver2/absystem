@@ -49,7 +49,9 @@ export default class Head extends Component{
             <div>
                 <Row className="head">
                     <Col md={4} className="logo">
-                        <img src="/images/abs-logo.png" />
+                        <Link to={`/dashboard`}>
+                            <img src="/images/abs-logo.png" />
+                        </Link>
                     </Col>
                     <Col md={4} className="abs-title">
                     ATENEO BLUE SYMPHONY ORCHESTRA

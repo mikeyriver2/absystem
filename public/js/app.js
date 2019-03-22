@@ -5954,6 +5954,7 @@ var Ticketing = function (_Component) {
             var _this2 = this;
 
             if (prevState.selected_date != this.state.selected_date) {
+                var edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false;
                 var buffer = prevState.chosen_seats_buffer.splice(0);
                 var prev_chosen = prevState.chosen_seats;
                 if (buffer.length > 0) {
@@ -6004,6 +6005,7 @@ var Ticketing = function (_Component) {
         value: function setVenue() {
             var _this3 = this;
 
+            var edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false;
             var array = [];
             var venue_object = {
                 venue_name: "",
@@ -6064,7 +6066,7 @@ var Ticketing = function (_Component) {
                     venue_name: venue_object.venue_name,
                     venue: venue_object.venue,
                     event: res.data.venue.event,
-                    selected_date: array[0]
+                    selected_date: edit_mode ? _this3.props.location.state.order.event_day.date : array[0]
                 });
             });
         }
@@ -6257,6 +6259,10 @@ var Ticketing = function (_Component) {
             this.setState({
                 selected_date: e
             });
+            var edit_mode = this.props.location.state ? this.props.location.state.fromOrderInfo ? true : false : false;
+            if (edit_mode) {
+                alert('You\'ve changed your date to ' + e);
+            }
         }
     }, {
         key: 'test',
@@ -6412,8 +6418,12 @@ var Ticketing = function (_Component) {
                                 { className: 'btn-container' },
                                 this.state.chosen_seats.length > 0 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'button',
-                                    { onClick: this.handleOrder, className: 'btn btn-default' },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    { style: { left: edit_mode ? "6%" : "" }, onClick: this.handleOrder, className: 'btn btn-default' },
+                                    edit_mode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'b',
+                                        null,
+                                        'Confirm Seat Change'
+                                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'b',
                                         null,
                                         'Order Now'
@@ -6463,7 +6473,9 @@ var Ticketing = function (_Component) {
                     clearOrder: this.clearOrder,
                     chosen_seats: this.state.chosen_seats,
                     chosen_date: this.state.selected_date,
-                    event: this.state.event
+                    event: this.state.event,
+                    edit_mode: edit_mode,
+                    orders_from_edit: orders_from_edit
                 })
             );
         }
@@ -10400,7 +10412,11 @@ var Head = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                         { md: 4, className: 'logo' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/abs-logo.png' })
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_7_react_router_dom__["b" /* Link */],
+                            { to: '/dashboard' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/abs-logo.png' })
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
@@ -11001,7 +11017,7 @@ var SideSummary = function (_Component) {
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                            { onClick: _this4.getOrderInfo, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
+                            { style: { cursor: "pointer" }, onClick: _this4.getOrderInfo, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
                             'view'
                         )
                     ));
@@ -45299,6 +45315,7 @@ var ConfirmModal = function (_Component) {
         _this.toggleLoading = _this.toggleLoading.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.submitOrder = _this.submitOrder.bind(_this);
+        _this.renderConfirm = _this.renderConfirm.bind(_this);
         return _this;
     }
 
@@ -45501,15 +45518,42 @@ var ConfirmModal = function (_Component) {
             );
         }
     }, {
+        key: 'renderConfirm',
+        value: function renderConfirm() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'confirm-container' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'confirm-message' },
+                    'Please consult with an executive officer before proceeding. Confirm?'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'ok' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'button',
+                        { style: { marginTop: "2vh" }, 'class': 'btn btn-light' },
+                        'OK'
+                    )
+                )
+            );
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var edit_mode = this.props.edit_mode;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */],
                 { id: 'confirm-order-modal', show: this.props.show_order_modal, onHide: this.props.show_order_modal_fnc },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Header,
                     { closeButton: true },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    edit_mode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        null,
+                        'Confirm Seat Changes'
+                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h4',
                         null,
                         'Contact Information'
@@ -45518,7 +45562,7 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Body,
                     { closeButton: true },
-                    !this.state.thanks ? this.renderInputs() : this.renderThankYou()
+                    !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()
                 )
             );
         }

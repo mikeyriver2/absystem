@@ -81,7 +81,7 @@ export default class SideSummary extends Component{
                                 {string.length >= 19 ? <span>{string}...</span> : string}
                             </div>
                         </Col>
-                        <Col onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
+                        <Col style={{cursor:"pointer"}} onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
                             view
                         </Col>
                     </Row>
