@@ -110,4 +110,15 @@ class TicketController extends Controller
         $ticket->save();
     }
 
+    public function EditOrder(Request $request){
+        $order = TicketOrder::find($request->order_id);
+        $order->buyer_first_name = $request->first_name;
+        $order->buyer_last_name = $request->last_name;
+        $order->buyer_email = $request->email;
+        $order->paid = $request->paid;
+        $order->save();
+
+        return "success";
+    }
+
 }

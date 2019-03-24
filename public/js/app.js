@@ -4621,13 +4621,15 @@ var OrderInfoModal = function (_Component) {
             buyer_email: "",
             buyer_event_day: "",
             paid: false,
-            student_id_number: ""
+            student_id_number: "",
+            show_saved_icon: false
 
         };
         _this.handleVerify = _this.handleVerify.bind(_this);
         _this.renderInfo = _this.renderInfo.bind(_this);
         _this.handleEditInfo = _this.handleEditInfo.bind(_this);
         _this.handleRedirectEdit = _this.handleRedirectEdit.bind(_this);
+        _this.handleSetPaid = _this.handleSetPaid.bind(_this);
         return _this;
     }
 
@@ -4638,7 +4640,8 @@ var OrderInfoModal = function (_Component) {
                 this.setState({
                     buyer_first_name: this.props.ticket_info.buyer_first_name,
                     buyer_last_name: this.props.ticket_info.buyer_last_name,
-                    buyer_email: this.props.ticket_info.buyer_email
+                    buyer_email: this.props.ticket_info.buyer_email,
+                    paid: this.props.ticket_info.paid
                 });
             }
         }
@@ -4648,6 +4651,7 @@ var OrderInfoModal = function (_Component) {
             var _this2 = this;
 
             var from_tickets = this.props.hasOwnProperty('from_tickets');
+            var edit_mode = this.props.edit_mode;
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'table',
                 { className: 'table' },
@@ -4667,7 +4671,7 @@ var OrderInfoModal = function (_Component) {
                             null,
                             'section'
                         ),
-                        from_tickets && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        from_tickets && !edit_mode && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'th',
                             null,
                             'Attendance Status'
@@ -4691,7 +4695,7 @@ var OrderInfoModal = function (_Component) {
                                 null,
                                 ticket.section.name
                             ),
-                            from_tickets && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            from_tickets && !edit_mode && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'td',
                                 null,
                                 ticket.status != "validated" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -4808,8 +4812,37 @@ var OrderInfoModal = function (_Component) {
             this.setState(_defineProperty({}, input, value));
         }
     }, {
+        key: 'handleSetPaid',
+        value: function handleSetPaid(value) {
+            console.log(value);
+            this.setState({
+                paid: value
+            });
+        }
+    }, {
+        key: 'handleEditSubmit',
+        value: function handleEditSubmit(e) {
+            var _this4 = this;
+
+            e.preventDefault();
+            var params = {
+                order_id: this.props.ticket_info.id,
+                first_name: this.state.buyer_first_name,
+                last_name: this.state.buyer_last_name,
+                email: this.state.buyer_email,
+                paid: this.state.paid
+            };
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/dashboard/edit-order', params).then(function () {
+                _this4.setState({
+                    show_saved_icon: true
+                });
+            });
+        }
+    }, {
         key: 'renderEditInfo',
         value: function renderEditInfo(ticket) {
+            var _this5 = this;
+
             var style = {
                 width: "100%",
                 textAlign: "center",
@@ -4819,40 +4852,104 @@ var OrderInfoModal = function (_Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'b',
+                    'form',
                     null,
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'span',
+                        'b',
                         null,
-                        'Buyer First Name:'
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'span',
+                            null,
+                            'Buyer First Name:'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_first_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_first_name, 'class': 'form-control', placeholder: 'First Name' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Buyer Last Name:'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_last_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_last_name, 'class': 'form-control', placeholder: 'Last Name' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Email Address:'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_email', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_email, 'class': 'form-control', placeholder: 'Email Address' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Date Chosen:'
+                    ),
+                    ' ',
+                    ticket.event_day.date,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        'Paid Status:'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */],
+                        { className: 'edit-dropdown', onSelect: function onSelect(e) {
+                                _this5.handleSetPaid(e);
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Toggle,
+                            null,
+                            this.state.paid == 1 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'span',
+                                null,
+                                'Paid'
+                            ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'span',
+                                null,
+                                'Not Paid'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Menu,
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Item,
+                                { eventKey: 1 },
+                                'Paid'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Item,
+                                { eventKey: 0 },
+                                'Not Paid'
+                            )
+                        )
+                    ),
+                    ' ',
+                    !this.state.show_saved_icon && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                    this.state.show_saved_icon && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'h4',
+                            { style: { textAlign: "center", marginBottom: "15px", color: "green" } },
+                            'Saved :)'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'b',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
+                            { type: 'submit', onClick: function onClick(e) {
+                                    _this5.handleEditSubmit(e);
+                                }, style: style, variant: 'primary' },
+                            'Save Changes'
+                        )
                     )
                 ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_first_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_first_name, 'class': 'form-control', placeholder: 'First Name' }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'b',
-                    null,
-                    'Buyer Last Name:'
-                ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_last_name', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_last_name, 'class': 'form-control', placeholder: 'Last Name' }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'b',
-                    null,
-                    'Email Address:'
-                ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { id: 'buyer_email', onChange: this.handleEditInfo, type: 'text', value: this.state.buyer_email, 'class': 'form-control', placeholder: 'Email Address' }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'b',
-                    null,
-                    'Date Chosen:'
-                ),
-                ' ',
-                ticket.event_day.date,
-                ' ',
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                this.listTickets(ticket.tickets),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["b" /* Link */],
                     {
@@ -4873,8 +4970,7 @@ var OrderInfoModal = function (_Component) {
                             'Edit Seatings'
                         )
                     )
-                ),
-                this.listTickets(ticket.tickets)
+                )
             );
         }
     }, {

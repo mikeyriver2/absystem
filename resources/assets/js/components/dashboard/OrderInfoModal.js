@@ -1,4 +1,4 @@
-import {Modal,Button} from 'react-bootstrap'
+import {Modal,Button, Dropdown} from 'react-bootstrap'
 import React, { Component } from 'react';
 import Axios from 'axios';
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
@@ -12,13 +12,15 @@ export default class OrderInfoModal extends Component{
             buyer_email: "",
             buyer_event_day: "",
             paid: false,
-            student_id_number: ""
+            student_id_number: "",
+            show_saved_icon: false
 
         }
         this.handleVerify = this.handleVerify.bind(this);
         this.renderInfo = this.renderInfo.bind(this);
         this.handleEditInfo = this.handleEditInfo.bind(this);
         this.handleRedirectEdit = this.handleRedirectEdit.bind(this);
+        this.handleSetPaid = this.handleSetPaid.bind(this);
     }
 
     componentDidUpdate(prevProps,prevState){
@@ -26,13 +28,15 @@ export default class OrderInfoModal extends Component{
             this.setState({
                 buyer_first_name: this.props.ticket_info.buyer_first_name,
                 buyer_last_name: this.props.ticket_info.buyer_last_name,
-                buyer_email: this.props.ticket_info.buyer_email
+                buyer_email: this.props.ticket_info.buyer_email,
+                paid: this.props.ticket_info.paid
             })
         }
     }
 
     listTickets(tickets){
         let from_tickets = this.props.hasOwnProperty('from_tickets');
+        let edit_mode = this.props.edit_mode;
         return (
             <table className="table">
                 <thead>
@@ -40,7 +44,7 @@ export default class OrderInfoModal extends Component{
                         <th>ticket id</th>
                         <th>section</th>
                         {
-                            from_tickets &&
+                            (from_tickets && !edit_mode) &&
                             <th>Attendance Status</th>
                         }
                     </tr>
@@ -51,7 +55,8 @@ export default class OrderInfoModal extends Component{
                             <tr>
                                 <td>{ticket.slug}</td>
                                 <td>{ticket.section.name}</td>
-                                {from_tickets &&
+                                {(from_tickets && !edit_mode) &&
+
                                 <td>
                                     {ticket.status != "validated" ?
                                         <Button onClick={(e)=>{this.handleVerify(ticket)}} variant="success">Verify Attendance</Button>
@@ -116,6 +121,29 @@ export default class OrderInfoModal extends Component{
 
     }
 
+    handleSetPaid(value){
+        console.log(value);
+        this.setState({
+            paid: value
+        })
+    }
+
+    handleEditSubmit(e){
+        e.preventDefault();
+        let params = {
+            order_id: this.props.ticket_info.id,
+            first_name: this.state.buyer_first_name,
+            last_name: this.state.buyer_last_name,
+            email: this.state.buyer_email,
+            paid: this.state.paid
+        }
+        Axios.put('/api/dashboard/edit-order',params).then(()=>{
+            this.setState({
+                show_saved_icon: true
+            })
+        })
+    }
+
     renderEditInfo(ticket){
         let style={
             width: "100%",
@@ -124,6 +152,7 @@ export default class OrderInfoModal extends Component{
         }
         return (
             <div>
+                <form>
                 <b><span>Buyer First Name:</span></b>
                 <input id="buyer_first_name" onChange={this.handleEditInfo} type="text" value={this.state.buyer_first_name} class="form-control" placeholder="First Name"/><br/>
                 
@@ -133,7 +162,30 @@ export default class OrderInfoModal extends Component{
                 <b>Email Address:</b>
                 <input id="buyer_email" onChange={this.handleEditInfo} type="text" value={this.state.buyer_email} class="form-control" placeholder="Email Address"/><br/>
 
-                <b>Date Chosen:</b> {ticket.event_day.date} <br/><br/>
+                <b>Date Chosen:</b> {ticket.event_day.date} <br/>
+
+                <b>Paid Status:</b> 
+                <Dropdown className="edit-dropdown" onSelect={(e)=>{this.handleSetPaid(e)}}>
+                    <Dropdown.Toggle>
+                        {this.state.paid == 1 ? <span>Paid</span> : <span>Not Paid</span>}    
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item eventKey={1}>Paid</Dropdown.Item>
+                        <Dropdown.Item eventKey={0}>Not Paid</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown> {!this.state.show_saved_icon && <br/>}
+
+                {this.state.show_saved_icon &&
+                    <div>
+                        <h4 style={{textAlign: "center", marginBottom: "15px", color:"green"}}>Saved :)</h4>
+                    </div>
+                }
+
+                <b><Button type="submit" onClick={e=>{this.handleEditSubmit(e)}} style={style} variant="primary">Save Changes</Button></b>
+            
+                </form>
+                {this.listTickets(ticket.tickets)}
 
                 <Link
                     to={{
@@ -145,9 +197,9 @@ export default class OrderInfoModal extends Component{
                         }
                     }}
                 >
-                <b><Button style={style} variant="primary">Edit Seatings</Button></b>
+                    <b><Button style={style} variant="primary">Edit Seatings</Button></b>
+
                 </Link>
-                {this.listTickets(ticket.tickets)}
             </div>
         )
     }

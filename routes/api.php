@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::post('orderTicket', 'TicketController@NewOrder');
         Route::post('verify-payment', 'TicketController@VerifyPayment');
         Route::post('verify-attendance', 'TicketController@VerifyAttendance');
+        Route::put('edit-order','TicketController@EditOrder');
     });
 //});
 
