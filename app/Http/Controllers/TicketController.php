@@ -121,4 +121,45 @@ class TicketController extends Controller
         return "success";
     }
 
+    public function EditChosenSeats(Request $request){
+        $order = TicketOrder::find($request->order["id"]);
+        $chosen_date = $order['event_day']['date'];
+        $new_chosen_seats = $request->new_chosen_seats;
+        $seats = $order->tickets;
+        
+        foreach ($new_chosen_seats as $new_seat) {
+            $new_seat_bool = false; //to check if the new_seat is already amongst the selected selected seats
+            foreach ($seats as $index => $current_seat){
+                $current_seat_bool = false; //to check if the old_seat is already amongst the selected new seats
+                if ($new_seat['seat_id'] == $current_seat->slug) {
+                    $new_seat_bool = true; 
+                    $current_seat_bool = true;                  
+                }
+            }
+            if (!$new_seat_bool){ //if seat is not yet part of the already, create new
+                Ticket::create([
+                    'order_id' => $order['id'],
+                    'slug' => $new_seat['seat_id'],
+                    'status' => "unvalidated",
+                    'section_id' => Section::where('name',$new_seat["section_name"])->first()->id,
+                    'ticket_price' => $new_seat['ticket_price']
+                ]);
+            }
+            
+            foreach ($seats as $index => $current_seat) {
+                $new_seat_bool = false; 
+                foreach ($new_chosen_seats as $new_seat){
+                    if ($new_seat['seat_id'] == $current_seat->slug) {
+                        $new_seat_bool = true; 
+                    }
+                }
+                if (!$new_seat_bool){ 
+                    Ticket::destroy($current_seat->id);
+                }
+            }
+        }
+
+        return TicketOrder::find($request->order["id"])->load('tickets','tickets.section');
+    }
+
 }

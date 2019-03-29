@@ -471,6 +471,7 @@ export default class Ticketing extends Component {
                     event = {this.state.event}
                     edit_mode = {edit_mode}
                     orders_from_edit = {orders_from_edit}
+                    order_to_edit = {edit_mode ? this.props.location.state.order : null}
                 />
             </div>
         );

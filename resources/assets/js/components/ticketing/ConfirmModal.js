@@ -4,6 +4,7 @@ import {Dropdown,Col,Row, Modal} from 'react-bootstrap';
 import Singson from './venues/Singson'
 import Loader from '../miscellaneous/LoadAnimation'
 import axios from 'axios';
+import {Redirect} from 'react-router-dom';
 
 export default class ConfirmModal extends Component{
     constructor(){
@@ -17,12 +18,16 @@ export default class ConfirmModal extends Component{
             cell_number: "",
             id_number: 0,
             year_course: "",
-            error: true //there is error
+            error: true, //there is error
+            show_new_tickets: false,
+            new_tickets: []
         }
         this.toggleLoading = this.toggleLoading.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.submitOrder = this.submitOrder.bind(this);
         this.renderConfirm = this.renderConfirm.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.renderNewTickets = this.renderNewTickets.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -166,28 +171,84 @@ export default class ConfirmModal extends Component{
         )
     }
 
+    handleEdit(){
+        this.setState({
+            loading: true
+        })
+        let params = {
+            new_chosen_seats: this.props.chosen_seats,
+            order: this.props.order_to_edit
+        }
+        axios.put("/api/dashboard/edit/seats",params).then((res)=>{
+            this.setState({
+                new_tickets: res.data,
+                show_new_tickets: true
+            })
+            //window.location.href = window.location.host+"/dashboard";
+        })
+    }
+
+    renderNewTickets(){
+        let tickets = this.state.new_tickets.tickets
+        return (
+            <div>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>ticket id</th>
+                            <th>section</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tickets.map((ticket)=>{
+                            return (
+                                <tr>
+                                    <td>{ticket.slug}</td>
+                                    <td>{ticket.section.name}</td>
+                                </tr>
+                            )
+                        })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
+
     renderConfirm(){
+        let style = {
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2vh"
+        }
         return (
             <div className="confirm-container">
                 <div className="confirm-message">
                     Please consult with an executive officer before proceeding. Confirm?
                 </div>
-                <div className="ok">
-                    <button style={{marginTop: "2vh"}} class="btn btn-light">OK</button>    
+                <div onClick={this.handleEdit}className="ok">
+                    <button style={style} class="btn btn-light">
+                        {!this.state.loading ? "Change my god damn seat bitch :)" : <Loader />}
+                    </button>    
                 </div>
             </div>
         )
     }
 
+    redirectBack(){
+        window.location.href = window.location.origin+"/dashboard/tickets";
+    }
+
     render(){
         let edit_mode = this.props.edit_mode;
+        let show_new_tickets = this.state.show_new_tickets;
         return (
-        <Modal id="confirm-order-modal" show={this.props.show_order_modal} onHide={this.props.show_order_modal_fnc}>
+        <Modal id="confirm-order-modal" show={this.props.show_order_modal} onHide={show_new_tickets ? this.redirectBack : this.props.show_order_modal_fnc}>
           <Modal.Header closeButton>
-            {edit_mode ? <h4>Confirm Seat Changes</h4> : <h4>Contact Information</h4>}
+            {show_new_tickets ? <h4>Summary of New Seats</h4> : edit_mode ? <h4>Confirm Seat Changes</h4> : <h4>Contact Information</h4>}
           </Modal.Header>
             <Modal.Body closeButton>    
-                {!edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()}
+                {show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()}
             </Modal.Body>
         </Modal>
         )

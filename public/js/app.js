@@ -6571,7 +6571,8 @@ var Ticketing = function (_Component) {
                     chosen_date: this.state.selected_date,
                     event: this.state.event,
                     edit_mode: edit_mode,
-                    orders_from_edit: orders_from_edit
+                    orders_from_edit: orders_from_edit,
+                    order_to_edit: edit_mode ? this.props.location.state.order : null
                 })
             );
         }
@@ -11149,7 +11150,7 @@ var SideSummary = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'label' },
-                                'Revenue Today'
+                                'Total Revenue'
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45374,6 +45375,7 @@ var HyundaiHall = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(17);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45381,6 +45383,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -45406,12 +45409,16 @@ var ConfirmModal = function (_Component) {
             cell_number: "",
             id_number: 0,
             year_course: "",
-            error: true //there is error
+            error: true, //there is error
+            show_new_tickets: false,
+            new_tickets: []
         };
         _this.toggleLoading = _this.toggleLoading.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.submitOrder = _this.submitOrder.bind(_this);
         _this.renderConfirm = _this.renderConfirm.bind(_this);
+        _this.handleEdit = _this.handleEdit.bind(_this);
+        _this.renderNewTickets = _this.renderNewTickets.bind(_this);
         return _this;
     }
 
@@ -45614,8 +45621,84 @@ var ConfirmModal = function (_Component) {
             );
         }
     }, {
+        key: 'handleEdit',
+        value: function handleEdit() {
+            var _this3 = this;
+
+            this.setState({
+                loading: true
+            });
+            var params = {
+                new_chosen_seats: this.props.chosen_seats,
+                order: this.props.order_to_edit
+            };
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.put("/api/dashboard/edit/seats", params).then(function (res) {
+                _this3.setState({
+                    new_tickets: res.data,
+                    show_new_tickets: true
+                });
+                //window.location.href = window.location.host+"/dashboard";
+            });
+        }
+    }, {
+        key: 'renderNewTickets',
+        value: function renderNewTickets() {
+            var tickets = this.state.new_tickets.tickets;
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'table',
+                    { className: 'table' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'thead',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'tr',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'th',
+                                null,
+                                'ticket id'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'th',
+                                null,
+                                'section'
+                            )
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'tbody',
+                        null,
+                        tickets.map(function (ticket) {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'tr',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    ticket.slug
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'td',
+                                    null,
+                                    ticket.section.name
+                                )
+                            );
+                        })
+                    )
+                )
+            );
+        }
+    }, {
         key: 'renderConfirm',
         value: function renderConfirm() {
+            var style = {
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "2vh"
+            };
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'confirm-container' },
@@ -45626,26 +45709,36 @@ var ConfirmModal = function (_Component) {
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'ok' },
+                    { onClick: this.handleEdit, className: 'ok' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
-                        { style: { marginTop: "2vh" }, 'class': 'btn btn-light' },
-                        'OK'
+                        { style: style, 'class': 'btn btn-light' },
+                        !this.state.loading ? "Change my god damn seat bitch :)" : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__["a" /* default */], null)
                     )
                 )
             );
         }
     }, {
+        key: 'redirectBack',
+        value: function redirectBack() {
+            window.location.href = window.location.origin + "/dashboard/tickets";
+        }
+    }, {
         key: 'render',
         value: function render() {
             var edit_mode = this.props.edit_mode;
+            var show_new_tickets = this.state.show_new_tickets;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */],
-                { id: 'confirm-order-modal', show: this.props.show_order_modal, onHide: this.props.show_order_modal_fnc },
+                { id: 'confirm-order-modal', show: this.props.show_order_modal, onHide: show_new_tickets ? this.redirectBack : this.props.show_order_modal_fnc },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Header,
                     { closeButton: true },
-                    edit_mode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    show_new_tickets ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        null,
+                        'Summary of New Seats'
+                    ) : edit_mode ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h4',
                         null,
                         'Confirm Seat Changes'
@@ -45658,7 +45751,7 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Body,
                     { closeButton: true },
-                    !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()
+                    show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()
                 )
             );
         }

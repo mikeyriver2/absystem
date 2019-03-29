@@ -101,7 +101,7 @@ export default class SideSummary extends Component{
                                     P{this.state.total_revenue}
                                 </div>
                                 <div className="label">
-                                    Revenue Today
+                                    Total Revenue
                                 </div>
                             </div>
                             <div className="tickets-sold">

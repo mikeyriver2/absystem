@@ -24,7 +24,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::post('orderTicket', 'TicketController@NewOrder');
         Route::post('verify-payment', 'TicketController@VerifyPayment');
         Route::post('verify-attendance', 'TicketController@VerifyAttendance');
-        Route::put('edit-order','TicketController@EditOrder');
+        Route::prefix('edit')->group(function(){
+            Route::put('order','TicketController@EditOrder');
+            Route::put('seats','TicketController@EditChosenSeats');
+
+        });
+        
     });
 //});
 
