@@ -4,12 +4,14 @@ import {Dropdown,Col,Row} from 'react-bootstrap';
 import Singson from './venues/Singson'
 import HyundaiHall from './venues/HyundaiHall'
 import ConfirmModal from './ConfirmModal'
+import AreYouSure from '../miscellaneous/AreYouSure'
 import axios from 'axios';
 
 export default class Ticketing extends Component {
     constructor(props){
         super(props);
         this.state = {
+            are_you_sure: false,
             venue_name: "",
             venue: [],
             chosen_seats: [],
@@ -30,6 +32,7 @@ export default class Ticketing extends Component {
         this.clearOrder = this.clearOrder.bind(this);
         this.handleSetDate = this.handleSetDate.bind(this);
         this.setVenue = this.setVenue.bind(this);
+        this.toggleAreYouSure = this.toggleAreYouSure.bind(this);
 
     }
 
@@ -128,6 +131,12 @@ export default class Ticketing extends Component {
                 total_price: total_price
             }));
         }
+    }
+
+    toggleAreYouSure(){
+        this.setState({
+            are_you_sure: !this.state.are_you_sure
+        })
     }
 
     setVenue(){
@@ -472,6 +481,10 @@ export default class Ticketing extends Component {
                     edit_mode = {edit_mode}
                     orders_from_edit = {orders_from_edit}
                     order_to_edit = {edit_mode ? this.props.location.state.order : null}
+                />
+                <AreYouSure
+                    show = {this.state.are_you_sure}
+                    toggle = {this.toggleAreYouSure}
                 />
             </div>
         );

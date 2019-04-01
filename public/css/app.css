@@ -12395,6 +12395,14 @@ body {
   margin-top: 10px;
 }
 
+#are_you_sure .modal-header {
+  font-weight: bold;
+}
+
+#are_you_sure button {
+  float: right;
+}
+
 /* Safari */
 
 @-webkit-keyframes spin {

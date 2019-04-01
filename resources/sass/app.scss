@@ -510,10 +510,6 @@ body{
   }
 }
 
-#popover-seat-info{
-  //top: -20px !important;
-}
-
 #ticket-info-modal{
   input{
     margin-left: 10px;
@@ -666,6 +662,15 @@ body{
   margin-left: 20px;
   margin-bottom: 25px;
   margin-top: 10px;
+}
+
+#are_you_sure{
+  .modal-header{
+    font-weight:bold;
+  }
+  button{
+    float:right;
+  }
 }
 
 /* Safari */

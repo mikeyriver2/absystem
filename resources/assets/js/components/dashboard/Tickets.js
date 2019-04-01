@@ -1,18 +1,20 @@
-import {Row, Col, Table, Dropdown, Button, Pagination} from 'react-bootstrap'
+import {Row, Col, Table, Dropdown, Button, Pagination, Modal} from 'react-bootstrap'
 import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Home from './Home'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import SideBar from './SideBar'
-import SideSummary from './SideSummary'
-import OrderInfoModal from './OrderInfoModal'
+import SideSummary from './SideSummary';
+import AreYouSure from '../miscellaneous/AreYouSure';
+import OrderInfoModal from './OrderInfoModal';
 import axios from 'axios';
 
 export default class Tickets extends Component{
   constructor(props){
     super(props);
     this.state = {
+      are_you_sure: false,
       orders: [],
       current_page: 1,
       total_pages: 1,
@@ -22,6 +24,10 @@ export default class Tickets extends Component{
       selected_date: "",
       search: "",
       edit_mode: false,
+      to_verify_payment: {
+        e: "",
+        order: {}   
+      }
     }
     this.renderSmallPaginate = this.renderSmallPaginate.bind(this);
     this.loadPaginatedData = this.loadPaginatedData.bind(this);
@@ -29,8 +35,10 @@ export default class Tickets extends Component{
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSetDate = this.handleSetDate.bind(this);
     this.handleVerify = this.handleVerify.bind(this);
+    this.verifyPayment = this.verifyPayment.bind(this);
     this.handleVerifyAttendance = this.handleVerifyAttendance.bind(this);
     this.handleEditOrder = this.handleEditOrder.bind(this);
+    this.toggleAreYouSure = this.toggleAreYouSure.bind(this);
   }
 
   componentDidMount(){
@@ -72,6 +80,12 @@ export default class Tickets extends Component{
           }
         })
       }                                             
+    })
+  }
+
+  toggleAreYouSure(){
+    this.setState({
+        are_you_sure: !this.state.are_you_sure
     })
   }
 
@@ -159,8 +173,19 @@ export default class Tickets extends Component{
   }
 
   handleVerify(e,order){
+    this.toggleAreYouSure();
+    this.setState({
+      to_verify_payment: {
+        e: e,
+        order: order
+      }
+    })
+  }
+
+  verifyPayment(e,order){
     axios.post('/api/dashboard/verify-payment',order).then(res=>{
-      this.loadPaginatedData(this.state.current_page)
+      this.loadPaginatedData(this.state.current_page);
+      this.toggleAreYouSure();
     })
 
   }
@@ -260,6 +285,15 @@ export default class Tickets extends Component{
           edit_mode = {this.state.edit_mode}
           show_ticket_info = {this.state.show_ticket_info}
         />
+        <Modal id="are_you_sure" show={this.state.are_you_sure} onHide={this.toggleAreYouSure}>
+          <Modal.Header closeButton>
+            <b>Ey meng, u gotta make sure of dat</b>
+          </Modal.Header>
+          <Modal.Body closeButton>
+            <p>Are you super duper ultra sure? There ain't no turnin' back yo.</p><b/><small>(..jk lng yeh der is)</small>  
+            <button type="button" class="btn btn-success" onClick={()=>{this.verifyPayment(this.state.to_verify_payment.e,this.state.to_verify_payment.order)}}>Yeh Meng</button>
+          </Modal.Body>
+        </Modal>
       </Row>
     )
   }

@@ -21,6 +21,13 @@ export default class OrderInfoModal extends Component{
         this.handleEditInfo = this.handleEditInfo.bind(this);
         this.handleRedirectEdit = this.handleRedirectEdit.bind(this);
         this.handleSetPaid = this.handleSetPaid.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+    }
+
+    componentWillUnmount(){
+        this.setState({
+            show_saved_icon: false
+        })
     }
 
     componentDidUpdate(prevProps,prevState){
@@ -137,9 +144,11 @@ export default class OrderInfoModal extends Component{
             email: this.state.buyer_email,
             paid: this.state.paid
         }
-        Axios.put('/api/dashboard/edit-order',params).then(()=>{
+        Axios.put('/api/dashboard/edit/order',params).then(()=>{
             this.setState({
                 show_saved_icon: true
+            },()=>{
+                this.props.handleVerifyAttendance(this.props.ticket_info)
             })
         })
     }
@@ -183,7 +192,8 @@ export default class OrderInfoModal extends Component{
                 }
 
                 <b><Button type="submit" onClick={e=>{this.handleEditSubmit(e)}} style={style} variant="primary">Save Changes</Button></b>
-            
+                <b><Button type="submit" style={style} variant="danger">Delete Order</Button></b>
+
                 </form>
                 {this.listTickets(ticket.tickets)}
 
@@ -202,6 +212,15 @@ export default class OrderInfoModal extends Component{
                 </Link>
             </div>
         )
+    }
+
+    hideModal(){
+        this.setState({
+            show_saved_icon: false
+        },()=>{
+            this.props.toggle_show()
+        })
+        
     }
 
     renderModal(ticket){
