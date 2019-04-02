@@ -24,10 +24,13 @@ export default class Home extends Component{
             sold_seats: {},
             show_ticket_info: false,
             ticket_info: {},
+            associated_tickets: []
         }
         this.setVenue = this.setVenue.bind(this);
         this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
         this.getOrderInfo = this.getOrderInfo.bind(this);
+        this.getAssociatedSeats = this.getAssociatedSeats.bind(this);
+        this.resetAssociatedSeats = this.resetAssociatedSeats.bind(this);
 
     }
 
@@ -91,10 +94,30 @@ export default class Home extends Component{
     }
 
     getOrderInfo(code){
+        this.setState({
+            associated_tickets: []
+        })
         console.log(code);
-        axios.get('/api/dashboard/view-order/'+code+'').then(res=>{
-            this.handleShowTicketInfo(null,res.data.order)
+        let params = {
+            code : code,
+            chosen_date : this.state.selected_date
+        }
+        axios.post('/api/dashboard/view-order',params).then(res=>{
+            this.getAssociatedSeats(res.data.ticket.ticket_order.tickets)
+            //this.handleShowTicketInfo(null,res.data.order)
         });
+    }
+
+    resetAssociatedSeats(){
+        this.setState({
+            associated_tickets: []
+        })
+    }
+
+    getAssociatedSeats(tickets){
+        this.setState({
+            associated_tickets: tickets
+        })
     }
 
     handleShowTicketInfo(e=null,order={}){
@@ -155,6 +178,8 @@ export default class Home extends Component{
                     </div>
                     <div className="main-venue">
                         <Singson
+                            resetAssociatedSeats = {this.resetAssociatedSeats}
+                            associated_seats = {this.state.associated_tickets}
                             venue={this.state.venue}
                             from_dashboard={true}
                             chosen_date = {this.state.selected_date}
@@ -164,6 +189,7 @@ export default class Home extends Component{
                     </div>
                 </Col>
                 <SideSummary
+                    chosen_date = {this.state.selected_date}
                     handleShowSales = {this.handleShowSales}
                 />
                 <OrderInfoModal 

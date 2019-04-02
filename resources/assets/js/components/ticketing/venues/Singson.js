@@ -119,8 +119,25 @@ export default class Singson extends Component{
     }
 
     renderSeatPopOver(e,status){
+        var associated_seats = [];
+        var associated_seats_date = "";
+        var from_dashboard = this.props.hasOwnProperty('from_dashboard')
+
+        if(this.props.associated_seats.length > 0){
+            associated_seats = this.props.associated_seats.map((seat)=>{
+                return seat.slug
+            })
+            if(associated_seats.includes(e.target.id)){
+                this.props.resetAssociatedSeats();
+            }else{
+                this.props.getOrderInfo(e.target.id);
+            }
+        }else{
+            this.props.getOrderInfo(e.target.id);
+        }
+        
         //if(status == "sold"){
-            this.props.getOrderInfo(e.target.id)
+            
         //}
         /*return(
             <Popover id="popover-seat-info">
@@ -187,6 +204,16 @@ export default class Singson extends Component{
         var from_dashboard = this.props.hasOwnProperty('from_dashboard')
         var rows = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
         var original_chosen_seats = []; //for edit mode;
+        var associated_seats = [];
+        var associated_seats_date = "";
+
+        if(from_dashboard){
+            if(this.props.associated_seats.length > 0){
+                associated_seats = this.props.associated_seats.map((seat)=>{
+                    return seat.slug
+                })
+            }
+        }
 
         const seat = (row_number,number_of_seats,section_number) => {
             var height = 3.5
@@ -222,7 +249,11 @@ export default class Singson extends Component{
                 let class_name = "seat"
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
-                        class_name+=" seat-taken"
+                        if(from_dashboard && this.props.associated_seats.length > 0 && associated_seats.includes(section+row+(i+1))){
+                            class_name+=" seat-reserved";
+                        }else{
+                            class_name+=" seat-taken"
+                        }
                         status = "sold"
                     }else{
                         if(edit_mode){

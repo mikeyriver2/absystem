@@ -45,8 +45,11 @@ export default class SideSummary extends Component{
 
     getOrderInfo(e){
         let code = e.target.id
-        console.log(code);
-        axios.get('/api/dashboard/view-order/'+code+'').then(res=>{
+        let params = {
+            code : code,
+            chosen_date : this.props.chosen_date
+        }
+        axios.post('/api/dashboard/view-order',params).then(res=>{
             this.handleShowTicketInfo(null,res.data.order)
         });
     }

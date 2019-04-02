@@ -11,11 +11,16 @@ use App\EventDay;
 class TicketController extends Controller
 {
 
-    public function ViewOrder(Request $request, $code){
+    public function ViewOrder(Request $request){
+        $code = $request->code;
+        $date = $request->chosen_date;
         $ticket = Ticket::where('slug',$code)
-                        ->whereHas('ticketOrder',function($order){
+                        ->whereHas('ticketOrder',function($order)use($date){
                             $order->whereHas('event',function($event){
                                 $event->where('id',1);
+                            });
+                            $order->whereHas('eventDay',function($event)use($date){
+                                $event->where('date',$date);
                             });
                         })
                         ->first();
