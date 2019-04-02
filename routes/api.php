@@ -27,7 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::prefix('edit')->group(function(){
             Route::put('order','TicketController@EditOrder');
             Route::put('seats','TicketController@EditChosenSeats');
-
+            Route::put('delete','TicketController@DeleteOrder');
         });
         
     });

@@ -11766,6 +11766,11 @@ body {
   margin-left: 3vw;
 }
 
+.home .main-info .breakdown .breakdown-sales {
+  max-height: 70vh;
+  overflow: auto;
+}
+
 .home .main-info .breakdown .breakdown-item {
   margin: 4vh 1vw;
 }

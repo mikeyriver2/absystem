@@ -40,6 +40,10 @@ export default class Home extends Component{
 
     }
 
+    componentWillUnmount(){
+        this.resetAssociatedSeats();
+    }
+
     setVenue(){
         let array = [];
         var venue_object = {
@@ -151,7 +155,7 @@ export default class Home extends Component{
                     <div className="main-footer"> {/* it was a footer before I moved it hahah */}
                         <div className="main-functions">
                             <Link to={"/ticketing"}>Ticketing Module </Link>|
-                            <Link to={"/dashboard"}> Ticket Sales </Link>|
+                            {/*<Link to={"/dashboard"}> Ticket Sales </Link>|*/}
                             <Link to={"/dashboard"}> Export Sales .xlsx </Link>
                         </div>
                         <div className="date-dropdown">

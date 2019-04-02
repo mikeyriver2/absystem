@@ -136,7 +136,7 @@ export default class Tickets extends Component{
     )
   }
 
-  handleShowTicketInfo(e,order={},just_refresh=false){
+  handleShowTicketInfo(e,order={},just_refresh=false,close_and_refresh = false){
     let bool = false;
     if(!this.state.show_ticket_info){
       bool = true;
@@ -284,6 +284,7 @@ export default class Tickets extends Component{
           ticket_info = {this.state.ticket_info}
           edit_mode = {this.state.edit_mode}
           show_ticket_info = {this.state.show_ticket_info}
+          loadPaginatedData = {this.loadPaginatedData}
         />
         <Modal id="are_you_sure" show={this.state.are_you_sure} onHide={this.toggleAreYouSure}>
           <Modal.Header closeButton>

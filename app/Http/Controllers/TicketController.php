@@ -10,6 +10,17 @@ use App\EventDay;
 
 class TicketController extends Controller
 {
+    public function DeleteOrder(Request $request){
+        $order_id = $request->order_id;
+        $order = TicketOrder::find($order_id);
+        $tickets = $order->tickets;
+        foreach($tickets as $ticket){
+            Ticket::destroy($ticket->id);
+        }
+        TicketOrder::destroy($order->id);
+
+        return "Delete Successful";
+    }
 
     public function ViewOrder(Request $request){
         $code = $request->code;

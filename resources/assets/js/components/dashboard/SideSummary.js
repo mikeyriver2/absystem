@@ -67,18 +67,23 @@ export default class SideSummary extends Component{
 
     handleShowSales(orders){
         let associated_seats = this.props.associated_seats;
-        let associated_bool = associated_seats.length > 0;
+        let associated_bool = false;
+        if(this.props.hasOwnProperty('associated_seats')){
+            if(associated_seats.length > 0){
+                associated_bool = true
+            }
+        }
         var sales = [];
         if(!associated_bool){
             for(let i = 0; i < 5; i++){
                 let tix_ids = []
                 if(orders[i]){
-                    orders[i].tickets.map((ticket)=>{
+                    orders[i].tickets.map((ticket,index)=>{
                         tix_ids.push(ticket.slug)
                     })
                     let string = tix_ids.join(" ").substr(0,19);
                     sales.push(
-                        <Row className="breakdown-item">
+                        <Row style={{marginTop: i == 0 ? "5px" : ""}} className="breakdown-item">
                             <Col md={8} className="breakdown-order"> 
                                 <div className="sale-order"> 
                                     Order No. {orders[i].id} | {orders[i].tickets.length} tickets
@@ -95,9 +100,9 @@ export default class SideSummary extends Component{
                 }
             }
         }else{
-            associated_seats.map((seat)=>{
+            associated_seats.map((seat, index)=>{
                 sales.push(
-                    <Row className="breakdown-item">
+                    <Row style={{marginTop: index == 0 ? "5px" : ""}} className="breakdown-item">
                         <Col md={12} className="breakdown-order"> 
                             <div className="sale-order"> 
                                 Seat Code: {seat.slug}
@@ -115,7 +120,12 @@ export default class SideSummary extends Component{
 
     render(){
         let associated_seats = this.props.associated_seats;
-        let associated_bool = associated_seats.length > 0;
+        let associated_bool = false;
+        if(this.props.hasOwnProperty('associated_seats')){
+            if(associated_seats.length > 0){
+                associated_bool = true
+            }
+        }
         return (
                 <Col md={3} className="main-info">
                     <div className="summary-main-container">
@@ -140,7 +150,7 @@ export default class SideSummary extends Component{
                                 </div>
                             </div>
                         :
-                            <div>
+                            <div className="associated-tickets-side">
                                 <div className="rev-today">
                                     <div className="amount">
                                         Order no. {associated_seats[0].ticket_order.id}
@@ -149,7 +159,7 @@ export default class SideSummary extends Component{
                                       {associated_seats[0].ticket_order.created_at}
                                     </div>
                                 </div>
-                                <div onClick={this.getOrderInfo} id={associated_seats[0].slug} className="tickets-sold">
+                                <div style={{cursor:"pointer", fontSize:".90em"}} onClick={this.getOrderInfo} id={associated_seats[0].slug} className="tickets-sold">
                                     view more
                                 </div>
                             </div>

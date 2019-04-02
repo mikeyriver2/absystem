@@ -4647,6 +4647,8 @@ var OrderInfoModal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (OrderInfoModal.__proto__ || Object.getPrototypeOf(OrderInfoModal)).call(this));
 
         _this.state = {
+            are_you_sure: false,
+            order_deleted: false,
             buyer_first_name: "",
             buyer_last_name: "",
             buyer_email: "",
@@ -4662,6 +4664,9 @@ var OrderInfoModal = function (_Component) {
         _this.handleRedirectEdit = _this.handleRedirectEdit.bind(_this);
         _this.handleSetPaid = _this.handleSetPaid.bind(_this);
         _this.hideModal = _this.hideModal.bind(_this);
+        _this.deleteOrder = _this.deleteOrder.bind(_this);
+        _this.toggleAreYouSure = _this.toggleAreYouSure.bind(_this);
+        _this.handleDeleteOrder = _this.handleDeleteOrder.bind(_this);
         return _this;
     }
 
@@ -4880,9 +4885,29 @@ var OrderInfoModal = function (_Component) {
             });
         }
     }, {
+        key: 'handleDeleteOrder',
+        value: function handleDeleteOrder(e) {
+            e.preventDefault();
+            this.setState({
+                are_you_sure: true
+            });
+        }
+    }, {
+        key: 'deleteOrder',
+        value: function deleteOrder() {
+            var _this5 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/dashboard/edit/delete', { order_id: this.props.ticket_info.id }).then(function () {
+                _this5.setState({
+                    order_deleted: true,
+                    are_you_sure: false
+                });
+            });
+        }
+    }, {
         key: 'renderEditInfo',
         value: function renderEditInfo(ticket) {
-            var _this5 = this;
+            var _this6 = this;
 
             var style = {
                 width: "100%",
@@ -4937,7 +4962,7 @@ var OrderInfoModal = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */],
                         { className: 'edit-dropdown', onSelect: function onSelect(e) {
-                                _this5.handleSetPaid(e);
+                                _this6.handleSetPaid(e);
                             } },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["c" /* Dropdown */].Toggle,
@@ -4984,7 +5009,7 @@ var OrderInfoModal = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
                             { type: 'submit', onClick: function onClick(e) {
-                                    _this5.handleEditSubmit(e);
+                                    _this6.handleEditSubmit(e);
                                 }, style: style, variant: 'primary' },
                             'Save Changes'
                         )
@@ -4994,7 +5019,9 @@ var OrderInfoModal = function (_Component) {
                         null,
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["a" /* Button */],
-                            { type: 'submit', style: style, variant: 'danger' },
+                            { type: 'submit', onClick: function onClick(e) {
+                                    _this6.handleDeleteOrder(e);
+                                }, style: style, variant: 'danger' },
                             'Delete Order'
                         )
                     )
@@ -5026,20 +5053,37 @@ var OrderInfoModal = function (_Component) {
     }, {
         key: 'hideModal',
         value: function hideModal() {
-            var _this6 = this;
+            var _this7 = this;
 
             this.setState({
                 show_saved_icon: false
             }, function () {
-                _this6.props.toggle_show();
+                _this7.props.toggle_show();
+            });
+        }
+    }, {
+        key: 'reloadAndClose',
+        value: function reloadAndClose() {
+            this.setState({
+                order_deleted: false
+            });
+            this.props.loadPaginatedData(1); //reload data on page 1
+            this.props.toggle_show();
+        }
+    }, {
+        key: 'toggleAreYouSure',
+        value: function toggleAreYouSure() {
+            this.setState({
+                are_you_sure: !this.state.are_you_sure
             });
         }
     }, {
         key: 'renderModal',
         value: function renderModal(ticket) {
+            var deleted = this.state.order_deleted;
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */],
-                { id: 'ticket-info-modal', show: this.props.show_ticket_info, onHide: this.props.toggle_show },
+                { id: 'ticket-info-modal', show: this.props.show_ticket_info, onHide: !deleted ? this.hideModal : this.reloadAndClose.bind(this) },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Header,
                     { closeButton: true },
@@ -5047,13 +5091,17 @@ var OrderInfoModal = function (_Component) {
                         'h4',
                         null,
                         'Order ID: ',
-                        ticket.id
+                        deleted ? "{empty}" : ticket.id
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Body,
                     null,
-                    this.props.edit_mode ? this.renderEditInfo(ticket) : this.renderInfo(ticket)
+                    deleted ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'h4',
+                        { style: { color: "red" } },
+                        'Order has been deleted'
+                    ) : this.props.edit_mode ? this.renderEditInfo(ticket) : this.renderInfo(ticket)
                 )
             );
         }
@@ -5064,7 +5112,40 @@ var OrderInfoModal = function (_Component) {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
-                this.props.show_ticket_info ? this.renderModal(ticket) : ""
+                this.props.show_ticket_info ? this.renderModal(ticket) : "",
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */],
+                    { id: 'are_you_sure', show: this.state.are_you_sure, onHide: this.toggleAreYouSure },
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Header,
+                        { closeButton: true },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'b',
+                            null,
+                            'Ey meng, u gotta make sure of dat'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */].Body,
+                        { closeButton: true },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'p',
+                            null,
+                            'Are you super duper ultra sure? ',
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'span',
+                                { style: { color: "red" } },
+                                'There ain\'t no turnin\' back yo.'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('b', null),
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'button',
+                            { type: 'button', 'class': 'btn btn-danger', onClick: this.deleteOrder },
+                            'Yeh Meng'
+                        )
+                    )
+                )
             );
         }
     }]);
@@ -10773,6 +10854,11 @@ var Home = function (_Component) {
             }, 10000);
         }
     }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.resetAssociatedSeats();
+        }
+    }, {
         key: 'setVenue',
         value: function setVenue() {
             var _this3 = this;
@@ -10919,12 +11005,6 @@ var Home = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
                                 { to: "/ticketing" },
                                 'Ticketing Module '
-                            ),
-                            '|',
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
-                                { to: "/dashboard" },
-                                ' Ticket Sales '
                             ),
                             '|',
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -11241,19 +11321,24 @@ var SideSummary = function (_Component) {
             var _this4 = this;
 
             var associated_seats = this.props.associated_seats;
-            var associated_bool = associated_seats.length > 0;
+            var associated_bool = false;
+            if (this.props.hasOwnProperty('associated_seats')) {
+                if (associated_seats.length > 0) {
+                    associated_bool = true;
+                }
+            }
             var sales = [];
             if (!associated_bool) {
                 var _loop = function _loop(i) {
                     var tix_ids = [];
                     if (orders[i]) {
-                        orders[i].tickets.map(function (ticket) {
+                        orders[i].tickets.map(function (ticket, index) {
                             tix_ids.push(ticket.slug);
                         });
                         var string = tix_ids.join(" ").substr(0, 19);
                         sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
-                            { className: 'breakdown-item' },
+                            { style: { marginTop: i == 0 ? "5px" : "" }, className: 'breakdown-item' },
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                                 { md: 8, className: 'breakdown-order' },
@@ -11290,10 +11375,10 @@ var SideSummary = function (_Component) {
                     _loop(i);
                 }
             } else {
-                associated_seats.map(function (seat) {
+                associated_seats.map(function (seat, index) {
                     sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
-                        { className: 'breakdown-item' },
+                        { style: { marginTop: index == 0 ? "5px" : "" }, className: 'breakdown-item' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                             { md: 12, className: 'breakdown-order' },
@@ -11319,7 +11404,12 @@ var SideSummary = function (_Component) {
         key: 'render',
         value: function render() {
             var associated_seats = this.props.associated_seats;
-            var associated_bool = associated_seats.length > 0;
+            var associated_bool = false;
+            if (this.props.hasOwnProperty('associated_seats')) {
+                if (associated_seats.length > 0) {
+                    associated_bool = true;
+                }
+            }
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                 { md: 3, className: 'main-info' },
@@ -11363,7 +11453,7 @@ var SideSummary = function (_Component) {
                             )
                         ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            null,
+                            { className: 'associated-tickets-side' },
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'rev-today' },
@@ -11381,7 +11471,7 @@ var SideSummary = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { onClick: this.getOrderInfo, id: associated_seats[0].slug, className: 'tickets-sold' },
+                                { style: { cursor: "pointer", fontSize: ".90em" }, onClick: this.getOrderInfo, id: associated_seats[0].slug, className: 'tickets-sold' },
                                 'view more'
                             )
                         )
@@ -46243,6 +46333,7 @@ var Tickets = function (_Component) {
     value: function handleShowTicketInfo(e) {
       var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var just_refresh = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var close_and_refresh = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
       var bool = false;
       if (!this.state.show_ticket_info) {
@@ -46322,7 +46413,8 @@ var Tickets = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this8 = this;
+      var _this8 = this,
+          _React$createElement;
 
       return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
@@ -46496,14 +46588,14 @@ var Tickets = function (_Component) {
           )
         ),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], null),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__OrderInfoModal__["a" /* default */], _defineProperty({
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__OrderInfoModal__["a" /* default */], (_React$createElement = {
           from_tickets: true,
           handleVerifyAttendance: this.handleVerifyAttendance,
           show_ticket_info: this.state.show_ticket_info,
           toggle_show: this.handleShowTicketInfo,
           ticket_info: this.state.ticket_info,
           edit_mode: this.state.edit_mode
-        }, 'show_ticket_info', this.state.show_ticket_info)),
+        }, _defineProperty(_React$createElement, 'show_ticket_info', this.state.show_ticket_info), _defineProperty(_React$createElement, 'loadPaginatedData', this.loadPaginatedData), _React$createElement)),
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["d" /* Modal */],
           { id: 'are_you_sure', show: this.state.are_you_sure, onHide: this.toggleAreYouSure },

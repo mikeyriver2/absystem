@@ -126,6 +126,10 @@ body{
         margin-top: 23vh;
         margin-left: 3vw;
       }
+      .breakdown-sales{
+        max-height: 70vh;
+        overflow: auto;
+      }
       .breakdown-item{
         margin: 4vh 1vw;
         .breakdown-order{

@@ -7,6 +7,8 @@ export default class OrderInfoModal extends Component{
     constructor(){
         super();
         this.state = {
+            are_you_sure: false,
+            order_deleted: false,
             buyer_first_name: "",
             buyer_last_name: "",
             buyer_email: "",
@@ -22,6 +24,9 @@ export default class OrderInfoModal extends Component{
         this.handleRedirectEdit = this.handleRedirectEdit.bind(this);
         this.handleSetPaid = this.handleSetPaid.bind(this);
         this.hideModal = this.hideModal.bind(this);
+        this.deleteOrder = this.deleteOrder.bind(this);
+        this.toggleAreYouSure = this.toggleAreYouSure.bind(this);
+        this.handleDeleteOrder = this.handleDeleteOrder.bind(this);
     }
 
     componentWillUnmount(){
@@ -153,6 +158,22 @@ export default class OrderInfoModal extends Component{
         })
     }
 
+    handleDeleteOrder(e){
+        e.preventDefault();
+        this.setState({
+            are_you_sure: true
+        })
+    }
+
+    deleteOrder(){
+        Axios.put('/api/dashboard/edit/delete',{order_id: this.props.ticket_info.id}).then(()=>{
+            this.setState({
+                order_deleted: true,
+                are_you_sure: false
+            })
+        })
+    }
+
     renderEditInfo(ticket){
         let style={
             width: "100%",
@@ -192,7 +213,7 @@ export default class OrderInfoModal extends Component{
                 }
 
                 <b><Button type="submit" onClick={e=>{this.handleEditSubmit(e)}} style={style} variant="primary">Save Changes</Button></b>
-                <b><Button type="submit" style={style} variant="danger">Delete Order</Button></b>
+                <b><Button type="submit" onClick={e => {this.handleDeleteOrder(e)}} style={style} variant="danger">Delete Order</Button></b>
 
                 </form>
                 {this.listTickets(ticket.tickets)}
@@ -223,14 +244,31 @@ export default class OrderInfoModal extends Component{
         
     }
 
+    reloadAndClose(){
+        this.setState({
+            order_deleted: false
+        })
+        this.props.loadPaginatedData(1) //reload data on page 1
+        this.props.toggle_show()
+    }
+
+    toggleAreYouSure(){
+        this.setState({
+            are_you_sure: !this.state.are_you_sure
+        })
+    }
+
     renderModal(ticket){
+        let deleted = this.state.order_deleted;
         return (
-            <Modal id="ticket-info-modal" show={this.props.show_ticket_info} onHide={this.props.toggle_show}>
+            <Modal id="ticket-info-modal" show={this.props.show_ticket_info} onHide={!deleted ? this.hideModal : this.reloadAndClose.bind(this)}>
             <Modal.Header closeButton>
-                <h4>Order ID: {ticket.id}</h4>
+                <h4>Order ID: {deleted ? "{empty}" : ticket.id}</h4>
             </Modal.Header>
                 <Modal.Body>
-                    {this.props.edit_mode ? 
+                    {deleted ? <h4 style={{color:"red"}}>Order has been deleted</h4> 
+                        : 
+                        this.props.edit_mode ? 
                         this.renderEditInfo(ticket)
                         :
                         this.renderInfo(ticket)
@@ -245,7 +283,17 @@ export default class OrderInfoModal extends Component{
         return (
             <div>
                 {this.props.show_ticket_info ? this.renderModal(ticket) : ""}
+                <Modal id="are_you_sure" show={this.state.are_you_sure} onHide={this.toggleAreYouSure}>
+                    <Modal.Header closeButton>
+                        <b>Ey meng, u gotta make sure of dat</b>
+                    </Modal.Header>
+                    <Modal.Body closeButton>
+                        <p>Are you super duper ultra sure? <span style={{color:"red"}}>There ain't no turnin' back yo.</span></p><b/>  
+                        <button type="button" class="btn btn-danger" onClick={this.deleteOrder}>Yeh Meng</button>
+                    </Modal.Body>
+                </Modal>
             </div>
+            
         )
     }
 } 
