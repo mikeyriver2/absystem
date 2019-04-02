@@ -10988,6 +10988,7 @@ var Home = function (_Component) {
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__SideSummary__["a" /* default */], {
+                    associated_seats: this.state.associated_tickets,
                     chosen_date: this.state.selected_date,
                     handleShowSales: this.handleShowSales
                 }),
@@ -11239,58 +11240,86 @@ var SideSummary = function (_Component) {
         value: function handleShowSales(orders) {
             var _this4 = this;
 
+            var associated_seats = this.props.associated_seats;
+            var associated_bool = associated_seats.length > 0;
             var sales = [];
+            if (!associated_bool) {
+                var _loop = function _loop(i) {
+                    var tix_ids = [];
+                    if (orders[i]) {
+                        orders[i].tickets.map(function (ticket) {
+                            tix_ids.push(ticket.slug);
+                        });
+                        var string = tix_ids.join(" ").substr(0, 19);
+                        sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
+                            { className: 'breakdown-item' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
+                                { md: 8, className: 'breakdown-order' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'sale-order' },
+                                    'Order No. ',
+                                    orders[i].id,
+                                    ' | ',
+                                    orders[i].tickets.length,
+                                    ' tickets'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'sale-codes' },
+                                    string.length >= 19 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'span',
+                                        null,
+                                        string,
+                                        '...'
+                                    ) : string
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
+                                { style: { cursor: "pointer" }, onClick: _this4.getOrderInfo, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
+                                'view'
+                            )
+                        ));
+                    }
+                };
 
-            var _loop = function _loop(i) {
-                var tix_ids = [];
-                if (orders[i]) {
-                    orders[i].tickets.map(function (ticket) {
-                        tix_ids.push(ticket.slug);
-                    });
-                    var string = tix_ids.join(" ").substr(0, 19);
+                for (var i = 0; i < 5; i++) {
+                    _loop(i);
+                }
+            } else {
+                associated_seats.map(function (seat) {
                     sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                         { className: 'breakdown-item' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                            { md: 8, className: 'breakdown-order' },
+                            { md: 12, className: 'breakdown-order' },
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'sale-order' },
-                                'Order No. ',
-                                orders[i].id,
-                                ' | ',
-                                orders[i].tickets.length,
-                                ' tickets'
+                                'Seat Code: ',
+                                seat.slug
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'sale-codes' },
-                                string.length >= 19 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                    'span',
-                                    null,
-                                    string,
-                                    '...'
-                                ) : string
+                                'Seat Section: ',
+                                seat.section.name
                             )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                            { style: { cursor: "pointer" }, onClick: _this4.getOrderInfo, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
-                            'view'
                         )
                     ));
-                }
-            };
-
-            for (var i = 0; i < 5; i++) {
-                _loop(i);
+                });
             }
             return sales;
         }
     }, {
         key: 'render',
         value: function render() {
+            var associated_seats = this.props.associated_seats;
+            var associated_bool = associated_seats.length > 0;
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
                 { md: 3, className: 'main-info' },
@@ -11300,33 +11329,60 @@ var SideSummary = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'summary-main' },
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        !associated_bool ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'rev-today' },
+                            null,
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { className: 'amount' },
-                                'P',
-                                this.state.total_revenue
+                                { className: 'rev-today' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'amount' },
+                                    'P',
+                                    this.state.total_revenue
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'label' },
+                                    'Total Revenue'
+                                )
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { className: 'label' },
-                                'Total Revenue'
+                                { className: 'tickets-sold' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'amount' },
+                                    this.state.number_of_tickets_sold
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'label' },
+                                    'Tickets sold'
+                                )
                             )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'tickets-sold' },
+                            null,
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { className: 'amount' },
-                                this.state.number_of_tickets_sold
+                                { className: 'rev-today' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'amount' },
+                                    'Order no. ',
+                                    associated_seats[0].ticket_order.id
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'div',
+                                    { className: 'label' },
+                                    associated_seats[0].ticket_order.created_at
+                                )
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { className: 'label' },
-                                'Tickets sold'
+                                { onClick: this.getOrderInfo, id: associated_seats[0].slug, className: 'tickets-sold' },
+                                'view more'
                             )
                         )
                     )
@@ -11337,7 +11393,7 @@ var SideSummary = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'h4',
                         null,
-                        'RECENT SALES'
+                        associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',

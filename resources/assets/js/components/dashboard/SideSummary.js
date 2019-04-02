@@ -66,59 +66,98 @@ export default class SideSummary extends Component{
     }
 
     handleShowSales(orders){
+        let associated_seats = this.props.associated_seats;
+        let associated_bool = associated_seats.length > 0;
         var sales = [];
-        for(let i = 0; i < 5; i++){
-            let tix_ids = []
-            if(orders[i]){
-                orders[i].tickets.map((ticket)=>{
-                    tix_ids.push(ticket.slug)
-                })
-                let string = tix_ids.join(" ").substr(0,19);
+        if(!associated_bool){
+            for(let i = 0; i < 5; i++){
+                let tix_ids = []
+                if(orders[i]){
+                    orders[i].tickets.map((ticket)=>{
+                        tix_ids.push(ticket.slug)
+                    })
+                    let string = tix_ids.join(" ").substr(0,19);
+                    sales.push(
+                        <Row className="breakdown-item">
+                            <Col md={8} className="breakdown-order"> 
+                                <div className="sale-order"> 
+                                    Order No. {orders[i].id} | {orders[i].tickets.length} tickets
+                                </div>
+                                <div className="sale-codes">
+                                    {string.length >= 19 ? <span>{string}...</span> : string}
+                                </div>
+                            </Col>
+                            <Col style={{cursor:"pointer"}} onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
+                                view
+                            </Col>
+                        </Row>
+                    )
+                }
+            }
+        }else{
+            associated_seats.map((seat)=>{
                 sales.push(
                     <Row className="breakdown-item">
-                        <Col md={8} className="breakdown-order"> 
+                        <Col md={12} className="breakdown-order"> 
                             <div className="sale-order"> 
-                                Order No. {orders[i].id} | {orders[i].tickets.length} tickets
+                                Seat Code: {seat.slug}
                             </div>
                             <div className="sale-codes">
-                                {string.length >= 19 ? <span>{string}...</span> : string}
+                                Seat Section: {seat.section.name}
                             </div>
-                        </Col>
-                        <Col style={{cursor:"pointer"}} onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
-                            view
                         </Col>
                     </Row>
                 )
-            }
+            })
         }
         return sales;
     }
 
     render(){
+        let associated_seats = this.props.associated_seats;
+        let associated_bool = associated_seats.length > 0;
         return (
                 <Col md={3} className="main-info">
                     <div className="summary-main-container">
                         <div className="summary-main">
-                            <div className="rev-today">
-                                <div className="amount">
-                                    P{this.state.total_revenue}
+                        {!associated_bool ?
+                            <div>  
+                                <div className="rev-today">
+                                    <div className="amount">
+                                        P{this.state.total_revenue}
+                                    </div>
+                                    <div className="label">
+                                        Total Revenue
+                                    </div>
                                 </div>
-                                <div className="label">
-                                    Total Revenue
+                                <div className="tickets-sold">
+                                    <div className="amount">
+                                        {this.state.number_of_tickets_sold}
+                                    </div>
+                                    <div className="label">
+                                        Tickets sold
+                                    </div>
                                 </div>
                             </div>
-                            <div className="tickets-sold">
-                                <div className="amount">
-                                    {this.state.number_of_tickets_sold}
+                        :
+                            <div>
+                                <div className="rev-today">
+                                    <div className="amount">
+                                        Order no. {associated_seats[0].ticket_order.id}
+                                    </div>
+                                    <div className="label">
+                                      {associated_seats[0].ticket_order.created_at}
+                                    </div>
                                 </div>
-                                <div className="label">
-                                    Tickets sold
+                                <div onClick={this.getOrderInfo} id={associated_seats[0].slug} className="tickets-sold">
+                                    view more
                                 </div>
                             </div>
+                        }
                         </div>
                     </div>
                     <div className="breakdown">
-                        <h4>RECENT SALES</h4>
+                        <h4>{associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"}</h4>
                         <div className="breakdown-sales">
                             {this.handleShowSales(this.state.orders)}
                         </div>

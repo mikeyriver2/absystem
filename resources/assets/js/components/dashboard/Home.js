@@ -189,6 +189,7 @@ export default class Home extends Component{
                     </div>
                 </Col>
                 <SideSummary
+                    associated_seats = {this.state.associated_tickets}
                     chosen_date = {this.state.selected_date}
                     handleShowSales = {this.handleShowSales}
                 />
