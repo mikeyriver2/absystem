@@ -8,7 +8,7 @@ export default class Singson extends Component{
         this.state = {
             price: {
                 ol: 350.00,
-                vip: 500.00,
+                oc: 350.00,
                 or: 350.00
             },
             venue: [] //re-arranged section (if needed)
@@ -165,9 +165,9 @@ export default class Singson extends Component{
                 section_name = "Orchestra Left"
             }else if(id.includes('OR')){
                 section_name = "Orchestra Right"
-            }else if(id.includes('VIP')){
-                section_name = "VIP"
-                ticket_price = 500;
+            }else if(id.includes('OC')){
+                section_name = "Orchestra Center"
+                ticket_price = 350;
             }else if(id.includes('BL')){
                 section_name = "Balcony Left"
                 ticket_price = 250;
@@ -225,7 +225,7 @@ export default class Singson extends Component{
                 height: height+"vh",
             }
             var seats = [];
-            var sections = ['OL','VIP','OR']
+            var sections = ['OL','OC','OR']
             var sections_balcony = ['BL','BC','BR']
             var section = "";
             var selected_date = this.props.chosen_date;
@@ -328,7 +328,7 @@ export default class Singson extends Component{
             if(i == 0){
                 section = "ol"
             }else if(i == 1){
-                section = "vip"
+                section = "oc"
             }else{
                 section = "or"
             }

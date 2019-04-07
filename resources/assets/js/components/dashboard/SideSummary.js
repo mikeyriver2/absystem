@@ -43,11 +43,11 @@ export default class SideSummary extends Component{
 
     }
 
-    getOrderInfo(e){
+    getOrderInfo(e,date){
         let code = e.target.id
         let params = {
             code : code,
-            chosen_date : this.props.chosen_date
+            chosen_date : date
         }
         axios.post('/api/dashboard/view-order',params).then(res=>{
             this.handleShowTicketInfo(null,res.data.order)
@@ -92,7 +92,7 @@ export default class SideSummary extends Component{
                                     {string.length >= 19 ? <span>{string}...</span> : string}
                                 </div>
                             </Col>
-                            <Col style={{cursor:"pointer"}} onClick={this.getOrderInfo} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
+                            <Col style={{cursor:"pointer"}} onClick={e=>{this.getOrderInfo(e,orders[i].event_day.date)}} id={orders[i].tickets[0].slug} md={2} className="breakdown-functions"> 
                                 view
                             </Col>
                         </Row>

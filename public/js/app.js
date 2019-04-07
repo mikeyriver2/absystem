@@ -2066,7 +2066,7 @@ var Singson = function (_Component) {
         _this.state = {
             price: {
                 ol: 350.00,
-                vip: 500.00,
+                oc: 350.00,
                 or: 350.00
             },
             venue: [] //re-arranged section (if needed)
@@ -2227,9 +2227,9 @@ var Singson = function (_Component) {
                     section_name = "Orchestra Left";
                 } else if (id.includes('OR')) {
                     section_name = "Orchestra Right";
-                } else if (id.includes('VIP')) {
-                    section_name = "VIP";
-                    ticket_price = 500;
+                } else if (id.includes('OC')) {
+                    section_name = "Orchestra Center";
+                    ticket_price = 350;
                 } else if (id.includes('BL')) {
                     section_name = "Balcony Left";
                     ticket_price = 250;
@@ -2290,7 +2290,7 @@ var Singson = function (_Component) {
                     height: height + "vh"
                 };
                 var seats = [];
-                var sections = ['OL', 'VIP', 'OR'];
+                var sections = ['OL', 'OC', 'OR'];
                 var sections_balcony = ['BL', 'BC', 'BR'];
                 var section = "";
                 var selected_date = _this3.props.chosen_date;
@@ -2391,7 +2391,7 @@ var Singson = function (_Component) {
                 if (i == 0) {
                     section = "ol";
                 } else if (i == 1) {
-                    section = "vip";
+                    section = "oc";
                 } else {
                     section = "or";
                 }
@@ -11288,13 +11288,13 @@ var SideSummary = function (_Component) {
         }
     }, {
         key: 'getOrderInfo',
-        value: function getOrderInfo(e) {
+        value: function getOrderInfo(e, date) {
             var _this3 = this;
 
             var code = e.target.id;
             var params = {
                 code: code,
-                chosen_date: this.props.chosen_date
+                chosen_date: date
             };
             __WEBPACK_IMPORTED_MODULE_7_axios___default.a.post('/api/dashboard/view-order', params).then(function (res) {
                 _this3.handleShowTicketInfo(null, res.data.order);
@@ -11364,7 +11364,9 @@ var SideSummary = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
-                                { style: { cursor: "pointer" }, onClick: _this4.getOrderInfo, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
+                                { style: { cursor: "pointer" }, onClick: function onClick(e) {
+                                        _this4.getOrderInfo(e, orders[i].event_day.date);
+                                    }, id: orders[i].tickets[0].slug, md: 2, className: 'breakdown-functions' },
                                 'view'
                             )
                         ));
@@ -45740,6 +45742,20 @@ var ConfirmModal = function (_Component) {
             }
         }
     }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            console.log('Calling');
+            try {
+                if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
+                    document.getElementById('submit-order').disabled = false;
+                } else {
+                    document.getElementById('submit-order').disabled = true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, {
         key: 'toggleLoading',
         value: function toggleLoading() {
             if (!this.state.loading) {
@@ -45794,16 +45810,6 @@ var ConfirmModal = function (_Component) {
     }, {
         key: 'handleChange',
         value: function handleChange(e) {
-
-            if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
-                this.setState({ error: false }, function () {
-                    document.getElementById('submit-order').disabled = false;
-                });
-            } else {
-                this.setState({ error: true });
-                document.getElementById('submit-order').disabled = true;
-            }
-
             var value = e.target.value;
             var name = e.target.name;
             switch (name) {

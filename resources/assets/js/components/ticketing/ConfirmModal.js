@@ -38,6 +38,20 @@ export default class ConfirmModal extends Component{
         }
     }
 
+    componentDidUpdate(prevProps,prevState){
+        console.log('Calling');
+        try{
+                if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
+                        document.getElementById('submit-order').disabled = false
+                }else{
+                    document.getElementById('submit-order').disabled = true
+                }
+        }catch(error){
+            console.log(error);
+        }
+        
+    }
+
     toggleLoading(){
         if(!this.state.loading){
             this.setState({
@@ -91,16 +105,6 @@ export default class ConfirmModal extends Component{
     }
 
     handleChange(e){
-
-        if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
-            this.setState({error:false},()=>{
-                document.getElementById('submit-order').disabled = false
-            })
-        }else{
-            this.setState({error:true})
-            document.getElementById('submit-order').disabled = true
-        }
-
         var value = e.target.value
         var name = e.target.name;
         switch(name){
