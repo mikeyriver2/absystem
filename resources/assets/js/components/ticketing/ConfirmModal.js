@@ -20,7 +20,8 @@ export default class ConfirmModal extends Component{
             year_course: "",
             error: true, //there is error
             show_new_tickets: false,
-            new_tickets: []
+            new_tickets: [],
+            error_message: "",
         }
         this.toggleLoading = this.toggleLoading.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -41,7 +42,7 @@ export default class ConfirmModal extends Component{
     componentDidUpdate(prevProps,prevState){
         console.log('Calling');
         try{
-                if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
+                if (this.state.error_message == "" && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
                         document.getElementById('submit-order').disabled = false
                 }else{
                     document.getElementById('submit-order').disabled = true
@@ -65,7 +66,7 @@ export default class ConfirmModal extends Component{
     }
 
     submitOrder(){
-        if(!this.state.error || this.state.error == "false"){
+        //if(!this.state.error || this.state.error == "false"){
             this.toggleLoading();
             var params = {
                 first_name: this.state.first_name,
@@ -99,9 +100,12 @@ export default class ConfirmModal extends Component{
             }).catch(error=>{
 
             })
-        }
+        //}
+    }
 
-        
+    validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
 
     handleChange(e){
@@ -115,7 +119,11 @@ export default class ConfirmModal extends Component{
                 this.setState({last_name: value});
                 break;
             case "email":
-                this.setState({email: value});
+                let valid_email = this.validateEmail(value);
+                this.setState({
+                    email: value,
+                    error_message: valid_email ? "" : "Invalid Email Format"
+                });
                 break;
             case "cell":
                 this.setState({cell_number: value});

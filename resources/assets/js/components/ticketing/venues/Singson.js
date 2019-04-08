@@ -249,10 +249,10 @@ export default class Singson extends Component{
                 let class_name = "seat"
                 if(this.props.sold_seats[selected_date]){
                     if(this.props.sold_seats[selected_date].includes(section+row+(i+1))){
-                        if(from_dashboard && this.props.associated_seats.length > 0 && associated_seats.includes(section+row+(i+1))){
+                        if(from_dashboard && this.props.associated_seats.length > 0 && associated_seats.includes(section+row+(i+1))){ //for dashboard side
                             class_name+=" seat-reserved";
                         }else{
-                            class_name+=" seat-taken"
+                            class_name+= " seat-taken";
                         }
                         status = "sold"
                     }else{
@@ -264,7 +264,21 @@ export default class Singson extends Component{
                                 status = "free"
                             }    
                         }else{
-                            class_name+=" seat-not-taken"
+                            let special = false;
+                            let special_type = "";
+                            this.props.special_seats.map((seat)=>{
+                                let keys = Object.keys(seat);
+                                keys.map((key)=>{
+                                    seat[key].map((special_seat)=>{
+                                        if(special_seat == section+row+(i+1)){
+                                            special = true;
+                                            special_type = key;
+                                        }
+                                    })
+                                })
+                            });
+                            class_name+= special ? ` ${special_type} seat-not-taken` : " seat-not-taken"
+                            //class_name+=" seat-not-taken"
                             status = "free"
                         }
                     }

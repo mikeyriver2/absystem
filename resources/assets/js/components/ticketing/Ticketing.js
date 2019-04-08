@@ -22,7 +22,8 @@ export default class Ticketing extends Component {
             selected_date: "",
             event: {},
             sold_seats: {},
-            from_dashboard: false
+            from_dashboard: false,
+            special_seats: []
         }
         this.test = this.test.bind(this);
         this.handleChosenSeats = this.handleChosenSeats.bind(this);
@@ -150,16 +151,20 @@ export default class Ticketing extends Component {
 
         axios.get('/api/ticketing/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
+            venue_object.special_seats = [];
             res.data.section_types.map((type)=>{
                 venue_object.venue.push({
                     type: type.type,
                     number_of_sections: 0,
                     number_of_rows: [],
                     number_of_columns: [],
-                    section_order: []
+                    section_order: [],
                 })
             });
             res.data.venue.sections.map((section)=>{
+                if(section.special){
+                    venue_object.special_seats.push(section.special)
+                }
                 venue_object.venue.map((map,index)=>{
                     if(map.type == section.type){
                         venue_object.venue[index].number_of_sections += 1;
@@ -201,7 +206,8 @@ export default class Ticketing extends Component {
                 venue_name: venue_object.venue_name,
                 venue: venue_object.venue,
                 event: res.data.venue.event,
-                selected_date: edit_mode ? this.props.location.state.order.event_day.date : array[0]
+                selected_date: edit_mode ? this.props.location.state.order.event_day.date : array[0],
+                special_seats: venue_object.special_seats
             })
         })
     }
@@ -459,6 +465,7 @@ export default class Ticketing extends Component {
                             sold_seats = {this.state.sold_seats}
                             edit_mode = {edit_mode}
                             orders_from_edit = {orders_from_edit}
+                            special_seats = {this.state.special_seats}
                         /> 
                         {/*<HyundaiHall 
                             venue = {this.state.venue}

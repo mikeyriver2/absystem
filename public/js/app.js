@@ -2316,6 +2316,7 @@ var Singson = function (_Component) {
                     if (_this3.props.sold_seats[selected_date]) {
                         if (_this3.props.sold_seats[selected_date].includes(section + row + (i + 1))) {
                             if (from_dashboard && _this3.props.associated_seats.length > 0 && associated_seats.includes(section + row + (i + 1))) {
+                                //for dashboard side
                                 _class_name += " seat-reserved";
                             } else {
                                 _class_name += " seat-taken";
@@ -2330,7 +2331,21 @@ var Singson = function (_Component) {
                                     status = "free";
                                 }
                             } else {
-                                _class_name += " seat-not-taken";
+                                var special = false;
+                                var special_type = "";
+                                _this3.props.special_seats.map(function (seat) {
+                                    var keys = Object.keys(seat);
+                                    keys.map(function (key) {
+                                        seat[key].map(function (special_seat) {
+                                            if (special_seat == section + row + (i + 1)) {
+                                                special = true;
+                                                special_type = key;
+                                            }
+                                        });
+                                    });
+                                });
+                                _class_name += special ? ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
+                                //class_name+=" seat-not-taken"
                                 status = "free";
                             }
                         }
@@ -6122,7 +6137,8 @@ var Ticketing = function (_Component) {
             selected_date: "",
             event: {},
             sold_seats: {},
-            from_dashboard: false
+            from_dashboard: false,
+            special_seats: []
         };
         _this.test = _this.test.bind(_this);
         _this.handleChosenSeats = _this.handleChosenSeats.bind(_this);
@@ -6264,6 +6280,7 @@ var Ticketing = function (_Component) {
 
             __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/api/ticketing/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
+                venue_object.special_seats = [];
                 res.data.section_types.map(function (type) {
                     venue_object.venue.push({
                         type: type.type,
@@ -6274,6 +6291,9 @@ var Ticketing = function (_Component) {
                     });
                 });
                 res.data.venue.sections.map(function (section) {
+                    if (section.special) {
+                        venue_object.special_seats.push(section.special);
+                    }
                     venue_object.venue.map(function (map, index) {
                         if (map.type == section.type) {
                             venue_object.venue[index].number_of_sections += 1;
@@ -6315,7 +6335,8 @@ var Ticketing = function (_Component) {
                     venue_name: venue_object.venue_name,
                     venue: venue_object.venue,
                     event: res.data.venue.event,
-                    selected_date: edit_mode ? _this3.props.location.state.order.event_day.date : array[0]
+                    selected_date: edit_mode ? _this3.props.location.state.order.event_day.date : array[0],
+                    special_seats: venue_object.special_seats
                 });
             });
         }
@@ -6712,7 +6733,8 @@ var Ticketing = function (_Component) {
                             chosen_date: this.state.selected_date,
                             sold_seats: this.state.sold_seats,
                             edit_mode: edit_mode,
-                            orders_from_edit: orders_from_edit
+                            orders_from_edit: orders_from_edit,
+                            special_seats: this.state.special_seats
                         })
                     )
                 ),
@@ -45721,7 +45743,8 @@ var ConfirmModal = function (_Component) {
             year_course: "",
             error: true, //there is error
             show_new_tickets: false,
-            new_tickets: []
+            new_tickets: [],
+            error_message: ""
         };
         _this.toggleLoading = _this.toggleLoading.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
@@ -45746,7 +45769,7 @@ var ConfirmModal = function (_Component) {
         value: function componentDidUpdate(prevProps, prevState) {
             console.log('Calling');
             try {
-                if (/\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
+                if (this.state.error_message == "" && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
                     document.getElementById('submit-order').disabled = false;
                 } else {
                     document.getElementById('submit-order').disabled = true;
@@ -45773,39 +45796,45 @@ var ConfirmModal = function (_Component) {
         value: function submitOrder() {
             var _this2 = this;
 
-            if (!this.state.error || this.state.error == "false") {
-                this.toggleLoading();
-                var params = {
-                    first_name: this.state.first_name,
-                    last_name: this.state.last_name,
-                    email: this.state.email,
-                    cell_number: this.state.cell_number,
-                    id_number: this.state.cell_number,
-                    year_course: this.state.year_course,
-                    chosen_seats: this.props.chosen_seats,
-                    selected_date: this.props.chosen_date,
-                    event: this.props.event
-                };
-                __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {
+            //if(!this.state.error || this.state.error == "false"){
+            this.toggleLoading();
+            var params = {
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                cell_number: this.state.cell_number,
+                id_number: this.state.cell_number,
+                year_course: this.state.year_course,
+                chosen_seats: this.props.chosen_seats,
+                selected_date: this.props.chosen_date,
+                event: this.props.event
+            };
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {
+                _this2.setState({
+                    thanks: true,
+                    last_name: "",
+                    email: "",
+                    cell_number: "",
+                    id_number: 0,
+                    year_course: "",
+                    error: true //there is error
+                });
+                _this2.toggleLoading();
+                _this2.props.clearOrder();
+                setTimeout(function () {
                     _this2.setState({
-                        thanks: true,
-                        last_name: "",
-                        email: "",
-                        cell_number: "",
-                        id_number: 0,
-                        year_course: "",
-                        error: true //there is error
+                        thanks: false,
+                        first_name: ""
                     });
-                    _this2.toggleLoading();
-                    _this2.props.clearOrder();
-                    setTimeout(function () {
-                        _this2.setState({
-                            thanks: false,
-                            first_name: ""
-                        });
-                    }, 5000);
-                }).catch(function (error) {});
-            }
+                }, 5000);
+            }).catch(function (error) {});
+            //}
+        }
+    }, {
+        key: 'validateEmail',
+        value: function validateEmail(email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
         }
     }, {
         key: 'handleChange',
@@ -45820,7 +45849,11 @@ var ConfirmModal = function (_Component) {
                     this.setState({ last_name: value });
                     break;
                 case "email":
-                    this.setState({ email: value });
+                    var valid_email = this.validateEmail(value);
+                    this.setState({
+                        email: value,
+                        error_message: valid_email ? "" : "Invalid Email Format"
+                    });
                     break;
                 case "cell":
                     this.setState({ cell_number: value });

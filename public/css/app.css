@@ -12245,6 +12245,11 @@ body {
   width: 40%;
 }
 
+.vip {
+  -webkit-box-shadow: 1px 1px 10px 1px #a98401a1 inset;
+          box-shadow: 1px 1px 10px 1px #a98401a1 inset;
+}
+
 .seat-reserved {
   color: white;
   background-color: #2741af;
