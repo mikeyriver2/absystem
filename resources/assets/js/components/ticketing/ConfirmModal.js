@@ -79,7 +79,7 @@ export default class ConfirmModal extends Component{
                 selected_date: this.props.chosen_date,
                 event: this.props.event
             }
-            axios.post('/api/ticketing/orderTicket',params).then(res=>{
+            axios.post('/ticketing/orderTicket',params).then(res=>{
                 this.setState({
                     thanks: true,
                     last_name: "",
@@ -191,7 +191,7 @@ export default class ConfirmModal extends Component{
             new_chosen_seats: this.props.chosen_seats,
             order: this.props.order_to_edit
         }
-        axios.put("/api/dashboard/edit/seats",params).then((res)=>{
+        axios.put("/dashboard/edit/seats",params).then((res)=>{
             this.setState({
                 new_tickets: res.data,
                 show_new_tickets: true

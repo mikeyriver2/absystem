@@ -2333,18 +2333,20 @@ var Singson = function (_Component) {
                             } else {
                                 var special = false;
                                 var special_type = "";
-                                _this3.props.special_seats.map(function (seat) {
-                                    var keys = Object.keys(seat);
-                                    keys.map(function (key) {
-                                        seat[key].map(function (special_seat) {
-                                            if (special_seat == section + row + (i + 1)) {
-                                                special = true;
-                                                special_type = key;
-                                            }
+                                if (_this3.props.hasOwnProperty('special_seats')) {
+                                    _this3.props.special_seats.map(function (seat) {
+                                        var keys = Object.keys(seat);
+                                        keys.map(function (key) {
+                                            seat[key].map(function (special_seat) {
+                                                if (special_seat == section + row + (i + 1)) {
+                                                    special = true;
+                                                    special_type = key;
+                                                }
+                                            });
                                         });
                                     });
-                                });
-                                _class_name += special ? ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
+                                }
+                                _class_name += special ? special_type == "ktx" ? ' ' + special_type + ' seat-reserved' : ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
                                 //class_name+=" seat-not-taken"
                                 status = "free";
                             }
@@ -4784,7 +4786,7 @@ var OrderInfoModal = function (_Component) {
         value: function handleVerify(ticket) {
             var _this3 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/dashboard/verify-attendance', ticket).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/dashboard/verify-attendance', ticket).then(function (res) {
                 _this3.props.handleVerifyAttendance(_this3.props.ticket_info);
             });
         }
@@ -4891,7 +4893,7 @@ var OrderInfoModal = function (_Component) {
                 email: this.state.buyer_email,
                 paid: this.state.paid
             };
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/dashboard/edit/order', params).then(function () {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/dashboard/edit/order', params).then(function () {
                 _this4.setState({
                     show_saved_icon: true
                 }, function () {
@@ -4912,7 +4914,7 @@ var OrderInfoModal = function (_Component) {
         value: function deleteOrder() {
             var _this5 = this;
 
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/api/dashboard/edit/delete', { order_id: this.props.ticket_info.id }).then(function () {
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put('/dashboard/edit/delete', { order_id: this.props.ticket_info.id }).then(function () {
                 _this5.setState({
                     order_deleted: true,
                     are_you_sure: false
@@ -6278,7 +6280,7 @@ var Ticketing = function (_Component) {
             };
             var sold_seats = {};
 
-            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/api/ticketing/venue').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/ticketing/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
                 venue_object.special_seats = [];
                 res.data.section_types.map(function (type) {
@@ -10892,7 +10894,7 @@ var Home = function (_Component) {
             };
             var sold_seats = {};
 
-            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/api/dashboard/venue').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/dashboard/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
                 res.data.section_types.map(function (type) {
                     venue_object.venue.push({
@@ -10949,7 +10951,7 @@ var Home = function (_Component) {
                 code: code,
                 chosen_date: this.state.selected_date
             };
-            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/api/dashboard/view-order', params).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/dashboard/view-order', params).then(function (res) {
                 _this4.getAssociatedSeats(res.data.ticket.ticket_order.tickets);
                 //this.handleShowTicketInfo(null,res.data.order)
             });
@@ -11289,7 +11291,7 @@ var SideSummary = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/api/ticketing/venue').then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.get('/ticketing/venue').then(function (res) {
                 _this2.setState({
                     orders: res.data.venue.event.ticket_orders
                 }, function () {
@@ -11318,7 +11320,7 @@ var SideSummary = function (_Component) {
                 code: code,
                 chosen_date: date
             };
-            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.post('/api/dashboard/view-order', params).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_7_axios___default.a.post('/dashboard/view-order', params).then(function (res) {
                 _this3.handleShowTicketInfo(null, res.data.order);
             });
         }
@@ -45809,7 +45811,7 @@ var ConfirmModal = function (_Component) {
                 selected_date: this.props.chosen_date,
                 event: this.props.event
             };
-            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/api/ticketing/orderTicket', params).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/ticketing/orderTicket', params).then(function (res) {
                 _this2.setState({
                     thanks: true,
                     last_name: "",
@@ -45979,7 +45981,7 @@ var ConfirmModal = function (_Component) {
                 new_chosen_seats: this.props.chosen_seats,
                 order: this.props.order_to_edit
             };
-            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.put("/api/dashboard/edit/seats", params).then(function (res) {
+            __WEBPACK_IMPORTED_MODULE_5_axios___default.a.put("/dashboard/edit/seats", params).then(function (res) {
                 _this3.setState({
                     new_tickets: res.data,
                     show_new_tickets: true
@@ -46230,7 +46232,7 @@ var Tickets = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.get('/api/dashboard/venue').then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.get('/dashboard/venue').then(function (res) {
         var array = [];
         res.data.venue.event.event_days.map(function (date) {
           array.push(date.date);
@@ -46240,7 +46242,7 @@ var Tickets = function (_Component) {
         });
       });
 
-      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/api/dashboard/orders').then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/dashboard/orders').then(function (res) {
         _this2.setState({
           orders: res.data.orders.data,
           total_pages: res.data.orders.last_page
@@ -46258,7 +46260,7 @@ var Tickets = function (_Component) {
         search: this.state.search,
         selected_date: this.state.selected_date
       };
-      var url = '/api/dashboard/orders?page=' + page;
+      var url = '/dashboard/orders?page=' + page;
       __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post(url, values).then(function (res) {
         _this3.setState({
           current_page: page,
@@ -46406,7 +46408,7 @@ var Tickets = function (_Component) {
           search: _this6.state.search,
           selected_date: _this6.state.selected_date
         };
-        __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/api/dashboard/orders', values).then(function (res) {
+        __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/dashboard/orders', values).then(function (res) {
           _this6.setState({
             orders: res.data.orders.data,
             total_pages: res.data.orders.last_page
@@ -46430,7 +46432,7 @@ var Tickets = function (_Component) {
     value: function verifyPayment(e, order) {
       var _this7 = this;
 
-      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/api/dashboard/verify-payment', order).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_10_axios___default.a.post('/dashboard/verify-payment', order).then(function (res) {
         _this7.loadPaginatedData(_this7.state.current_page);
         _this7.toggleAreYouSure();
       });

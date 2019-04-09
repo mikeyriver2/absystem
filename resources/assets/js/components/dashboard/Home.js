@@ -52,7 +52,7 @@ export default class Home extends Component{
         }
         var sold_seats = {}
 
-        axios.get('/api/dashboard/venue').then(res=>{
+        axios.get('/dashboard/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
             res.data.section_types.map((type)=>{
                 venue_object.venue.push({
@@ -106,7 +106,7 @@ export default class Home extends Component{
             code : code,
             chosen_date : this.state.selected_date
         }
-        axios.post('/api/dashboard/view-order',params).then(res=>{
+        axios.post('/dashboard/view-order',params).then(res=>{
             this.getAssociatedSeats(res.data.ticket.ticket_order.tickets)
             //this.handleShowTicketInfo(null,res.data.order)
         });

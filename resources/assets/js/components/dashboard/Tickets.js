@@ -42,7 +42,7 @@ export default class Tickets extends Component{
   }
 
   componentDidMount(){
-    axios.get('/api/dashboard/venue').then(res=>{
+    axios.get('/dashboard/venue').then(res=>{
       let array = [];
       res.data.venue.event.event_days.map((date)=>{
         array.push(date.date)
@@ -52,7 +52,7 @@ export default class Tickets extends Component{
       })
     })
 
-    axios.post('/api/dashboard/orders').then(res=>{
+    axios.post('/dashboard/orders').then(res=>{
       this.setState({
         orders: res.data.orders.data,
         total_pages: res.data.orders.last_page
@@ -67,7 +67,7 @@ export default class Tickets extends Component{
       search: this.state.search,
       selected_date: this.state.selected_date
     }
-    let url = `/api/dashboard/orders?page=${page}`
+    let url = `/dashboard/orders?page=${page}`
     axios.post(url,values).then((res)=>{
       this.setState({
         current_page: page,
@@ -162,7 +162,7 @@ export default class Tickets extends Component{
         search: this.state.search,
         selected_date: this.state.selected_date
       }
-      axios.post('/api/dashboard/orders',values).then(res=>{
+      axios.post('/dashboard/orders',values).then(res=>{
         this.setState({
           orders: res.data.orders.data,
           total_pages: res.data.orders.last_page
@@ -183,7 +183,7 @@ export default class Tickets extends Component{
   }
 
   verifyPayment(e,order){
-    axios.post('/api/dashboard/verify-payment',order).then(res=>{
+    axios.post('/dashboard/verify-payment',order).then(res=>{
       this.loadPaginatedData(this.state.current_page);
       this.toggleAreYouSure();
     })

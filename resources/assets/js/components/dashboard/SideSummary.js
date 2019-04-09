@@ -22,7 +22,7 @@ export default class SideSummary extends Component{
     }
 
     componentDidMount(){
-        axios.get('/api/ticketing/venue').then(res=>{
+        axios.get('/ticketing/venue').then(res=>{
             this.setState({
                 orders: res.data.venue.event.ticket_orders
             },function(){
@@ -49,7 +49,7 @@ export default class SideSummary extends Component{
             code : code,
             chosen_date : date
         }
-        axios.post('/api/dashboard/view-order',params).then(res=>{
+        axios.post('/dashboard/view-order',params).then(res=>{
             this.handleShowTicketInfo(null,res.data.order)
         });
     }

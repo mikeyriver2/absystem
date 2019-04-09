@@ -149,7 +149,7 @@ export default class Ticketing extends Component {
         }
         var sold_seats = {}
 
-        axios.get('/api/ticketing/venue').then(res=>{
+        axios.get('/ticketing/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
             venue_object.special_seats = [];
             res.data.section_types.map((type)=>{

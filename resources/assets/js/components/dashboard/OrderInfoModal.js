@@ -90,7 +90,7 @@ export default class OrderInfoModal extends Component{
     }
 
     handleVerify(ticket){
-        Axios.post('/api/dashboard/verify-attendance',ticket).then(res=>{
+        Axios.post('/dashboard/verify-attendance',ticket).then(res=>{
             this.props.handleVerifyAttendance(this.props.ticket_info)
         })
     }
@@ -149,7 +149,7 @@ export default class OrderInfoModal extends Component{
             email: this.state.buyer_email,
             paid: this.state.paid
         }
-        Axios.put('/api/dashboard/edit/order',params).then(()=>{
+        Axios.put('/dashboard/edit/order',params).then(()=>{
             this.setState({
                 show_saved_icon: true
             },()=>{
@@ -166,7 +166,7 @@ export default class OrderInfoModal extends Component{
     }
 
     deleteOrder(){
-        Axios.put('/api/dashboard/edit/delete',{order_id: this.props.ticket_info.id}).then(()=>{
+        Axios.put('/dashboard/edit/delete',{order_id: this.props.ticket_info.id}).then(()=>{
             this.setState({
                 order_deleted: true,
                 are_you_sure: false
