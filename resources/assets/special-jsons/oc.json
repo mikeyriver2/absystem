@@ -1,0 +1,9 @@
+{
+	"ktx": ["OCG1", "OCG2", "OCG3", "OCG4", "OCG5", "OCG6", "OCG7", "OCG8", "OCG9", "OCG10", "OCG11", "OCG12", "OCG13", "OCG14", "OCG15", "OCH1", "OCH2", "OCH3", "OCH4", "OCH5", "OCH6", "OCH7", "OCH8", "OCH9", "OCH10", "OCH11", "OCH12", "OCH13", "OCH14", "OCH15"],
+	"vip": [
+		"OCE1", "OCE2", "OCE3", "OCE4", "OCE5", "OCE6", "OCE7", "OCE8", "OCE9", "OCE10", "OCE11", "OCE12", "OCE13", "OCE14", "OCE15",
+		"OCF1", "OCF2", "OCF3", "OCF4", "OCF5", "OCF6", "OCF7", "OCF8", "OCF9", "OCF10", "OCF11", "OCF12", "OCF13", "OCF14", "OCF15",
+		"OCI1", "OCI2", "OCI3", "OCI4", "OCI5", "OCI6", "OCI7", "OCI8", "OCI9", "OCI10", "OCI11", "OCI12", "OCI13", "OCI14", "OCI15",
+		"OCJ1", "OCJ2", "OCJ3", "OCJ4", "OCJ5", "OCJ6", "OCJ7", "OCJ8", "OCJ9", "OCJ10", "OCJ11", "OCJ12", "OCJ13", "OCJ14", "OCJ15"
+	]
+}

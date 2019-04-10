@@ -12246,13 +12246,13 @@ body {
 }
 
 .vip {
-  -webkit-box-shadow: 1px 1px 10px 1px #a98401a1 inset;
-          box-shadow: 1px 1px 10px 1px #a98401a1 inset;
+  -webkit-box-shadow: 1px 1px 10px 1px #a98401 inset;
+          box-shadow: 1px 1px 10px 1px #a98401 inset;
 }
 
 .seat-reserved {
   color: white;
-  background-color: #2741af;
+  background-color: #f1b850;
 }
 
 .seat-not-taken {
@@ -12261,7 +12261,7 @@ body {
 
 .seat-taken {
   color: white;
-  background-color: #f1b850;
+  background-color: #2741af;
   cursor: context-menu;
 }
 

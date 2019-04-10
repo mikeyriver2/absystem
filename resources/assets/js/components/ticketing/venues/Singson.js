@@ -279,13 +279,28 @@ export default class Singson extends Component{
                                     })
                                 });
                             }
-                            class_name+= special ? special_type == "ktx" ? ` ${special_type} seat-reserved` : ` ${special_type} seat-not-taken` : " seat-not-taken"
+                            class_name+= special ? special_type == "ktx" ? ` ${special_type} seat-taken` : ` ${special_type} seat-not-taken` : " seat-not-taken"
                             //class_name+=" seat-not-taken"
                             status = "free"
                         }
                     }
                 }else{
-                    class_name+=" seat-not-taken"
+                    let special = false;
+                    let special_type = "";
+                    if(this.props.hasOwnProperty('special_seats')){
+                        this.props.special_seats.map((seat)=>{
+                            let keys = Object.keys(seat);
+                                keys.map((key)=>{
+                                seat[key].map((special_seat)=>{
+                                    if(special_seat == section+row+(i+1)){
+                                        special = true;
+                                        special_type = key;
+                                    }
+                                })
+                            })
+                        });
+                    }
+                    class_name+= special ? special_type == "ktx" ? ` ${special_type} seat-taken` : ` ${special_type} seat-not-taken` : " seat-not-taken"
                     status = "free"
                 }
                 var style={

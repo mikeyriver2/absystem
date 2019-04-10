@@ -2346,13 +2346,28 @@ var Singson = function (_Component) {
                                         });
                                     });
                                 }
-                                _class_name += special ? special_type == "ktx" ? ' ' + special_type + ' seat-reserved' : ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
+                                _class_name += special ? special_type == "ktx" ? ' ' + special_type + ' seat-taken' : ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
                                 //class_name+=" seat-not-taken"
                                 status = "free";
                             }
                         }
                     } else {
-                        _class_name += " seat-not-taken";
+                        var _special = false;
+                        var _special_type = "";
+                        if (_this3.props.hasOwnProperty('special_seats')) {
+                            _this3.props.special_seats.map(function (seat) {
+                                var keys = Object.keys(seat);
+                                keys.map(function (key) {
+                                    seat[key].map(function (special_seat) {
+                                        if (special_seat == section + row + (i + 1)) {
+                                            _special = true;
+                                            _special_type = key;
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                        _class_name += _special ? _special_type == "ktx" ? ' ' + _special_type + ' seat-taken' : ' ' + _special_type + ' seat-not-taken' : " seat-not-taken";
                         status = "free";
                     }
                     var style = {

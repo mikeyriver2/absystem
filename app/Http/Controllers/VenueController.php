@@ -7,7 +7,7 @@ use App\Venue;
 use App\Section;
 class VenueController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $venue = Venue::where('name','Singson')
                 ->with(['sections' => function($query){
                     $query->orderBy('order','asc');
@@ -23,7 +23,7 @@ class VenueController extends Controller
 
         return response()->json([
             'venue' => $venue,
-            'section_types' => $section_types
+            'section_types' => $section_types,
         ]);
     }
 }
