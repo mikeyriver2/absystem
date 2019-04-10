@@ -10871,7 +10871,8 @@ var Home = function (_Component) {
             sold_seats: {},
             show_ticket_info: false,
             ticket_info: {},
-            associated_tickets: []
+            associated_tickets: [],
+            special_seats: []
         };
         _this.setVenue = _this.setVenue.bind(_this);
         _this.handleShowTicketInfo = _this.handleShowTicketInfo.bind(_this);
@@ -10911,6 +10912,7 @@ var Home = function (_Component) {
 
             __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/dashboard/venue').then(function (res) {
                 venue_object.venue_name = res.data.venue.name;
+                venue_object.special_seats = [];
                 res.data.section_types.map(function (type) {
                     venue_object.venue.push({
                         type: type.type,
@@ -10921,6 +10923,9 @@ var Home = function (_Component) {
                     });
                 });
                 res.data.venue.sections.map(function (section) {
+                    if (section.special) {
+                        venue_object.special_seats.push(section.special);
+                    }
                     venue_object.venue.map(function (map, index) {
                         if (map.type == section.type) {
                             venue_object.venue[index].number_of_sections += 1;
@@ -10949,7 +10954,8 @@ var Home = function (_Component) {
                     venue_name: venue_object.venue_name,
                     venue: venue_object.venue,
                     event: res.data.venue.event,
-                    selected_date: array[0]
+                    selected_date: array[0],
+                    special_seats: venue_object.special_seats
                 });
             });
         }
@@ -10967,7 +10973,7 @@ var Home = function (_Component) {
                 chosen_date: this.state.selected_date
             };
             __WEBPACK_IMPORTED_MODULE_9_axios___default.a.post('/dashboard/view-order', params).then(function (res) {
-                _this4.getAssociatedSeats(res.data.ticket.ticket_order.tickets);
+                _this4.getAssociatedSeats(res.data.ticket.ticket_order);
                 //this.handleShowTicketInfo(null,res.data.order)
             });
         }
@@ -11097,12 +11103,13 @@ var Home = function (_Component) {
                         { className: 'main-venue' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__ticketing_venues_Singson__["a" /* default */], {
                             resetAssociatedSeats: this.resetAssociatedSeats,
-                            associated_seats: this.state.associated_tickets,
+                            associated_seats: this.state.associated_tickets.tickets ? this.state.associated_tickets.tickets : this.state.associated_tickets,
                             venue: this.state.venue,
                             from_dashboard: true,
                             chosen_date: this.state.selected_date,
                             sold_seats: this.state.sold_seats,
-                            getOrderInfo: this.getOrderInfo
+                            getOrderInfo: this.getOrderInfo,
+                            special_seats: this.state.special_seats
                         })
                     )
                 ),
@@ -11359,11 +11366,13 @@ var SideSummary = function (_Component) {
         value: function handleShowSales(orders) {
             var _this4 = this;
 
-            var associated_seats = this.props.associated_seats;
+            var associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
             var associated_bool = false;
             if (this.props.hasOwnProperty('associated_seats')) {
-                if (associated_seats.length > 0) {
-                    associated_bool = true;
+                if (this.props.associated_seats.tickets) {
+                    if (associated_seats.length > 0) {
+                        associated_bool = true;
+                    }
                 }
             }
             var sales = [];
@@ -11444,11 +11453,15 @@ var SideSummary = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var associated_seats = this.props.associated_seats;
+            var _this5 = this;
+
+            var associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
             var associated_bool = false;
             if (this.props.hasOwnProperty('associated_seats')) {
-                if (associated_seats.length > 0) {
-                    associated_bool = true;
+                if (this.props.associated_seats.tickets) {
+                    if (associated_seats.length > 0) {
+                        associated_bool = true;
+                    }
                 }
             }
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -11512,7 +11525,9 @@ var SideSummary = function (_Component) {
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
-                                { style: { cursor: "pointer", fontSize: ".90em" }, onClick: this.getOrderInfo, id: associated_seats[0].slug, className: 'tickets-sold' },
+                                { style: { cursor: "pointer", fontSize: ".90em" }, onClick: function onClick(e) {
+                                        _this5.getOrderInfo(e, _this5.props.associated_seats.event_day.date);
+                                    }, id: associated_seats[0].slug, className: 'tickets-sold' },
                                 'view more'
                             )
                         )

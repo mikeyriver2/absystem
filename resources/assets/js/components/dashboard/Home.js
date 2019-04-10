@@ -24,7 +24,8 @@ export default class Home extends Component{
             sold_seats: {},
             show_ticket_info: false,
             ticket_info: {},
-            associated_tickets: []
+            associated_tickets: [],
+            special_seats: []
         }
         this.setVenue = this.setVenue.bind(this);
         this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);
@@ -54,6 +55,7 @@ export default class Home extends Component{
 
         axios.get('/dashboard/venue').then(res=>{
             venue_object.venue_name = res.data.venue.name;
+            venue_object.special_seats = [];
             res.data.section_types.map((type)=>{
                 venue_object.venue.push({
                     type: type.type,
@@ -64,6 +66,9 @@ export default class Home extends Component{
                 })
             });
             res.data.venue.sections.map((section)=>{
+                if(section.special){
+                    venue_object.special_seats.push(section.special)
+                }
                 venue_object.venue.map((map,index)=>{
                     if(map.type == section.type){
                         venue_object.venue[index].number_of_sections += 1;
@@ -92,7 +97,8 @@ export default class Home extends Component{
                 venue_name: venue_object.venue_name,
                 venue: venue_object.venue,
                 event: res.data.venue.event,
-                selected_date:array[0]
+                selected_date:array[0],
+                special_seats: venue_object.special_seats
             })
         })
     }
@@ -107,7 +113,7 @@ export default class Home extends Component{
             chosen_date : this.state.selected_date
         }
         axios.post('/dashboard/view-order',params).then(res=>{
-            this.getAssociatedSeats(res.data.ticket.ticket_order.tickets)
+            this.getAssociatedSeats(res.data.ticket.ticket_order)
             //this.handleShowTicketInfo(null,res.data.order)
         });
     }
@@ -183,12 +189,13 @@ export default class Home extends Component{
                     <div className="main-venue">
                         <Singson
                             resetAssociatedSeats = {this.resetAssociatedSeats}
-                            associated_seats = {this.state.associated_tickets}
+                            associated_seats = {this.state.associated_tickets.tickets ? this.state.associated_tickets.tickets : this.state.associated_tickets}
                             venue={this.state.venue}
                             from_dashboard={true}
                             chosen_date = {this.state.selected_date}
                             sold_seats = {this.state.sold_seats}
                             getOrderInfo = {this.getOrderInfo}
+                            special_seats = {this.state.special_seats}
                         />
                     </div>
                 </Col>

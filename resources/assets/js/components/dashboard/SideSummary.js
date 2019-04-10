@@ -66,11 +66,13 @@ export default class SideSummary extends Component{
     }
 
     handleShowSales(orders){
-        let associated_seats = this.props.associated_seats;
+        let associated_seats =  this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
         let associated_bool = false;
         if(this.props.hasOwnProperty('associated_seats')){
-            if(associated_seats.length > 0){
-                associated_bool = true
+            if(this.props.associated_seats.tickets){
+                if(associated_seats.length > 0){
+                    associated_bool = true
+                }
             }
         }
         var sales = [];
@@ -119,11 +121,13 @@ export default class SideSummary extends Component{
     }
 
     render(){
-        let associated_seats = this.props.associated_seats;
+        let associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
         let associated_bool = false;
         if(this.props.hasOwnProperty('associated_seats')){
-            if(associated_seats.length > 0){
-                associated_bool = true
+            if(this.props.associated_seats.tickets){
+                if(associated_seats.length > 0){
+                    associated_bool = true
+                }
             }
         }
         return (
@@ -159,7 +163,7 @@ export default class SideSummary extends Component{
                                       {associated_seats[0].ticket_order.created_at}
                                     </div>
                                 </div>
-                                <div style={{cursor:"pointer", fontSize:".90em"}} onClick={this.getOrderInfo} id={associated_seats[0].slug} className="tickets-sold">
+                                <div style={{cursor:"pointer", fontSize:".90em"}} onClick={e=>{this.getOrderInfo(e,this.props.associated_seats.event_day.date)}} id={associated_seats[0].slug} className="tickets-sold">
                                     view more
                                 </div>
                             </div>
