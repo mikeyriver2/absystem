@@ -186,7 +186,9 @@ export default class Singson extends Component{
                 date: this.props.chosen_date
             }
             
-            this.props.handleChosenSeats(seat);
+            if(!status.includes("seat-taken")){
+                this.props.handleChosenSeats(seat);
+            }
 
             if(status.includes("seat-not-taken")){
                 document.getElementById(e.target.id).classList.add('seat-reserved');
@@ -305,7 +307,7 @@ export default class Singson extends Component{
                 }
                 var style={
                     height: from_dashboard ? "2.5vh" : "",
-                    cursor: from_dashboard ? "pointer" : ""
+                    cursor: from_dashboard ? class_name.includes("seat-taken") ? "pointer" : "default" : ""
                 }
                 seats.push(
                     from_dashboard ?

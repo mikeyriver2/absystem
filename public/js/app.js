@@ -2248,7 +2248,9 @@ var Singson = function (_Component) {
                     date: this.props.chosen_date
                 };
 
-                this.props.handleChosenSeats(seat);
+                if (!status.includes("seat-taken")) {
+                    this.props.handleChosenSeats(seat);
+                }
 
                 if (status.includes("seat-not-taken")) {
                     document.getElementById(e.target.id).classList.add('seat-reserved');
@@ -2372,7 +2374,7 @@ var Singson = function (_Component) {
                     }
                     var style = {
                         height: from_dashboard ? "2.5vh" : "",
-                        cursor: from_dashboard ? "pointer" : ""
+                        cursor: from_dashboard ? _class_name.includes("seat-taken") ? "pointer" : "default" : ""
                     };
                     seats.push(from_dashboard ?
                     // <OverlayTrigger 

@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware('auth:web')->group(function(){
+Route::middleware('auth:web','logUserAction')->group(function(){
     Route::get('login-check','AuthController@checkIfLoggedIn');
     Route::get('logout','AuthController@clearSession');
     
@@ -27,7 +27,6 @@ Route::middleware('auth:web')->group(function(){
             Route::put('seats','TicketController@EditChosenSeats');
             Route::put('delete','TicketController@DeleteOrder');
         });
-        
     });
 });
 
