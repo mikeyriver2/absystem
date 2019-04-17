@@ -569,6 +569,19 @@ body{
 }
 
 #confirm-order-modal{
+  .note{
+    margin-bottom: .5em;
+  }
+  .total-confirm-modal{
+    h6{
+      display:inline-block;
+    }
+    span{
+      margin-left: 2em;
+    }
+    text-align: center;
+    margin: 2.5vh 0;
+  }
   .modal-content{
     width: 50vw;
     .modal-header{
@@ -587,13 +600,27 @@ body{
       }
       button{
         width: 100%;
-        margin-top: 5vh;
+        //margin-top: 5vh;
       }
       padding: 2em !important;
+      padding-top: .75em !important;
       .form-span{
         display: grid;
         grid-template-columns: 200px 400px;
         margin-bottom: 3vh;
+        &.email{
+          input{
+            width: 100%
+          }
+        }
+        &.cell{
+          input{
+            width: 100%
+          }        
+        }
+        small{
+          color:red;
+        }
       }
       .form-span-two{
         display: flex;

@@ -103,6 +103,10 @@ class TicketController extends Controller
         ]);
         
         foreach($request->chosen_seats as $key => $value){
+            if(strpos($value["section_name"],"[VIP] ") > -1){
+                $exploded = explode("[VIP] ",$value["section_name"]);
+                $value["section_name"] = $exploded[1];
+            }
             Ticket::create([
                 'order_id' => $order->id,
                 'slug' => $value["seat_id"],

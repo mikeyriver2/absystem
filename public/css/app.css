@@ -12287,6 +12287,23 @@ body {
   margin-bottom: 1.5rem;
 }
 
+#confirm-order-modal .note {
+  margin-bottom: .5em;
+}
+
+#confirm-order-modal .total-confirm-modal {
+  text-align: center;
+  margin: 2.5vh 0;
+}
+
+#confirm-order-modal .total-confirm-modal h6 {
+  display: inline-block;
+}
+
+#confirm-order-modal .total-confirm-modal span {
+  margin-left: 2em;
+}
+
 #confirm-order-modal .modal-content {
   width: 50vw;
 }
@@ -12299,6 +12316,7 @@ body {
 
 #confirm-order-modal .modal-content .modal-body {
   padding: 2em !important;
+  padding-top: .75em !important;
 }
 
 #confirm-order-modal .modal-content .modal-body .thanks h5 {
@@ -12308,13 +12326,24 @@ body {
 
 #confirm-order-modal .modal-content .modal-body button {
   width: 100%;
-  margin-top: 5vh;
 }
 
 #confirm-order-modal .modal-content .modal-body .form-span {
   display: grid;
   grid-template-columns: 200px 400px;
   margin-bottom: 3vh;
+}
+
+#confirm-order-modal .modal-content .modal-body .form-span.email input {
+  width: 100%;
+}
+
+#confirm-order-modal .modal-content .modal-body .form-span.cell input {
+  width: 100%;
+}
+
+#confirm-order-modal .modal-content .modal-body .form-span small {
+  color: red;
 }
 
 #confirm-order-modal .modal-content .modal-body .form-span-two {

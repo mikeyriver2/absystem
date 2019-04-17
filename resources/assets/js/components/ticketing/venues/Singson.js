@@ -167,7 +167,13 @@ export default class Singson extends Component{
                 section_name = "Orchestra Right"
             }else if(id.includes('OC')){
                 section_name = "Orchestra Center"
-                ticket_price = 350;
+                let classes = document.getElementById(id).className
+                if(classes.includes('vip')){
+                    section_name = "[VIP] Orchestra Center"
+                    ticket_price = 500;
+                }else{
+                    ticket_price = 350;
+                }
             }else if(id.includes('BL')){
                 section_name = "Balcony Left"
                 ticket_price = 250;

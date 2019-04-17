@@ -16,12 +16,14 @@ export default class ConfirmModal extends Component{
             last_name: "",
             email: "",
             cell_number: "",
-            id_number: 0,
+            id_number: "",
             year_course: "",
             error: true, //there is error
             show_new_tickets: false,
             new_tickets: [],
-            error_message: "",
+            valid_email: true,
+            valid_cell: true,
+            valid_student_id: true
         }
         this.toggleLoading = this.toggleLoading.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -42,13 +44,13 @@ export default class ConfirmModal extends Component{
     componentDidUpdate(prevProps,prevState){
         console.log('Calling');
         try{
-                if (this.state.error_message == "" && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
+                if ((this.state.valid_student_id || !/\S/.test(this.state.id_number))  && this.state.valid_email && (this.state.valid_cell || !/\S/.test(this.state.cell_number)) && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
                         document.getElementById('submit-order').disabled = false
                 }else{
                     document.getElementById('submit-order').disabled = true
                 }
         }catch(error){
-            console.log(error);
+            //do nuthing
         }
         
     }
@@ -65,8 +67,11 @@ export default class ConfirmModal extends Component{
         }
     }
 
-    submitOrder(){
+    submitOrder(e){
         //if(!this.state.error || this.state.error == "false"){
+            setTimeout(()=>{ //gotta settime out because it's null right upon click for some reason
+                document.getElementById('submit-order').disabled = true
+            },10)
             this.toggleLoading();
             var params = {
                 first_name: this.state.first_name,
@@ -87,9 +92,15 @@ export default class ConfirmModal extends Component{
                     cell_number: "",
                     id_number: 0,
                     year_course: "",
+                    valid_email: true,
+                    valid_cell: true,
+                    valid_student_id: true,
                     error: true //there is error
                 })
                 this.toggleLoading();
+                setTimeout(()=>{ 
+                    document.getElementById('submit-order').disabled = false
+                },10)
                 this.props.clearOrder()
                 setTimeout(()=>{
                     this.setState({
@@ -108,7 +119,17 @@ export default class ConfirmModal extends Component{
         return re.test(String(email).toLowerCase());
     }
 
-    handleChange(e){
+    validateCell(cell){ //only checks if string ONLY contains numbers
+        var isnum = /^\d+$/.test(cell);
+        return isnum;
+    }
+
+    validateStudentId(student_id){
+        let bool = this.validateCell(student_id);
+        return (bool && student_id.length == 6);
+    }
+
+    handleChange(e,type=null){
         var value = e.target.value
         var name = e.target.name;
         switch(name){
@@ -122,14 +143,22 @@ export default class ConfirmModal extends Component{
                 let valid_email = this.validateEmail(value);
                 this.setState({
                     email: value,
-                    error_message: valid_email ? "" : "Invalid Email Format"
+                    valid_email: valid_email
                 });
                 break;
             case "cell":
-                this.setState({cell_number: value});
+                let valid_cell = this.validateCell(value);
+                this.setState({
+                    cell_number: value,
+                    valid_cell: valid_cell
+                });
                 break;
             case "id_number":
-                this.setState({id_number: value});
+                let valid_student_id = this.validateStudentId(value)
+                this.setState({
+                    id_number: value,
+                    valid_student_id: valid_student_id
+                });
                 break;
             case "year_course":
                 this.setState({year_course: value});
@@ -138,8 +167,17 @@ export default class ConfirmModal extends Component{
     }
 
     renderInputs(){
+        let total = 0;
+        if(this.props.hasOwnProperty('chosen_seats')){
+            this.props.chosen_seats.map((seat)=>{
+                total += seat.ticket_price
+            })
+        }
         return(
             <div>
+                <div className="note">
+                    <b>*</b> <small>required</small>
+                </div>
                 <div className="form-span first-name">
                     <span>First Name*</span>
                     <input name="first_name" onChange={this.handleChange} type="text" required></input>
@@ -150,21 +188,33 @@ export default class ConfirmModal extends Component{
                 </div>
                 <div className="form-span email">
                     <span>Email Address*</span>
-                    <input name="email" onChange={this.handleChange} type="text" required></input>
+                    <div>
+                        <input name="email" onChange={e=>this.handleChange(e,'email')} type="text" required></input><br/>
+                        {!this.state.valid_email && <small>Please enter a valid email</small>}
+                    </div>
                 </div>
                 <div className="form-span cell">
                     <span>Cellphone Number:</span>
-                    <input name="cell" onChange={this.handleChange} type="text"></input>
+                    <div>
+                        <input name="cell" onChange={e=>this.handleChange(e,'cell')} type="text"></input><br/>
+                        {!this.state.valid_cell && <small>Numbers only</small>}
+                    </div>
                 </div>
                 <div className="form-span-two">
                     <div className="id_number">
                         <span>ID Number</span>
-                        <input name="id_number" onChange={this.handleChange} type="text"></input>
+                       
+                            <input name="id_number" onChange={this.handleChange} type="text"></input><br/>
+                            {!this.state.valid_student_id && <small>Please enter a valid Ateneo ID Number</small>}
+                       
                     </div>
                     <div className="id_number">
                         <span>Year and Course</span>
                         <input name="year_course" onChange={this.handleChange} type="text"></input>
                     </div>
+                </div>
+                <div className="total-confirm-modal">
+                    <h6>TOTAL:</h6><span><b>P{total.toLocaleString()}.00</b></span>
                 </div>
                 <button id="submit-order" onClick={this.submitOrder} className="confirm-button btn btn-primary">
                     {!this.state.loading ? "Confirm Order" : <Loader />}

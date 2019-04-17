@@ -2229,7 +2229,13 @@ var Singson = function (_Component) {
                     section_name = "Orchestra Right";
                 } else if (id.includes('OC')) {
                     section_name = "Orchestra Center";
-                    ticket_price = 350;
+                    var classes = document.getElementById(id).className;
+                    if (classes.includes('vip')) {
+                        section_name = "[VIP] Orchestra Center";
+                        ticket_price = 500;
+                    } else {
+                        ticket_price = 350;
+                    }
                 } else if (id.includes('BL')) {
                     section_name = "Balcony Left";
                     ticket_price = 250;
@@ -45773,12 +45779,14 @@ var ConfirmModal = function (_Component) {
             last_name: "",
             email: "",
             cell_number: "",
-            id_number: 0,
+            id_number: "",
             year_course: "",
             error: true, //there is error
             show_new_tickets: false,
             new_tickets: [],
-            error_message: ""
+            valid_email: true,
+            valid_cell: true,
+            valid_student_id: true
         };
         _this.toggleLoading = _this.toggleLoading.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
@@ -45803,13 +45811,13 @@ var ConfirmModal = function (_Component) {
         value: function componentDidUpdate(prevProps, prevState) {
             console.log('Calling');
             try {
-                if (this.state.error_message == "" && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
+                if ((this.state.valid_student_id || !/\S/.test(this.state.id_number)) && this.state.valid_email && (this.state.valid_cell || !/\S/.test(this.state.cell_number)) && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
                     document.getElementById('submit-order').disabled = false;
                 } else {
                     document.getElementById('submit-order').disabled = true;
                 }
             } catch (error) {
-                console.log(error);
+                //do nuthing
             }
         }
     }, {
@@ -45827,10 +45835,14 @@ var ConfirmModal = function (_Component) {
         }
     }, {
         key: 'submitOrder',
-        value: function submitOrder() {
+        value: function submitOrder(e) {
             var _this2 = this;
 
             //if(!this.state.error || this.state.error == "false"){
+            setTimeout(function () {
+                //gotta settime out because it's null right upon click for some reason
+                document.getElementById('submit-order').disabled = true;
+            }, 10);
             this.toggleLoading();
             var params = {
                 first_name: this.state.first_name,
@@ -45851,9 +45863,15 @@ var ConfirmModal = function (_Component) {
                     cell_number: "",
                     id_number: 0,
                     year_course: "",
+                    valid_email: true,
+                    valid_cell: true,
+                    valid_student_id: true,
                     error: true //there is error
                 });
                 _this2.toggleLoading();
+                setTimeout(function () {
+                    document.getElementById('submit-order').disabled = false;
+                }, 10);
                 _this2.props.clearOrder();
                 setTimeout(function () {
                     _this2.setState({
@@ -45871,8 +45889,23 @@ var ConfirmModal = function (_Component) {
             return re.test(String(email).toLowerCase());
         }
     }, {
+        key: 'validateCell',
+        value: function validateCell(cell) {
+            //only checks if string ONLY contains numbers
+            var isnum = /^\d+$/.test(cell);
+            return isnum;
+        }
+    }, {
+        key: 'validateStudentId',
+        value: function validateStudentId(student_id) {
+            var bool = this.validateCell(student_id);
+            return bool && student_id.length == 6;
+        }
+    }, {
         key: 'handleChange',
         value: function handleChange(e) {
+            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
             var value = e.target.value;
             var name = e.target.name;
             switch (name) {
@@ -45886,14 +45919,22 @@ var ConfirmModal = function (_Component) {
                     var valid_email = this.validateEmail(value);
                     this.setState({
                         email: value,
-                        error_message: valid_email ? "" : "Invalid Email Format"
+                        valid_email: valid_email
                     });
                     break;
                 case "cell":
-                    this.setState({ cell_number: value });
+                    var valid_cell = this.validateCell(value);
+                    this.setState({
+                        cell_number: value,
+                        valid_cell: valid_cell
+                    });
                     break;
                 case "id_number":
-                    this.setState({ id_number: value });
+                    var valid_student_id = this.validateStudentId(value);
+                    this.setState({
+                        id_number: value,
+                        valid_student_id: valid_student_id
+                    });
                     break;
                 case "year_course":
                     this.setState({ year_course: value });
@@ -45903,9 +45944,32 @@ var ConfirmModal = function (_Component) {
     }, {
         key: 'renderInputs',
         value: function renderInputs() {
+            var _this3 = this;
+
+            var total = 0;
+            if (this.props.hasOwnProperty('chosen_seats')) {
+                this.props.chosen_seats.map(function (seat) {
+                    total += seat.ticket_price;
+                });
+            }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'note' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'b',
+                        null,
+                        '*'
+                    ),
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'small',
+                        null,
+                        'required'
+                    )
+                ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'form-span first-name' },
@@ -45934,7 +45998,19 @@ var ConfirmModal = function (_Component) {
                         null,
                         'Email Address*'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'email', onChange: this.handleChange, type: 'text', required: true })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'email', onChange: function onChange(e) {
+                                return _this3.handleChange(e, 'email');
+                            }, type: 'text', required: true }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                        !this.state.valid_email && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'small',
+                            null,
+                            'Please enter a valid email'
+                        )
+                    )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -45944,7 +46020,19 @@ var ConfirmModal = function (_Component) {
                         null,
                         'Cellphone Number:'
                     ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'cell', onChange: this.handleChange, type: 'text' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'cell', onChange: function onChange(e) {
+                                return _this3.handleChange(e, 'cell');
+                            }, type: 'text' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                        !this.state.valid_cell && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'small',
+                            null,
+                            'Numbers only'
+                        )
+                    )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -45957,7 +46045,13 @@ var ConfirmModal = function (_Component) {
                             null,
                             'ID Number'
                         ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'id_number', onChange: this.handleChange, type: 'text' })
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'id_number', onChange: this.handleChange, type: 'text' }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                        !this.state.valid_student_id && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'small',
+                            null,
+                            'Please enter a valid Ateneo ID Number'
+                        )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
@@ -45968,6 +46062,26 @@ var ConfirmModal = function (_Component) {
                             'Year and Course'
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'year_course', onChange: this.handleChange, type: 'text' })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'total-confirm-modal' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h6',
+                        null,
+                        'TOTAL:'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'b',
+                            null,
+                            'P',
+                            total.toLocaleString(),
+                            '.00'
+                        )
                     )
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -46004,7 +46118,7 @@ var ConfirmModal = function (_Component) {
     }, {
         key: 'handleEdit',
         value: function handleEdit() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.setState({
                 loading: true
@@ -46014,7 +46128,7 @@ var ConfirmModal = function (_Component) {
                 order: this.props.order_to_edit
             };
             __WEBPACK_IMPORTED_MODULE_5_axios___default.a.put("/dashboard/edit/seats", params).then(function (res) {
-                _this3.setState({
+                _this4.setState({
                     new_tickets: res.data,
                     show_new_tickets: true
                 });
