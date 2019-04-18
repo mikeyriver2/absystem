@@ -27,4 +27,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $appends = [
+        'last_activity',
+    ];
+
+    public function actionLogs(){
+        return $this->hasMany('App\UserLog');
+    }
+
+    public function getLastActivityAttribute(){
+        $activities = $this->actionLogs->sortByDesc('id')->first();
+        return $activities;
+    }
 }

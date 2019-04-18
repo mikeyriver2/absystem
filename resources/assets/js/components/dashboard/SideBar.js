@@ -50,7 +50,9 @@ export default class SideBar extends Component{
                     <label style={{marginLeft:"6.7vw"}} id="label-event" htmlFor="event-icon" className="label-icon">Events</label>
                 </Row>
                 <Row className="side-icon member-icon">
-                    <img onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/audience.png" id="member-icon"/>
+                    <Link to={`/dashboard/members`}>
+                        <img onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/audience.png" id="member-icon"/>
+                    </Link>
                     <label style={{marginLeft:"7.4vw"}} id="label-member" htmlFor="member-icon" className="label-icon">Members</label>
                 </Row>
             </Col>

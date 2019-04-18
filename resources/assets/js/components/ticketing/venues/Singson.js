@@ -264,14 +264,14 @@ export default class Singson extends Component{
                         }
                         status = "sold"
                     }else{
-                        if(edit_mode){
+                        /*if(edit_mode){
                             if(chosen_seats.includes(section+row+(i+1))){
                                 class_name+=" seat-reserved";
                             }else{
                                 class_name+=" seat-not-taken"
                                 status = "free"
                             }    
-                        }else{
+                        }else{*/
                             let special = false;
                             let special_type = "";
                             if(this.props.hasOwnProperty('special_seats')){
@@ -290,7 +290,7 @@ export default class Singson extends Component{
                             class_name+= special ? special_type == "ktx" ? ` ${special_type} seat-taken` : ` ${special_type} seat-not-taken` : " seat-not-taken"
                             //class_name+=" seat-not-taken"
                             status = "free"
-                        }
+                        //}
                     }
                 }else{
                     let special = false;

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import Example from '../Example';
 import Home from './Home'
 import Tickets from './Tickets'
+import Members from './Members'
 import Ticketing from '../ticketing/Ticketing'
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import axios from 'axios';
@@ -70,14 +71,14 @@ export default class Head extends Component{
                         <div onClick={this.handleLogout} id="logout" className="logout">Logout</div>
                     }
                 </Row>
+
                 <Route exact path={`${this.props.match.url}`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/home`} component={Home}/>
                 <Route exact path={`${this.props.match.url}/tickets`} component={Tickets}/>
                 <Route exact path={`${this.props.match.url}/tickets/order/:id`} component={Tickets}/>
                 <Route exact path={`${this.props.match.url}/tickets/ticket/:id`} component={Tickets}/>
                 <Route exact path={`${this.props.match.url}/tickets/ticket/edit/:id`} component={Ticketing}/>
-
-
+                <Route exact path={`${this.props.match.url}/members`} component={Members}/>
             </div>
             
         )

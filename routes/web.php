@@ -16,6 +16,7 @@ Route::middleware('auth:web','logUserAction')->group(function(){
     Route::get('logout','AuthController@clearSession');
     
     Route::prefix('dashboard')->group(function(){
+        Route::get('users','HomeController@getUsers');
         Route::get('venue','VenueController@index');
         Route::post('orders','TicketController@Order');
         Route::post('view-order','TicketController@ViewOrder');
