@@ -18,7 +18,7 @@ export default class ConfirmModal extends Component{
             cell_number: "",
             id_number: "",
             year_course: "",
-            error: true, //there is error
+            error: false, //there is network error
             show_new_tickets: false,
             new_tickets: [],
             valid_email: true,
@@ -50,7 +50,7 @@ export default class ConfirmModal extends Component{
                     document.getElementById('submit-order').disabled = true
                 }
         }catch(error){
-            //do nuthing
+
         }
         
     }
@@ -95,7 +95,6 @@ export default class ConfirmModal extends Component{
                     valid_email: true,
                     valid_cell: true,
                     valid_student_id: true,
-                    error: true //there is error
                 })
                 this.toggleLoading();
                 setTimeout(()=>{ 
@@ -109,7 +108,31 @@ export default class ConfirmModal extends Component{
                     })
                 },5000)
             }).catch(error=>{
-
+                this.setState({
+                    error: true,
+                    thanks: true,
+                    last_name: "",
+                    email: "",
+                    cell_number: "",
+                    id_number: 0,
+                    year_course: "",
+                    valid_email: true,
+                    valid_cell: true,
+                    valid_student_id: true,
+                    error: true //there is error
+                })
+                this.toggleLoading();
+                setTimeout(()=>{ 
+                    document.getElementById('submit-order').disabled = false
+                },10)
+                this.props.clearOrder()
+                setTimeout(()=>{
+                    this.setState({
+                        thanks: false,
+                        first_name: "",
+                        error: false
+                    })
+                },10000)
             })
         //}
     }
@@ -297,6 +320,15 @@ export default class ConfirmModal extends Component{
         )
     }
 
+    renderError(){
+        return (
+            <div>
+                Something went wrong :( . Please refresh the page and try again. Sorrrryyyyyyy.<br/>
+                Most Likely cause: already existing ticket in database. Please choose another seat 
+            </div>
+        )
+    }
+
     redirectBack(){
         window.location.href = window.location.origin+"/dashboard/tickets";
     }
@@ -307,10 +339,10 @@ export default class ConfirmModal extends Component{
         return (
         <Modal id="confirm-order-modal" show={this.props.show_order_modal} onHide={show_new_tickets ? this.redirectBack : this.props.show_order_modal_fnc}>
           <Modal.Header closeButton>
-            {show_new_tickets ? <h4>Summary of New Seats</h4> : edit_mode ? <h4>Confirm Seat Changes</h4> : <h4>Contact Information</h4>}
+            {this.state.error ? <h4 style={{color:"red"}}>Internal Error</h4> : show_new_tickets ? <h4>Summary of New Seats</h4> : edit_mode ? <h4>Confirm Seat Changes</h4> : <h4>Contact Information</h4>}
           </Modal.Header>
             <Modal.Body closeButton>    
-                {show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()}
+                {this.state.error ? this.renderError() : show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()}
             </Modal.Body>
         </Modal>
         )
