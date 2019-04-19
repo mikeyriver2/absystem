@@ -29,7 +29,9 @@ class HomeController extends Controller
     }
 
     public function getUsers(){
-        $users = User::all()->load('actionLogs');
+        $users = User::all()->load(['actionLogs' => function($actionLog){
+            $actionLog->orderBy('id','desc');
+        }]);
         return $users;
     }
 }

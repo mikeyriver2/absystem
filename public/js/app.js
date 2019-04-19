@@ -5808,6 +5808,9 @@ var SideSummary = function (_Component) {
 
             var associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
             var associated_bool = false;
+            var from_members = this.props.hasOwnProperty('chosen_user');
+            var member_actions = from_members ? this.props.chosen_user.action_logs : [];
+            console.log(member_actions);
             if (this.props.hasOwnProperty('associated_seats')) {
                 if (this.props.associated_seats.tickets) {
                     if (associated_seats.length > 0) {
@@ -5816,7 +5819,29 @@ var SideSummary = function (_Component) {
                 }
             }
             var sales = [];
-            if (!associated_bool) {
+            if (from_members && member_actions) {
+                member_actions.map(function (action) {
+                    sales.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
+                        { className: 'breakdown-item' },
+                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["b" /* Col */],
+                            { md: 12, className: 'breakdown-order' },
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'sale-order' },
+                                'Action: ',
+                                action.action
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'sale-codes' },
+                                action.created_at
+                            )
+                        )
+                    ));
+                });
+            } else if (!associated_bool) {
                 var _loop = function _loop(i) {
                     var tix_ids = [];
                     if (orders[i]) {
@@ -5897,6 +5922,7 @@ var SideSummary = function (_Component) {
 
             var associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
             var associated_bool = false;
+            var from_members = this.props.hasOwnProperty('chosen_user');
             if (this.props.hasOwnProperty('associated_seats')) {
                 if (this.props.associated_seats.tickets) {
                     if (associated_seats.length > 0) {
@@ -5913,7 +5939,19 @@ var SideSummary = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { className: 'summary-main' },
-                        !associated_bool ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        from_members ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                            'div',
+                            null,
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'rev-today' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'h5',
+                                    null,
+                                    this.props.chosen_user.name
+                                )
+                            )
+                        ) : !associated_bool ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
                             null,
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -5979,7 +6017,7 @@ var SideSummary = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'h4',
                         null,
-                        associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"
+                        from_members ? "LIST OF ACTIONS" : associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',

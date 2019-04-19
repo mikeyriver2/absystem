@@ -52,6 +52,8 @@ class LogUserAction
             case "TicketController@DeleteOrder":
                 $action = "User deleted order ID: ".$request->order_id."";
                 break;
+            default:
+                $action = $action_controller;
         }
 
         if($action == "Dashboard API Called"){

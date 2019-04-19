@@ -68,6 +68,9 @@ export default class SideSummary extends Component{
     handleShowSales(orders){
         let associated_seats =  this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
         let associated_bool = false;
+        let from_members = this.props.hasOwnProperty('chosen_user');
+        let member_actions =  from_members ? this.props.chosen_user.action_logs : [];
+        console.log(member_actions);
         if(this.props.hasOwnProperty('associated_seats')){
             if(this.props.associated_seats.tickets){
                 if(associated_seats.length > 0){
@@ -76,7 +79,22 @@ export default class SideSummary extends Component{
             }
         }
         var sales = [];
-        if(!associated_bool){
+        if(from_members && member_actions){
+            member_actions.map((action)=>{
+                 sales.push(
+                     <Row className="breakdown-item">
+                         <Col md={12} className="breakdown-order"> 
+                             <div className="sale-order"> 
+                                 Action: {action.action}
+                             </div>
+                             <div className="sale-codes">
+                                {action.created_at}
+                             </div>
+                         </Col>
+                     </Row>
+                 )   
+            })
+        }else if(!associated_bool){
             for(let i = 0; i < 5; i++){
                 let tix_ids = []
                 if(orders[i]){
@@ -123,6 +141,7 @@ export default class SideSummary extends Component{
     render(){
         let associated_seats = this.props.hasOwnProperty('associated_seats') && this.props.associated_seats.tickets;
         let associated_bool = false;
+        let from_members = this.props.hasOwnProperty('chosen_user');
         if(this.props.hasOwnProperty('associated_seats')){
             if(this.props.associated_seats.tickets){
                 if(associated_seats.length > 0){
@@ -134,7 +153,15 @@ export default class SideSummary extends Component{
                 <Col md={3} className="main-info">
                     <div className="summary-main-container">
                         <div className="summary-main">
-                        {!associated_bool ?
+                        {
+                        from_members ?
+                            <div>
+                                <div className="rev-today">
+                                    <h5>{this.props.chosen_user.name}</h5>
+                                </div>
+                            </div>
+                        :
+                        !associated_bool ?
                             <div>  
                                 <div className="rev-today">
                                     <div className="amount">
@@ -171,7 +198,7 @@ export default class SideSummary extends Component{
                         </div>
                     </div>
                     <div className="breakdown">
-                        <h4>{associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"}</h4>
+                        <h4>{from_members ? "LIST OF ACTIONS" : associated_bool ? "TICKETS BOUGHT" : "RECENT SALES"}</h4>
                         <div className="breakdown-sales">
                             {this.handleShowSales(this.state.orders)}
                         </div>
