@@ -372,6 +372,16 @@ export default class Ticketing extends Component {
         return ass;
     }
 
+    changeDateFormat(dateTime){
+        let unixTime = Date.parse(dateTime);
+        let newDateTimeFormat = new Date(unixTime)
+        let explodedTime = newDateTimeFormat.toString().split(" ");
+        let dateArray =  explodedTime.filter((date,index) => {
+            return index < 5;
+        });
+        return dateArray.join(" ");
+    }
+
     render() {
         var window_width = window.innerWidth+"px";
         var window_height = window.innerHeight+"px";
@@ -393,14 +403,14 @@ export default class Ticketing extends Component {
                                         {this.state.selected_date == "" ?
                                             <span>Select Reservation Date</span>
                                             :
-                                            <span>{this.state.selected_date}</span>
+                                            <span>{this.changeDateFormat(this.state.selected_date)}</span>
                                         }
                                     </div>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
                                     {this.state.dates.map((date,index)=>{
-                                        return <Dropdown.Item eventKey={date}>{date}</Dropdown.Item>
+                                        return <Dropdown.Item eventKey={date}>{this.changeDateFormat(date)}</Dropdown.Item>
                                     })
                                     }
                                 </Dropdown.Menu>

@@ -7422,6 +7422,17 @@ var Ticketing = function (_Component) {
             return ass;
         }
     }, {
+        key: 'changeDateFormat',
+        value: function changeDateFormat(dateTime) {
+            var unixTime = Date.parse(dateTime);
+            var newDateTimeFormat = new Date(unixTime);
+            var explodedTime = newDateTimeFormat.toString().split(" ");
+            var dateArray = explodedTime.filter(function (date, index) {
+                return index < 5;
+            });
+            return dateArray.join(" ");
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this7 = this;
@@ -7465,7 +7476,7 @@ var Ticketing = function (_Component) {
                                         ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'span',
                                             null,
-                                            this.state.selected_date
+                                            this.changeDateFormat(this.state.selected_date)
                                         )
                                     )
                                 ),
@@ -7476,7 +7487,7 @@ var Ticketing = function (_Component) {
                                         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["c" /* Dropdown */].Item,
                                             { eventKey: date },
-                                            date
+                                            _this7.changeDateFormat(date)
                                         );
                                     })
                                 )
