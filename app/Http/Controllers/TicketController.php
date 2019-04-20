@@ -90,6 +90,21 @@ class TicketController extends Controller
     }
 
     public function NewOrder(Request $request){
+        $chosen_seat_codes = collect($request->chosen_seats)->map(function($seat){
+            return $seat["seat_id"];
+        });
+
+        $check = Ticket::whereIn('slug',$chosen_seat_codes->toArray())
+                        ->whereHas('ticketOrder',function($order)use($request){
+                            $order->whereHas('eventDay',function($eventDay)use($request){
+                                $eventDay->where('date',$request->chosen_seats[0]['date']);
+                            });
+                        })
+                        ->get();
+
+        if(count($check) > 0 && isset($check)){
+            return response("error",403);
+        }
 
         $order = TicketOrder::create([
             'buyer_first_name'  =>  $request->first_name,

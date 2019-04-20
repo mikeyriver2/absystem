@@ -58,13 +58,16 @@ class LogUserAction
 
         if($action == "Dashboard API Called"){
             $now = Carbon::now();
-            $time = UserLog::where('action','Dashboard API Called')->orderBy('id','desc')->first()->created_at;
-            if($now->diffInSeconds($time) >= 60){ //to avoid filling up db too much, only log this action when action is at least a minute apart from latest similar action
-                UserLog::create([ 
-                    "user_id"   => $user->id,
-                    "action"    => $action  
-                ]);
-        
+            $time = UserLog::where('action','Dashboard API Called')->orderBy('id','desc')->first();
+            if(!empty($time) && isset($time)){
+                $time = $time->created_at;
+                if($now->diffInSeconds($time) >= 60){ //to avoid filling up db too much, only log this action when action is at least a minute apart from latest similar action
+                    UserLog::create([ 
+                        "user_id"   => $user->id,
+                        "action"    => $action  
+                    ]);
+            
+                }
             }
         }else{
             UserLog::create([

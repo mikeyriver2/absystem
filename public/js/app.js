@@ -45806,6 +45806,8 @@ var HyundaiHall = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(14);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -45837,7 +45839,7 @@ var ConfirmModal = function (_Component) {
             cell_number: "",
             id_number: "",
             year_course: "",
-            error: true, //there is error
+            error: false, //there is network error
             show_new_tickets: false,
             new_tickets: [],
             valid_email: true,
@@ -45872,9 +45874,7 @@ var ConfirmModal = function (_Component) {
                 } else {
                     document.getElementById('submit-order').disabled = true;
                 }
-            } catch (error) {
-                //do nuthing
-            }
+            } catch (error) {}
         }
     }, {
         key: 'toggleLoading',
@@ -45921,8 +45921,7 @@ var ConfirmModal = function (_Component) {
                     year_course: "",
                     valid_email: true,
                     valid_cell: true,
-                    valid_student_id: true,
-                    error: true //there is error
+                    valid_student_id: true
                 });
                 _this2.toggleLoading();
                 setTimeout(function () {
@@ -45935,7 +45934,32 @@ var ConfirmModal = function (_Component) {
                         first_name: ""
                     });
                 }, 5000);
-            }).catch(function (error) {});
+            }).catch(function (error) {
+                _this2.setState(_defineProperty({
+                    error: true,
+                    thanks: true,
+                    last_name: "",
+                    email: "",
+                    cell_number: "",
+                    id_number: 0,
+                    year_course: "",
+                    valid_email: true,
+                    valid_cell: true,
+                    valid_student_id: true
+                }, 'error', true));
+                _this2.toggleLoading();
+                setTimeout(function () {
+                    document.getElementById('submit-order').disabled = false;
+                }, 10);
+                _this2.props.clearOrder();
+                setTimeout(function () {
+                    _this2.setState({
+                        thanks: false,
+                        first_name: "",
+                        error: false
+                    });
+                }, 10000);
+            });
             //}
         }
     }, {
@@ -46270,6 +46294,17 @@ var ConfirmModal = function (_Component) {
             );
         }
     }, {
+        key: 'renderError',
+        value: function renderError() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                'Something went wrong :( . Please refresh the page and try again. Sorrrryyyyyyy.',
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+                'Most Likely cause: already existing ticket in database. Please choose another seat'
+            );
+        }
+    }, {
         key: 'redirectBack',
         value: function redirectBack() {
             window.location.href = window.location.origin + "/dashboard/tickets";
@@ -46285,7 +46320,11 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Header,
                     { closeButton: true },
-                    show_new_tickets ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    this.state.error ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        { style: { color: "red" } },
+                        'Internal Error'
+                    ) : show_new_tickets ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h4',
                         null,
                         'Summary of New Seats'
@@ -46302,7 +46341,7 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["d" /* Modal */].Body,
                     { closeButton: true },
-                    show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()
+                    this.state.error ? this.renderError() : show_new_tickets ? this.renderNewTickets() : !edit_mode ? !this.state.thanks ? this.renderInputs() : this.renderThankYou() : this.renderConfirm()
                 )
             );
         }
