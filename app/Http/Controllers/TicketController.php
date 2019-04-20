@@ -7,6 +7,9 @@ use App\TicketOrder;
 use App\Ticket;
 use App\Section;
 use App\EventDay;
+use App\Exports\TicketsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class TicketController extends Controller
 {
@@ -214,6 +217,12 @@ class TicketController extends Controller
         }
 
         return TicketOrder::find($request->order["id"])->load('tickets','tickets.section');
+    }
+
+    public function export() 
+    {   
+        $now = Carbon::now();
+        return Excel::download(new TicketsExport, "ticket_sale_report-$now.xlsx");
     }
 
 }

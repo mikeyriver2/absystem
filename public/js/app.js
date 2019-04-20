@@ -5515,8 +5515,8 @@ var Home = function (_Component) {
                             ),
                             '|',
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
-                                { to: "/dashboard" },
+                                'a',
+                                { href: '/dashboard/report' },
                                 ' Export Sales .xlsx '
                             )
                         ),

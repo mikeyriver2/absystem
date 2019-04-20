@@ -162,7 +162,7 @@ export default class Home extends Component{
                         <div className="main-functions">
                             <Link to={"/ticketing"}>Ticketing Module </Link>|
                             {/*<Link to={"/dashboard"}> Ticket Sales </Link>|*/}
-                            <Link to={"/dashboard"}> Export Sales .xlsx </Link>
+                            <a href="/dashboard/report"> Export Sales .xlsx </a>
                         </div>
                         <div className="date-dropdown">
                             <Dropdown onSelect={(e)=>{this.handleSetDate(e)}}>
