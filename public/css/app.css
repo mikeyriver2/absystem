@@ -12010,6 +12010,7 @@ body {
 }
 
 .ticket-module .ticket-module-head .summary .btn-container button {
+  border-color: #c7c7c7;
   position: fixed;
   left: 8%;
   /* Width: 10%; */
@@ -12252,7 +12253,7 @@ body {
 
 .seat-reserved {
   color: white;
-  background-color: #f1b850;
+  background-color: #f1b850 !important;
 }
 
 .seat-not-taken {

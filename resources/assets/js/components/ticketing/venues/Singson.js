@@ -287,6 +287,14 @@ export default class Singson extends Component{
                                     })
                                 });
                             }
+                            if(edit_mode){
+                                if(chosen_seats.includes(section+row+(i+1))){
+                                    class_name+=" seat-reserved";
+                                }else{
+                                    class_name+=" seat-not-taken"
+                                    status = "free"
+                                }    
+                            }
                             class_name+= special ? special_type == "ktx" ? ` ${special_type} seat-taken` : ` ${special_type} seat-not-taken` : " seat-not-taken"
                             //class_name+=" seat-not-taken"
                             status = "free"

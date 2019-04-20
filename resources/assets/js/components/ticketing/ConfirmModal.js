@@ -78,7 +78,7 @@ export default class ConfirmModal extends Component{
                 last_name: this.state.last_name,
                 email: this.state.email,
                 cell_number: this.state.cell_number,
-                id_number: this.state.cell_number,
+                id_number: this.state.id_number,
                 year_course: this.state.year_course,
                 chosen_seats: this.props.chosen_seats,
                 selected_date: this.props.chosen_date,
@@ -309,11 +309,11 @@ export default class ConfirmModal extends Component{
         return (
             <div className="confirm-container">
                 <div className="confirm-message">
-                    Please consult with an executive officer before proceeding. Confirm?
+                    Please consult with an executive officer before proceeding.
                 </div>
                 <div onClick={this.handleEdit}className="ok">
                     <button style={style} class="btn btn-light">
-                        {!this.state.loading ? "Change my god damn seat bitch :)" : <Loader />}
+                        {!this.state.loading ? "Confirm" : <Loader />}
                     </button>    
                 </div>
             </div>

@@ -98,11 +98,13 @@ export default class OrderInfoModal extends Component{
     renderInfo(ticket){
         return (
             <div>
+                <b>Event:</b>   {ticket.event.name} <br/>
                 <b>Buyer Name:</b>  {`${ticket.buyer_first_name} ${ticket.buyer_last_name}`}  <br/>
                 <b>Email Address:</b>  {`${ticket.buyer_email}`} <br/>
-                <b>Cell Number:</b>  {`${ticket.buyer_email}`} <br/>
-                <b>Event:</b>   {ticket.event.name} <br/>
+                <b>Cell Number:</b>  {`${ticket.buyer_cell_number}`} <br/>
                 <b>Date Chosen:</b> {ticket.event_day.date} <br/>
+                <b>Student ID Number:</b> {ticket.student_id} <br/>
+                <b>Student Year Course:</b> {ticket.student_year_course} <br/>
                 <b>Bought Tickets:</b> <br/><br/>
                 {this.listTickets(ticket.tickets)}
             </div>

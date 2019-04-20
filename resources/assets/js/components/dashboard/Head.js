@@ -41,7 +41,7 @@ export default class Head extends Component{
 
     handleLogout(){
         axios.get('/logout').then(res=>{
-            window.location.href = '/';
+            window.location.href = '/login';
         });
     }
 

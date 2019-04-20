@@ -103,7 +103,7 @@ class TicketController extends Controller
                         ->get();
 
         if(count($check) > 0 && isset($check)){
-            return response("error",403);
+            return response($check->load('ticketOrder'),403);
         }
 
         $order = TicketOrder::create([
@@ -111,6 +111,8 @@ class TicketController extends Controller
             'buyer_last_name'  =>  $request->last_name,
             'buyer_email'  =>  $request->email,
             'buyer_cell_number'  =>  $request->cell_number,
+            'student_id' => $request->id_number,
+            'student_year_course'   => $request->year_course,
             'event_id'  =>  $request->event['id'],
             'event_day_id' => EventDay::where('date',$request->selected_date)
                                         ->where('event_id',$request->event['id'])
@@ -163,7 +165,7 @@ class TicketController extends Controller
         $seats = $order->tickets;
         if($chosen_date != $order->eventDay->date){
             $dayt = EventDay::find($order->eventDay->id);
-            $order->event_id = $dayt->id;
+            $order->event_day_id = $dayt->id;
             $order->save();
             foreach ($seats as $index => $current_seat) { //remove all tickets from last date
                 Ticket::destroy($current_seat->id);

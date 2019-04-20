@@ -2354,6 +2354,14 @@ var Singson = function (_Component) {
                                     });
                                 });
                             }
+                            if (edit_mode) {
+                                if (chosen_seats.includes(section + row + (i + 1))) {
+                                    _class_name += " seat-reserved";
+                                } else {
+                                    _class_name += " seat-not-taken";
+                                    status = "free";
+                                }
+                            }
                             _class_name += special ? special_type == "ktx" ? ' ' + special_type + ' seat-taken' : ' ' + special_type + ' seat-not-taken' : " seat-not-taken";
                             //class_name+=" seat-not-taken"
                             status = "free";
@@ -3253,6 +3261,15 @@ var OrderInfoModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'b',
                     null,
+                    'Event:'
+                ),
+                '   ',
+                ticket.event.name,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
                     'Buyer Name:'
                 ),
                 '  ',
@@ -3274,16 +3291,7 @@ var OrderInfoModal = function (_Component) {
                     'Cell Number:'
                 ),
                 '  ',
-                '' + ticket.buyer_email,
-                ' ',
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'b',
-                    null,
-                    'Event:'
-                ),
-                '   ',
-                ticket.event.name,
+                '' + ticket.buyer_cell_number,
                 ' ',
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -3293,6 +3301,24 @@ var OrderInfoModal = function (_Component) {
                 ),
                 ' ',
                 ticket.event_day.date,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Student ID Number:'
+                ),
+                ' ',
+                ticket.student_id,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Student Year Course:'
+                ),
+                ' ',
+                ticket.student_year_course,
                 ' ',
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -7549,7 +7575,7 @@ var Ticketing = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', { style: { margin: "10px 1vw" }, className: 'summary-hr' }),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'span',
-                                { onClick: this.clearOrder, className: 'clear-order' },
+                                { onClick: this.state.chosen_seats.length > 0 && this.clearOrder, className: 'clear-order' },
                                 'Clear Orders'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -11555,7 +11581,7 @@ var Head = function (_Component) {
         key: 'handleLogout',
         value: function handleLogout() {
             __WEBPACK_IMPORTED_MODULE_9_axios___default.a.get('/logout').then(function (res) {
-                window.location.href = '/';
+                window.location.href = '/login';
             });
         }
     }, {
@@ -45905,7 +45931,7 @@ var ConfirmModal = function (_Component) {
                 last_name: this.state.last_name,
                 email: this.state.email,
                 cell_number: this.state.cell_number,
-                id_number: this.state.cell_number,
+                id_number: this.state.id_number,
                 year_course: this.state.year_course,
                 chosen_seats: this.props.chosen_seats,
                 selected_date: this.props.chosen_date,
@@ -46280,7 +46306,7 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'confirm-message' },
-                    'Please consult with an executive officer before proceeding. Confirm?'
+                    'Please consult with an executive officer before proceeding.'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -46288,7 +46314,7 @@ var ConfirmModal = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'button',
                         { style: style, 'class': 'btn btn-light' },
-                        !this.state.loading ? "Change my god damn seat bitch :)" : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__["a" /* default */], null)
+                        !this.state.loading ? "Confirm" : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__miscellaneous_LoadAnimation__["a" /* default */], null)
                     )
                 )
             );

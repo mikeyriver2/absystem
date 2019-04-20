@@ -320,6 +320,7 @@ body{
         .btn-container{
           text-align:center;
           button{
+            border-color: #c7c7c7;
             position: fixed;
             left: 8%;
             /* Width: 10%; */
@@ -528,7 +529,7 @@ body{
 }
 .seat-reserved{
   color:white;
-  background-color: #f1b850; //#2741af;
+  background-color: #f1b850 !important; //#2741af;
 }
 .seat-not-taken{
   background-color: white;

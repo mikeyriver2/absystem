@@ -443,7 +443,7 @@ export default class Ticketing extends Component {
                             </div>
                             {/*<div className="total-price">*/}
                                 <hr style={{margin:"10px 1vw"}} className="summary-hr"/>
-                                <span onClick={this.clearOrder} className="clear-order">Clear Orders</span>
+                                <span onClick={this.state.chosen_seats.length > 0 && this.clearOrder} className="clear-order">Clear Orders</span>
                                 <div className="price"><b>P{this.state.total_price}.00</b></div>
                                 <div className="btn-container">
                                     {this.state.chosen_seats.length > 0 ?
