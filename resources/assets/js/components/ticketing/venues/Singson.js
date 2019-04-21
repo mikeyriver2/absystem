@@ -336,7 +336,7 @@ export default class Singson extends Component{
                         //</OverlayTrigger>
                     :
                         <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
-                            {!this.props.hasOwnProperty('from_dashboard') ? i+1 : ""}
+                            {this.props.hasOwnProperty('from_dashboard') ? i+1 : ""}
                         </div>
                 )
             }

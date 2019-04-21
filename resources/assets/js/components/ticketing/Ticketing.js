@@ -470,19 +470,19 @@ export default class Ticketing extends Component {
                             <div className="seat-prev-item">
                                 <span>Taken</span>
                                 <div className="seat seat-taken">
-                                    1
+                                    
                                 </div>
                             </div>
                             <div md={4} className="seat-prev-item">
                                 <span>Selected Seat</span>
                                 <div className="seat seat-reserved">
-                                    1
+                                    
                                 </div>
                             </div>
                             <div md={4} className="seat-prev-item">
                                 <span>VIP [Not Taken]</span>
                                 <div className="seat vip">
-                                    1
+                                    
                                 </div>
                             </div>
                         </div>

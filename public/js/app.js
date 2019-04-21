@@ -2403,7 +2403,7 @@ var Singson = function (_Component) {
                     : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name },
-                        !_this3.props.hasOwnProperty('from_dashboard') ? i + 1 : ""
+                        _this3.props.hasOwnProperty('from_dashboard') ? i + 1 : ""
                     ));
                 }
                 return seats;
@@ -7656,11 +7656,7 @@ var Ticketing = function (_Component) {
                                     null,
                                     'Taken'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'seat seat-taken' },
-                                    '1'
-                                )
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'seat seat-taken' })
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
@@ -7670,11 +7666,7 @@ var Ticketing = function (_Component) {
                                     null,
                                     'Selected Seat'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'seat seat-reserved' },
-                                    '1'
-                                )
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'seat seat-reserved' })
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
@@ -7684,11 +7676,7 @@ var Ticketing = function (_Component) {
                                     null,
                                     'VIP [Not Taken]'
                                 ),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'div',
-                                    { className: 'seat vip' },
-                                    '1'
-                                )
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'seat vip' })
                             )
                         )
                     ),
