@@ -2437,11 +2437,11 @@ var Singson = function (_Component) {
             for (var i = 0; i < numberOfSections; i++) {
                 var section = " ";
                 if (i == 0) {
-                    section = "ol";
+                    section = "Orchestra Left";
                 } else if (i == 1) {
-                    section = "oc";
+                    section = "Orchestra Center";
                 } else {
-                    section = "or";
+                    section = "Orchestra Right";
                 }
                 var class_name = "section section-" + section;
                 var style = {
@@ -7545,7 +7545,7 @@ var Ticketing = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_2_react_bootstrap__["b" /* Col */],
                                     { md: 9, className: 'concert-title' },
-                                    'YEAR-END CONCERT 2019: SPIRIT'
+                                    'YEAR-END CONCERT 2019: ANIMA'
                                 )
                             )
                         ),
@@ -7639,6 +7639,57 @@ var Ticketing = function (_Component) {
                             'div',
                             { className: 'stage' },
                             'STAGE'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'seat-previews' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'h4',
+                                { style: { marginRight: "20px", display: 'inline-block' } },
+                                'LEGENDS:'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'seat-prev-item' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'Taken'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'seat seat-taken' },
+                                    '1'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { md: 4, className: 'seat-prev-item' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'Selected Seat'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'seat seat-reserved' },
+                                    '1'
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { md: 4, className: 'seat-prev-item' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'span',
+                                    null,
+                                    'VIP [Not Taken]'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'seat vip' },
+                                    '1'
+                                )
+                            )
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(

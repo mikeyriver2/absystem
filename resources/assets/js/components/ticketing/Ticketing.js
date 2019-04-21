@@ -422,7 +422,7 @@ export default class Ticketing extends Component {
                                     <img src="/images/ABS_Full-Logo_Circle.png"/>
                                 </Col>
                                 <Col md={9} className='concert-title'>
-                                    YEAR-END CONCERT 2019: SPIRIT
+                                    YEAR-END CONCERT 2019: ANIMA
                                 </Col>
                             </Row>
                         </div>
@@ -464,6 +464,27 @@ export default class Ticketing extends Component {
                     <div className="stage-container">
                         <div className="stage">
                             STAGE
+                        </div>
+                        <div className="seat-previews"> 
+                            <h4 style={{marginRight:"20px",display:'inline-block'}}>LEGENDS:</h4>
+                            <div className="seat-prev-item">
+                                <span>Taken</span>
+                                <div className="seat seat-taken">
+                                    1
+                                </div>
+                            </div>
+                            <div md={4} className="seat-prev-item">
+                                <span>Selected Seat</span>
+                                <div className="seat seat-reserved">
+                                    1
+                                </div>
+                            </div>
+                            <div md={4} className="seat-prev-item">
+                                <span>VIP [Not Taken]</span>
+                                <div className="seat vip">
+                                    1
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="clickables">

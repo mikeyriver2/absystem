@@ -12189,7 +12189,11 @@ body {
   margin-right: 1vh;
 }
 
-.stage {
+.stage-container {
+  margin-bottom: 20px;
+}
+
+.stage-container .stage {
   width: 75%;
   margin: 3vh auto;
   text-align: center;
@@ -12197,6 +12201,29 @@ body {
   border-style: solid;
   border-color: #00000054;
   padding: 1vh;
+}
+
+.stage-container .seat-previews {
+  margin: 0;
+  text-align: right;
+}
+
+.stage-container .seat-previews .seat-prev-item {
+  padding: 0;
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.stage-container .seat-previews span {
+  vertical-align: top;
+}
+
+.stage-container .seat-previews .seat {
+  width: 20px;
+  display: inline-block;
+  margin-bottom: 0;
+  margin-left: 5px;
+  text-align: center;
 }
 
 .absolute-column-counter small {

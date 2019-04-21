@@ -468,14 +468,36 @@ body{
   margin-right: 1vh;
 }
 
-.stage{
-  width:75%;
-  margin: 3vh auto;
-  text-align: center;
-  border: 1px;
-  border-style: solid;
-  border-color: #00000054;
-  padding: 1vh;
+.stage-container{
+  margin-bottom: 20px;
+  .stage{
+    width:75%;
+    margin: 3vh auto;
+    text-align: center;
+    border: 1px;
+    border-style: solid;
+    border-color: #00000054;
+    padding: 1vh;
+  }
+  .seat-previews{
+    margin: 0;
+    text-align: right;
+    .seat-prev-item{
+      padding: 0;
+      margin-right: 15px;
+      display: inline-block;
+    }
+    span{
+      vertical-align: top;
+    }
+    .seat{
+      width: 20px;
+      display: inline-block;
+      margin-bottom: 0;
+      margin-left: 5px;
+      text-align:center
+    }
+  }
 }
 
 .absolute-column-counter{

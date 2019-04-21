@@ -373,11 +373,11 @@ export default class Singson extends Component{
         for(var i = 0; i < numberOfSections; i++){
             var section = " "
             if(i == 0){
-                section = "ol"
+                section = "Orchestra Left"
             }else if(i == 1){
-                section = "oc"
+                section = "Orchestra Center"
             }else{
-                section = "or"
+                section = "Orchestra Right"
             }
             var class_name = "section section-"+section
             let style = {
