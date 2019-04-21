@@ -11,9 +11,18 @@ export default class SideBar extends Component{
     constructor(props){
         super(props)
         this.state={
-            show_ticket_info: false
+            show_ticket_info: false,
+            user: {}
         }
         this.showLabel = this.showLabel.bind(this)
+    }
+
+    componentDidMount(){
+        axios.get('/login-check').then(res=>{
+            this.setState({
+                user: res.data.user
+            })
+        });
     }
 
     showLabel(e){
@@ -46,13 +55,18 @@ export default class SideBar extends Component{
                     <label style={{marginLeft:"6.9vw"}} id="label-ticket" htmlFor="ticket-icon" className="label-icon">Tickets</label>
                 </Row>
                 <Row className="side-icon event-icon">
-                    <img onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/stage.png" id="event-icon"/>
+                    <img style={{cursor:"not-allowed"}} onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/stage.png" id="event-icon"/>
                     <label style={{marginLeft:"6.7vw"}} id="label-event" htmlFor="event-icon" className="label-icon">Events</label>
                 </Row>
                 <Row className="side-icon member-icon">
-                    <Link to={`/dashboard/members`}>
-                        <img onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/audience.png" id="member-icon"/>
-                    </Link>
+                    {this.state.user.type == "eb" ?
+                        <Link to={`/dashboard/members`}>
+                            <img onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/audience.png" id="member-icon"/>
+                        </Link>
+                    :
+                        <img style={{cursor:"not-allowed"}} onMouseOver={this.showLabel} onMouseOut={this.showLabel} src="/images/audience.png" id="member-icon"/>
+                    }
+                    
                     <label style={{marginLeft:"7.4vw"}} id="label-member" htmlFor="member-icon" className="label-icon">Members</label>
                 </Row>
             </Col>

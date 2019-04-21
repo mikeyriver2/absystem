@@ -17,6 +17,10 @@ class TicketOrder extends Model
         'student_year_course'
     ];
 
+    protected $appends = [
+        'buyer_full_name'
+    ];
+
     public function tickets(){
         return $this->hasMany('App\Ticket','order_id');
     }
@@ -27,5 +31,9 @@ class TicketOrder extends Model
 
     public function eventDay(){
         return $this->belongsTo('App\EventDay');
+    }
+
+    public function getBuyerFullNameAttribute(){
+        return " ".$this->attributes['buyer_first_name']." ".$this->attributes['buyer_last_name']."";
     }
 }

@@ -5634,13 +5634,25 @@ var SideBar = function (_Component) {
         var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this, props));
 
         _this.state = {
-            show_ticket_info: false
+            show_ticket_info: false,
+            user: {}
         };
         _this.showLabel = _this.showLabel.bind(_this);
         return _this;
     }
 
     _createClass(SideBar, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_6_axios___default.a.get('/login-check').then(function (res) {
+                _this2.setState({
+                    user: res.data.user
+                });
+            });
+        }
+    }, {
         key: 'showLabel',
         value: function showLabel(e) {
             var labels = document.getElementsByTagName('LABEL');
@@ -5692,7 +5704,7 @@ var SideBar = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon event-icon' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/stage.png', id: 'event-icon' }),
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { style: { cursor: "not-allowed" }, onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/stage.png', id: 'event-icon' }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'label',
                         { style: { marginLeft: "6.7vw" }, id: 'label-event', htmlFor: 'event-icon', className: 'label-icon' },
@@ -5702,11 +5714,11 @@ var SideBar = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["f" /* Row */],
                     { className: 'side-icon member-icon' },
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    this.state.user.type == "eb" ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */],
                         { to: '/dashboard/members' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/audience.png', id: 'member-icon' })
-                    ),
+                    ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { style: { cursor: "not-allowed" }, onMouseOver: this.showLabel, onMouseOut: this.showLabel, src: '/images/audience.png', id: 'member-icon' }),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'label',
                         { style: { marginLeft: "7.4vw" }, id: 'label-member', htmlFor: 'member-icon', className: 'label-icon' },
@@ -47040,12 +47052,12 @@ var Members = function (_Component) {
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
               'div',
               { className: 'search-table' },
-              __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'text', 'class': 'form-control', placeholder: 'Search' })
+              __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', { type: 'text', 'class': 'form-control', placeholder: 'Not Functional Yet' })
             )
           ),
           __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
-            { className: 'tickets-table' },
+            { style: { maxHeight: "70vh", overflow: "auto" }, className: 'tickets-table' },
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
               __WEBPACK_IMPORTED_MODULE_0_react_bootstrap__["g" /* Table */],
               { hover: true },
@@ -47079,7 +47091,7 @@ var Members = function (_Component) {
                 this.state.members.map(function (member, index) {
                   return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'tr',
-                    { onClick: function onClick(e) {
+                    { style: { cursor: "pointer" }, onClick: function onClick(e) {
                         return _this3.setChosenUser(index);
                       } },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -47087,16 +47099,16 @@ var Members = function (_Component) {
                       null,
                       member.name
                     ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    member.last_activity ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
                       member.last_activity.action
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('td', null),
+                    member.last_activity ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                       'td',
                       null,
                       member.last_activity.created_at
-                    )
+                    ) : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('td', null)
                   );
                 })
               )

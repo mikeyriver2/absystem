@@ -42,11 +42,11 @@ export default class Members extends Component{
         <Col md={8} className="tickets-container">
           <div className="stuff">
             <div className="search-table">
-              <input type="text" class="form-control" placeholder="Search"/>
+              <input type="text" class="form-control" placeholder="Not Functional Yet"/>
             </div>
             
           </div>
-          <div className="tickets-table">
+          <div style={{maxHeight:"70vh",overflow:"auto"}} className="tickets-table">
             <Table hover>
               <thead>
                 <tr>
@@ -59,10 +59,18 @@ export default class Members extends Component{
               <tbody>
                 {this.state.members.map((member,index)=>{
                   return (
-                    <tr onClick={e=>this.setChosenUser(index)}>
+                    <tr style={{cursor:"pointer"}} onClick={e=>this.setChosenUser(index)}>
                       <td>{member.name}</td>
-                      <td>{member.last_activity.action}</td>
-                      <td>{member.last_activity.created_at}</td>
+                      {member.last_activity ?
+                        <td>{member.last_activity.action}</td>
+                      :
+                        <td></td>
+                      }
+                      {member.last_activity ?
+                        <td>{member.last_activity.created_at}</td>
+                      :
+                        <td></td>
+                      }
                     </tr>
                   )
                   })

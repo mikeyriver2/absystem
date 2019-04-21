@@ -15,7 +15,7 @@ export default class SideSummary extends Component{
             orders : [],
             total_revenue: 0,
             number_of_tickets_sold: 0,
-            show_ticket_info: false
+            show_ticket_info: false,
         }
         this.getOrderInfo = this.getOrderInfo.bind(this);
         this.handleShowTicketInfo = this.handleShowTicketInfo.bind(this);

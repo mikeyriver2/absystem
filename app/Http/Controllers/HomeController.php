@@ -28,10 +28,19 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function getUsers(){
-        $users = User::all()->load(['actionLogs' => function($actionLog){
-            $actionLog->orderBy('id','desc');
-        }]);
-        return $users;
+    public function getUsers(Request $request){
+        $user = $request->user();
+            if($user->type == "eb"){
+            $users = User::all()->load(['actionLogs' => function($actionLog){
+                $actionLog->orderBy('id','desc');
+            }]);
+            return $users;
+        }else{
+            return response("You don't have access",403);
+        }
+    }
+
+    public function getUser(Request $request){
+        return $request->user();
     }
 }
