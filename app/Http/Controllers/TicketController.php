@@ -59,6 +59,7 @@ class TicketController extends Controller
             $orders->where('buyer_first_name','like',"%".$search."%")
                 ->orWhere('buyer_last_name','like',"%".$search."%")
                 ->orWhere('buyer_email','like',"%".$search."%")
+                ->orWhere('student_id','like',"%".$search."%")
                 //->orWhere('buyer_cell_number',$search)
                 ->orWhereHas('tickets',function($ticket)use($search){
                     $ticket->where('slug','like',"%".$search."%");
