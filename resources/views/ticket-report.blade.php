@@ -24,8 +24,8 @@
             <td>{{$ticket->ticketOrder->buyer_full_name}}</td>
             <td>{{$ticket->ticketOrder->buyer_email}}</td>
             <td>{{$ticket->ticketOrder->buyer_cell_number}}</td>
-            <td>{{$ticket->ticketOrder->student_id_number}}</td>
-            <td>{{$ticket->ticketOrder->year_course}}</td>
+            <td>{{$ticket->ticketOrder->student_id}}</td>
+            <td>{{$ticket->ticketOrder->student_year_course}}</td>
         </tr>
     @endforeach 
     </tbody>

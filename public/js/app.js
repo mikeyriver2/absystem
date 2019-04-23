@@ -3205,6 +3205,7 @@ var OrderInfoModal = function (_Component) {
                     'tbody',
                     null,
                     tickets.map(function (ticket) {
+                        var section_name = ticket.vip ? "[VIP] " + ticket.section.name : ticket.section.name;
                         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'tr',
                             null,
@@ -3216,7 +3217,7 @@ var OrderInfoModal = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'td',
                                 null,
-                                ticket.section.name
+                                section_name
                             ),
                             from_tickets && !edit_mode && __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'td',
@@ -7674,7 +7675,7 @@ var Ticketing = function (_Component) {
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'span',
                                     null,
-                                    'VIP [Not Taken]'
+                                    'VIP'
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'seat vip' })
                             )

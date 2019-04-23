@@ -480,7 +480,7 @@ export default class Ticketing extends Component {
                                 </div>
                             </div>
                             <div md={4} className="seat-prev-item">
-                                <span>VIP [Not Taken]</span>
+                                <span>VIP</span>
                                 <div className="seat vip">
                                     
                                 </div>

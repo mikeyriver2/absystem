@@ -124,16 +124,19 @@ class TicketController extends Controller
         ]);
         
         foreach($request->chosen_seats as $key => $value){
+            $vip = false;
             if(strpos($value["section_name"],"[VIP] ") > -1){
                 $exploded = explode("[VIP] ",$value["section_name"]);
                 $value["section_name"] = $exploded[1];
+                $vip = true;
             }
             Ticket::create([
                 'order_id' => $order->id,
                 'slug' => $value["seat_id"],
                 'status' => "unvalidated",
                 'section_id' => Section::where('name',$value["section_name"])->first()->id,
-                'ticket_price' => $value['ticket_price']
+                'ticket_price' => $value['ticket_price'],
+                'vip'   => $vip
             ]);
         }
     }
@@ -174,7 +177,13 @@ class TicketController extends Controller
             foreach ($seats as $index => $current_seat) { //remove all tickets from last date
                 Ticket::destroy($current_seat->id);
             }
+
             foreach ($new_chosen_seats as $new_seat){
+                if(strpos($new_seat["section_name"],"[VIP] ") > -1){
+                    $exploded = explode("[VIP] ",$new_seat["section_name"]);
+                    $new_seat["section_name"] = $exploded[1];
+                }
+
                 Ticket::create([
                     'order_id' => $order['id'],
                     'slug' => $new_seat['seat_id'],

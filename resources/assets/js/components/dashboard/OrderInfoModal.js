@@ -63,10 +63,11 @@ export default class OrderInfoModal extends Component{
                 </thead>
                 <tbody>
                     {tickets.map((ticket)=>{
+                        let section_name = ticket.vip ? "[VIP] "+ticket.section.name : ticket.section.name;
                         return (
                             <tr>
                                 <td>{ticket.slug}</td>
-                                <td>{ticket.section.name}</td>
+                                <td>{section_name}</td>
                                 {(from_tickets && !edit_mode) &&
 
                                 <td>
