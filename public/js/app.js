@@ -3256,6 +3256,10 @@ var OrderInfoModal = function (_Component) {
     }, {
         key: 'renderInfo',
         value: function renderInfo(ticket) {
+            var total_price = 0;
+            ticket.tickets.map(function (tix) {
+                total_price += tix.ticket_price;
+            });
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
                 null,
@@ -3320,6 +3324,24 @@ var OrderInfoModal = function (_Component) {
                 ),
                 ' ',
                 ticket.student_year_course,
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Scholar:'
+                ),
+                ' ',
+                ticket.tickets[0].scholar ? 'True' : 'False',
+                ' ',
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'b',
+                    null,
+                    'Total Cost of tickets:'
+                ),
+                ' ',
+                'P' + total_price + '.00',
                 ' ',
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -45909,6 +45931,7 @@ var ConfirmModal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ConfirmModal.__proto__ || Object.getPrototypeOf(ConfirmModal)).call(this));
 
         _this.state = {
+            is_scholar: false,
             loading: false,
             thanks: false,
             first_name: "",
@@ -45930,6 +45953,7 @@ var ConfirmModal = function (_Component) {
         _this.renderConfirm = _this.renderConfirm.bind(_this);
         _this.handleEdit = _this.handleEdit.bind(_this);
         _this.renderNewTickets = _this.renderNewTickets.bind(_this);
+        _this.handleScholarChange = _this.handleScholarChange.bind(_this);
         return _this;
     }
 
@@ -45946,6 +45970,25 @@ var ConfirmModal = function (_Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
             console.log('Calling');
+            if (this.props.show_order_modal != prevProps.show_order_modal) {
+                this.setState({
+                    is_scholar: false,
+                    loading: false,
+                    thanks: false,
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    cell_number: "",
+                    id_number: "",
+                    year_course: "",
+                    error: false, //there is network error
+                    show_new_tickets: false,
+                    new_tickets: [],
+                    valid_email: true,
+                    valid_cell: true,
+                    valid_student_id: true
+                });
+            }
             try {
                 if ((this.state.valid_student_id || !/\S/.test(this.state.id_number)) && this.state.valid_email && (this.state.valid_cell || !/\S/.test(this.state.cell_number)) && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)) {
                     document.getElementById('submit-order').disabled = false;
@@ -45987,7 +46030,8 @@ var ConfirmModal = function (_Component) {
                 year_course: this.state.year_course,
                 chosen_seats: this.props.chosen_seats,
                 selected_date: this.props.chosen_date,
-                event: this.props.event
+                event: this.props.event,
+                scholar: this.state.is_scholar
             };
             __WEBPACK_IMPORTED_MODULE_5_axios___default.a.post('/ticketing/orderTicket', params).then(function (res) {
                 _this2.setState({
@@ -45999,7 +46043,8 @@ var ConfirmModal = function (_Component) {
                     year_course: "",
                     valid_email: true,
                     valid_cell: true,
-                    valid_student_id: true
+                    valid_student_id: true,
+                    scholar: false
                 });
                 _this2.toggleLoading();
                 setTimeout(function () {
@@ -46023,7 +46068,8 @@ var ConfirmModal = function (_Component) {
                     year_course: "",
                     valid_email: true,
                     valid_cell: true,
-                    valid_student_id: true
+                    valid_student_id: true,
+                    scholar: false
                 }, 'error', true));
                 _this2.toggleLoading();
                 setTimeout(function () {
@@ -46100,6 +46146,12 @@ var ConfirmModal = function (_Component) {
             }
         }
     }, {
+        key: 'handleScholarChange',
+        value: function handleScholarChange() {
+            console.log('calling');
+            this.setState({ is_scholar: !this.state.is_scholar });
+        }
+    }, {
         key: 'renderInputs',
         value: function renderInputs() {
             var _this3 = this;
@@ -46109,6 +46161,9 @@ var ConfirmModal = function (_Component) {
                 this.props.chosen_seats.map(function (seat) {
                     total += seat.ticket_price;
                 });
+                if (this.state.is_scholar) {
+                    total = total * .9;
+                }
             }
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -46225,6 +46280,16 @@ var ConfirmModal = function (_Component) {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { className: 'total-confirm-modal' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'scholar-checkbox' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h6',
+                            { style: { marginRight: "10px" } },
+                            'Scholar?'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { onClick: this.handleScholarChange, value: this.state.is_scholar, type: 'checkbox' })
+                    ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'h6',
                         null,

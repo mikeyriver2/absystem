@@ -10,6 +10,7 @@ export default class ConfirmModal extends Component{
     constructor(){
         super();
         this.state={
+            is_scholar: false,
             loading:false,
             thanks:false,
             first_name: "",
@@ -31,6 +32,7 @@ export default class ConfirmModal extends Component{
         this.renderConfirm = this.renderConfirm.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.renderNewTickets = this.renderNewTickets.bind(this);
+        this.handleScholarChange = this.handleScholarChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps){
@@ -43,6 +45,25 @@ export default class ConfirmModal extends Component{
 
     componentDidUpdate(prevProps,prevState){
         console.log('Calling');
+        if(this.props.show_order_modal != prevProps.show_order_modal){
+            this.setState({
+                is_scholar: false,
+                loading:false,
+                thanks:false,
+                first_name: "",
+                last_name: "",
+                email: "",
+                cell_number: "",
+                id_number: "",
+                year_course: "",
+                error: false, //there is network error
+                show_new_tickets: false,
+                new_tickets: [],
+                valid_email: true,
+                valid_cell: true,
+                valid_student_id: true
+            })  
+        }
         try{
                 if ((this.state.valid_student_id || !/\S/.test(this.state.id_number))  && this.state.valid_email && (this.state.valid_cell || !/\S/.test(this.state.cell_number)) && /\S/.test(this.state.first_name) && /\S/.test(this.state.last_name) && /\S/.test(this.state.email)){
                         document.getElementById('submit-order').disabled = false
@@ -82,7 +103,8 @@ export default class ConfirmModal extends Component{
                 year_course: this.state.year_course,
                 chosen_seats: this.props.chosen_seats,
                 selected_date: this.props.chosen_date,
-                event: this.props.event
+                event: this.props.event,
+                scholar: this.state.is_scholar
             }
             axios.post('/ticketing/orderTicket',params).then(res=>{
                 this.setState({
@@ -95,6 +117,7 @@ export default class ConfirmModal extends Component{
                     valid_email: true,
                     valid_cell: true,
                     valid_student_id: true,
+                    scholar: false
                 })
                 this.toggleLoading();
                 setTimeout(()=>{ 
@@ -119,6 +142,7 @@ export default class ConfirmModal extends Component{
                     valid_email: true,
                     valid_cell: true,
                     valid_student_id: true,
+                    scholar: false,
                     error: true //there is error
                 })
                 this.toggleLoading();
@@ -189,12 +213,20 @@ export default class ConfirmModal extends Component{
         }
     }
 
+    handleScholarChange(){
+        console.log('calling')
+        this.setState({is_scholar: !this.state.is_scholar})
+    }
+
     renderInputs(){
         let total = 0;
         if(this.props.hasOwnProperty('chosen_seats')){
             this.props.chosen_seats.map((seat)=>{
                 total += seat.ticket_price
             })
+            if(this.state.is_scholar){
+                total = total*.9;
+            }
         }
         return(
             <div>
@@ -236,7 +268,12 @@ export default class ConfirmModal extends Component{
                         <input name="year_course" onChange={this.handleChange} type="text"></input>
                     </div>
                 </div>
+                
                 <div className="total-confirm-modal">
+                    <div className="scholar-checkbox">
+                        <h6 style={{marginRight:"10px"}}>Scholar?</h6>
+                        <input onClick={this.handleScholarChange} value={this.state.is_scholar} type="checkbox"/>
+                    </div>
                     <h6>TOTAL:</h6><span><b>P{total.toLocaleString()}.00</b></span>
                 </div>
                 <button id="submit-order" onClick={this.submitOrder} className="confirm-button btn btn-primary">

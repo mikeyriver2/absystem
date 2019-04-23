@@ -135,7 +135,8 @@ class TicketController extends Controller
                 'slug' => $value["seat_id"],
                 'status' => "unvalidated",
                 'section_id' => Section::where('name',$value["section_name"])->first()->id,
-                'ticket_price' => $value['ticket_price'],
+                'ticket_price' => $request->scholar ? $value['ticket_price']*.9 : $value['ticket_price'],
+                'scholar'   => $request->scholar,
                 'vip'   => $vip
             ]);
         }

@@ -97,6 +97,10 @@ export default class OrderInfoModal extends Component{
     }
 
     renderInfo(ticket){
+        let total_price = 0;
+        ticket.tickets.map((tix)=>{
+            total_price += tix.ticket_price;
+        })
         return (
             <div>
                 <b>Event:</b>   {ticket.event.name} <br/>
@@ -106,6 +110,9 @@ export default class OrderInfoModal extends Component{
                 <b>Date Chosen:</b> {ticket.event_day.date} <br/>
                 <b>Student ID Number:</b> {ticket.student_id} <br/>
                 <b>Student Year Course:</b> {ticket.student_year_course} <br/>
+                <b>Scholar:</b> {ticket.tickets[0].scholar ? 'True' : 'False'} <br/>
+                <b>Total Cost of tickets:</b> {`P${total_price}.00`} <br/>
+
                 <b>Bought Tickets:</b> <br/><br/>
                 {this.listTickets(ticket.tickets)}
             </div>

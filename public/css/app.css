@@ -12324,6 +12324,11 @@ body {
   margin: 2.5vh 0;
 }
 
+#confirm-order-modal .total-confirm-modal .scholar-checkbox {
+  display: inline-block;
+  margin-right: 20px;
+}
+
 #confirm-order-modal .total-confirm-modal h6 {
   display: inline-block;
 }

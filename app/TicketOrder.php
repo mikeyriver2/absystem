@@ -14,7 +14,7 @@ class TicketOrder extends Model
         'event_id',
         'event_day_id',
         'student_id',
-        'student_year_course'
+        'student_year_course',
     ];
 
     protected $appends = [
