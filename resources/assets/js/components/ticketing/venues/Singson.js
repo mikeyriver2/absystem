@@ -331,12 +331,12 @@ export default class Singson extends Component{
                         //     overlay={e=>{this.renderSeatPopOver(section,row,i+1,status)}}
                         // >
                             <div onClick={(e)=>{this.renderSeatPopOver(e,status)}} id={section+row+(i+1)} style={style} className={class_name}>
-                                {i+1}
+                                {}
                             </div>
                         //</OverlayTrigger>
                     :
                         <div id={section+row+(i+1)} style={style} onClick={this.handleSeatClick} className={class_name}>
-                            {this.props.hasOwnProperty('from_dashboard') ? i+1 : ""}
+                            {this.props.hasOwnProperty('from_dashboard') ? i+1 : i+1}
                         </div>
                 )
             }
