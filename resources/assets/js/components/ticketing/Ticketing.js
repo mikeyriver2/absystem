@@ -462,11 +462,8 @@ export default class Ticketing extends Component {
                 </div>
                 <div style={{maxHeight:window_height}} className="venue">
                     <div className="stage-container">
-                        <div className="stage">
-                            STAGE
-                        </div>
                         <div className="seat-previews"> 
-                            <h4 style={{marginRight:"20px",display:'inline-block'}}>LEGENDS:</h4>
+                            <h4 style={{marginTop: "20px",marginRight:"20px",display:'inline-block'}}>LEGEND:</h4>
                             <div className="seat-prev-item">
                                 <span>Taken</span>
                                 <div className="seat seat-taken">
@@ -485,6 +482,9 @@ export default class Ticketing extends Component {
                                     
                                 </div>
                             </div>
+                        </div>
+						<div className="stage">
+                            STAGE
                         </div>
                     </div>
                     <div className="clickables">

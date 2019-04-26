@@ -2396,9 +2396,13 @@ var Singson = function (_Component) {
                     //     trigger="click" 
                     //     overlay={e=>{this.renderSeatPopOver(section,row,i+1,status)}}
                     // >
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { onClick: function onClick(e) {
-                            _this3.renderSeatPopOver(e, status);
-                        }, id: section + row + (i + 1), style: style, className: _class_name })
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'div',
+                        { onClick: function onClick(e) {
+                                _this3.renderSeatPopOver(e, status);
+                            }, id: section + row + (i + 1), style: style, className: _class_name },
+                        i + 1
+                    )
                     //</OverlayTrigger>
                     : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
@@ -7660,16 +7664,11 @@ var Ticketing = function (_Component) {
                         { className: 'stage-container' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'stage' },
-                            'STAGE'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
                             { className: 'seat-previews' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'h4',
-                                { style: { marginRight: "20px", display: 'inline-block' } },
-                                'LEGENDS:'
+                                { style: { marginTop: "20px", marginRight: "20px", display: 'inline-block' } },
+                                'LEGEND:'
                             ),
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
@@ -7701,6 +7700,11 @@ var Ticketing = function (_Component) {
                                 ),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'seat vip' })
                             )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'stage' },
+                            'STAGE'
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
