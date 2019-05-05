@@ -155,7 +155,7 @@ export default class Home extends Component{
                 />
                 <Col md={8} className="main">
                     <div className="main-top">
-                        <h3>YEAR-END CONCERT 2019: SPIRIT</h3>
+                        <h3>YEAR-END CONCERT 2019: ANIMA</h3>
                         <h4>Live Status of Singson</h4>
                     </div>
                     <div className="main-footer"> {/* it was a footer before I moved it hahah */}

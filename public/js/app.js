@@ -2396,18 +2396,14 @@ var Singson = function (_Component) {
                     //     trigger="click" 
                     //     overlay={e=>{this.renderSeatPopOver(section,row,i+1,status)}}
                     // >
-                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'div',
-                        { onClick: function onClick(e) {
-                                _this3.renderSeatPopOver(e, status);
-                            }, id: section + row + (i + 1), style: style, className: _class_name },
-                        i + 1
-                    )
+                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { onClick: function onClick(e) {
+                            _this3.renderSeatPopOver(e, status);
+                        }, id: section + row + (i + 1), style: style, className: _class_name })
                     //</OverlayTrigger>
                     : __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
                         { id: section + row + (i + 1), style: style, onClick: _this3.handleSeatClick, className: _class_name },
-                        _this3.props.hasOwnProperty('from_dashboard') ? i + 1 : ""
+                        _this3.props.hasOwnProperty('from_dashboard') ? i + 1 : i + 1
                     ));
                 }
                 return seats;
@@ -5520,7 +5516,7 @@ var Home = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'h3',
                             null,
-                            'YEAR-END CONCERT 2019: SPIRIT'
+                            'YEAR-END CONCERT 2019: ANIMA'
                         ),
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'h4',
@@ -11677,7 +11673,7 @@ var Head = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             __WEBPACK_IMPORTED_MODULE_8_react_router_dom__["b" /* Link */],
                             { to: '/dashboard' },
-                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/abs-logo.png' })
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('img', { src: '/images/ABS_Full-Logo_Circle.png' })
                         )
                     ),
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(

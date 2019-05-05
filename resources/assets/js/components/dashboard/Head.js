@@ -51,7 +51,7 @@ export default class Head extends Component{
                 <Row className="head">
                     <Col md={4} className="logo">
                         <Link to={`/dashboard`}>
-                            <img src="/images/abs-logo.png" />
+                            <img src="/images/ABS_Full-Logo_Circle.png" />
                         </Link>
                     </Col>
                     <Col md={4} className="abs-title">
